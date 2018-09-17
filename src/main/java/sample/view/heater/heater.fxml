@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane alignment="center" hgap="10" prefHeight="113.0" prefWidth="374.0" stylesheets="/sample/view/heater/heater.css" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.heaterController.HeaterController">
+   <columnConstraints>
+      <ColumnConstraints />
+      <ColumnConstraints />
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+   </rowConstraints>
+   <children>
+      <Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#okAction" text="ok" textAlignment="JUSTIFY" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+      <Label text="تعداد گرم کن" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+      <TextField fx:id="heaterNumberInput" accessibleText="تعداد گرم کن را وارد کنید" onKeyReleased="#textInput" />
+      <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" styleClass="tabPane" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="3">
+        <tabs>
+          <Tab text="Untitled Tab 1">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+          <Tab text="Untitled Tab 2">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+      <Button mnemonicParsing="false" text="Cancel" GridPane.columnIndex="0" GridPane.rowIndex="4" onAction="#cancelButton"></Button>
+      <Button mnemonicParsing="false" text="Clear" GridPane.columnIndex="1" GridPane.rowIndex="4" onAction="#clearButton"/>
+   </children>
+</GridPane>

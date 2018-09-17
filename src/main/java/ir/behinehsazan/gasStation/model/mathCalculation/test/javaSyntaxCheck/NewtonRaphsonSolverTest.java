@@ -5,6 +5,7 @@ import org.apache.commons.math3.analysis.function.Sin;
 import org.apache.commons.math3.analysis.solvers.NewtonRaphsonSolver;
 import org.apache.commons.math3.util.FastMath;
 import org.junit.Assert;
+import org.junit.Test;
 
 
 /**

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<h1> سلام </h1>
+<script>
+    document.write(5 + 6);
+</script>
+
+
+<object id="image" data="../svgfile/stationproperty/list-of-works.svg"
+        type="image/svg+xml"  class="logo" > </object>
+<!--<img id="image2" src="list-of-works.svg" />-->
+
+<h1><script>
+    var myPicXE = document.getElementsByTagName('image')[0];
+    var address = myPicXE.getAttribute('data');
+
+    var myPicXO = new Image();
+    myPicXO.src = address;
+    document.alert(address);
+
+    document.write(myPicXO.width);
+    document.write(myPicXO.height);
+</script></h1>
+
+
+</body>
+</html>

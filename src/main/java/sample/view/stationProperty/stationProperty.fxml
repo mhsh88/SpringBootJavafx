@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane fx:id="mainGridPane" alignment="center" hgap="10" prefHeight="550.0" prefWidth="1000.0" stylesheets="/sample/view/stationProperty/stationProperty.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.stationProperty.StationPropertyController">
+    <columnConstraints>
+        <ColumnConstraints />
+        <ColumnConstraints />
+        <ColumnConstraints />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+    </rowConstraints>
+    <children>
+        <GridPane vgap="5" GridPane.columnIndex="0" GridPane.rowIndex="1">
+        <Label fx:id="nitrogenLabel" text="Nitrogen" GridPane.rowIndex="2" />
+        <TextField fx:id="nitrogenTextField" onInputMethodTextChanged="#gasPropertyInput" onKeyPressed="#gasPropertyInput" onKeyReleased="#gasPropertyInput" onKeyTyped="#gasPropertyInput" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+        <Label fx:id="carbonDioxideLabel" text="Carbon Dioxide" GridPane.rowIndex="3" />
+        <TextField fx:id="carbonDioxideTextField" onInputMethodTextChanged="#gasPropertyInput" onKeyPressed="#gasPropertyInput" onKeyReleased="#gasPropertyInput" onKeyTyped="#gasPropertyInput" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+        <Label fx:id="methanLabel" text="Methan" GridPane.rowIndex="4" />
+        <TextField fx:id="methanTextField" onInputMethodTextChanged="#gasPropertyInput" onKeyPressed="#gasPropertyInput" onKeyReleased="#gasPropertyInput" onKeyTyped="#gasPropertyInput" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+        <Label fx:id="ethaneLabel" text="Ethane" GridPane.rowIndex="5" />
+        <TextField fx:id="ethaneTextField" onInputMethodTextChanged="#gasPropertyInput" onKeyPressed="#gasPropertyInput" onKeyReleased="#gasPropertyInput" onKeyTyped="#gasPropertyInput" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+        <Label fx:id="propaneLabel" text="Propane" GridPane.rowIndex="6" />
+        <TextField fx:id="propaneTextField" onInputMethodTextChanged="#gasPropertyInput" onKeyPressed="#gasPropertyInput" onKeyReleased="#gasPropertyInput" onKeyTyped="#gasPropertyInput" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
+        <Label fx:id="nButanelabel" text="n-Butane" GridPane.rowIndex="7" />
+        <TextField fx:id="nButaneTextField" onInputMethodTextChanged="#gasPropertyInput" onKeyPressed="#gasPropertyInput" onKeyReleased="#gasPropertyInput" onKeyTyped="#gasPropertyInput" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+
+        <Label fx:id="isoButaneLabel" text="iso-Butane" GridPane.rowIndex="8" />
+        <TextField fx:id="isoButaneTextField" onInputMethodTextChanged="#gasPropertyInput" onKeyPressed="#gasPropertyInput" onKeyReleased="#gasPropertyInput" onKeyTyped="#gasPropertyInput" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+
+        <Label fx:id="nPentaneLabel" text="n-Pentane" GridPane.rowIndex="9" />
+        <TextField fx:id="nPentaneTextField" onInputMethodTextChanged="#gasPropertyInput" onKeyPressed="#gasPropertyInput" onKeyReleased="#gasPropertyInput" onKeyTyped="#gasPropertyInput" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+
+        <Label fx:id="isoPentaneLabel" text="iso-Pentane" GridPane.rowIndex="10" />
+        <TextField fx:id="isoPentaneTextField" onInputMethodTextChanged="#gasPropertyInput" onKeyPressed="#gasPropertyInput" onKeyReleased="#gasPropertyInput" onKeyTyped="#gasPropertyInput" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+
+        <Label fx:id="hexaneLabel" text="Hexane" GridPane.rowIndex="11" />
+        <TextField fx:id="hexaneTextField" onInputMethodTextChanged="#gasPropertyInput" onKeyPressed="#gasPropertyInput" onKeyReleased="#gasPropertyInput" onKeyTyped="#gasPropertyInput" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+
+        <Label fx:id="heptaneLabel" text="Heptane" GridPane.rowIndex="12" />
+        <TextField fx:id="heptaneTextField" onInputMethodTextChanged="#gasPropertyInput" onKeyPressed="#gasPropertyInput" onKeyReleased="#gasPropertyInput" onKeyTyped="#gasPropertyInput" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+
+        <Label fx:id="octaneLabel" text="Octane" GridPane.rowIndex="13" />
+        <TextField fx:id="octaneTextField" onInputMethodTextChanged="#gasPropertyInput" onKeyPressed="#gasPropertyInput" onKeyReleased="#gasPropertyInput" onKeyTyped="#gasPropertyInput" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+
+        <Label fx:id="noneneLabel" text="Nonane" GridPane.rowIndex="14" />
+        <TextField fx:id="nonaneTextField" onInputMethodTextChanged="#gasPropertyInput" onKeyPressed="#gasPropertyInput" onKeyReleased="#gasPropertyInput" onKeyTyped="#gasPropertyInput" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+
+        <Label fx:id="decaneLabel" text="Decane" GridPane.rowIndex="15" />
+        <TextField fx:id="decaneTextField" onInputMethodTextChanged="#gasPropertyInput" onKeyPressed="#gasPropertyInput" onKeyReleased="#gasPropertyInput" onKeyTyped="#gasPropertyInput" GridPane.columnIndex="1" GridPane.rowIndex="15" />
+
+        <Label fx:id="hydrogenLabel" text="Hydrogen" GridPane.rowIndex="16" />
+        <TextField fx:id="hydrogenTextField" onInputMethodTextChanged="#gasPropertyInput" onKeyPressed="#gasPropertyInput" onKeyReleased="#gasPropertyInput" onKeyTyped="#gasPropertyInput" GridPane.columnIndex="1" GridPane.rowIndex="16" />
+
+        <Label fx:id="oxygenLabel" text="Oxygen" GridPane.rowIndex="17" />
+        <TextField fx:id="oxygenTextField" onInputMethodTextChanged="#gasPropertyInput" onKeyPressed="#gasPropertyInput" onKeyReleased="#gasPropertyInput" onKeyTyped="#gasPropertyInput" GridPane.columnIndex="1" GridPane.rowIndex="17" />
+
+        <Label fx:id="carbonMonoxideLabel" text="Carbon Monoxide" GridPane.rowIndex="18" />
+        <TextField fx:id="carbonMonoxideTextField" onInputMethodTextChanged="#gasPropertyInput" onKeyPressed="#gasPropertyInput" onKeyReleased="#gasPropertyInput" onKeyTyped="#gasPropertyInput" GridPane.columnIndex="1" GridPane.rowIndex="18" />
+
+        <Label fx:id="waterLabel" text="Water" GridPane.rowIndex="19" />
+        <TextField fx:id="waterTextField" onInputMethodTextChanged="#gasPropertyInput" onKeyPressed="#gasPropertyInput" onKeyReleased="#gasPropertyInput" onKeyTyped="#gasPropertyInput" GridPane.columnIndex="1" GridPane.rowIndex="19" />
+
+        <Label fx:id="hydrogenSulfideLabel" text="Hydrogen Sulfide" GridPane.rowIndex="20" />
+        <TextField fx:id="hydrogenSulfideTextField" onInputMethodTextChanged="#gasPropertyInput" onKeyPressed="#gasPropertyInput" onKeyReleased="#gasPropertyInput" onKeyTyped="#gasPropertyInput" GridPane.columnIndex="1" GridPane.rowIndex="20" />
+
+        <Label fx:id="heliumLabel" text="Helium" GridPane.rowIndex="21" />
+        <TextField fx:id="heliumTextField" onInputMethodTextChanged="#gasPropertyInput" onKeyPressed="#gasPropertyInput" onKeyReleased="#gasPropertyInput" onKeyTyped="#gasPropertyInput" GridPane.columnIndex="1" GridPane.rowIndex="21" />
+
+        <Label fx:id="argonLabel" text="Argon" GridPane.rowIndex="22" />
+        <TextField fx:id="argonTextField" onInputMethodTextChanged="#gasPropertyInput" onKeyPressed="#gasPropertyInput" onKeyReleased="#gasPropertyInput" onKeyTyped="#gasPropertyInput" GridPane.columnIndex="1" GridPane.rowIndex="22" />
+
+            <Label fx:id="totalTextLabel" text="Total: " GridPane.rowIndex="23" />
+            <Label fx:id="totalNumberText" text="" GridPane.columnIndex="1" GridPane.rowIndex="23" />
+
+        <Label text="ترکیب گاز:" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <ComboBox fx:id="gasPercentType" prefWidth="150.0" GridPane.rowIndex="1" />
+         <columnConstraints>
+            <ColumnConstraints />
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
+        </GridPane>
+
+        <GridPane alignment="CENTER_RIGHT" vgap="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <GridPane alignment="CENTER_RIGHT" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <Label text="استان:" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="provinceTextField" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <columnConstraints>
+               <ColumnConstraints />
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
+        </GridPane>
+        <GridPane alignment="CENTER_RIGHT" GridPane.columnIndex="2" GridPane.rowIndex="2">
+            <Label text="شهر" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="cityTextField" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <columnConstraints>
+               <ColumnConstraints />
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
+        </GridPane>
+
+        <GridPane alignment="CENTER_RIGHT" GridPane.columnIndex="2" GridPane.rowIndex="3">
+            <Label text="منطقه" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="areaTextField" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <columnConstraints>
+               <ColumnConstraints />
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
+        </GridPane>
+        <GridPane alignment="CENTER_RIGHT" GridPane.columnIndex="2" GridPane.rowIndex="4">
+            <Label text="ظرفیت اسمی" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="nominalCapacityTextField" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <columnConstraints>
+               <ColumnConstraints />
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
+        </GridPane>
+
+
+        <GridPane alignment="CENTER_RIGHT" GridPane.columnIndex="2" GridPane.rowIndex="5">
+            <Label text="آدرس" />
+            <columnConstraints>
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+            </rowConstraints></GridPane>
+        <TextArea fx:id="addressTextArea" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+        <Separator GridPane.columnIndex="2" GridPane.rowIndex="7" />
+
+
+        <GridPane alignment="CENTER_RIGHT" GridPane.columnIndex="2" GridPane.rowIndex="8">
+            <Label text="دمای گاز استاندارد (C°):" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="۱۵ °C " GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <Label text="فشار گاز استاندارد (kPa):" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="۱۰۱.۳۲۵ kpa" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <columnConstraints>
+               <ColumnConstraints />
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
+
+
+        </GridPane>
+
+        <Separator GridPane.columnIndex="2" GridPane.rowIndex="9" />
+
+        <GridPane alignment="CENTER_RIGHT" GridPane.columnIndex="2" GridPane.rowIndex="10">
+            <Label text="دمای گاز ورودی به ایستگاه: " GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <ComboBox fx:id="inputGasTempComboBox" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="inputGasTempTextField" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <columnConstraints>
+               <ColumnConstraints />
+               <ColumnConstraints />
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
+        </GridPane>
+        <GridPane alignment="CENTER_RIGHT" GridPane.columnIndex="2" GridPane.rowIndex="11">
+            <Label text="فشار گاز ورودی به ایستگاه: " GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <ComboBox fx:id="inputGasPressureComboBox" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="inputGasPressureTextField" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <columnConstraints>
+               <ColumnConstraints />
+               <ColumnConstraints />
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
+        </GridPane>
+        <GridPane alignment="CENTER_RIGHT" GridPane.columnIndex="2" GridPane.rowIndex="12">
+            <Label text="دمای گاز خروجی از ایستگاه: " GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <ComboBox fx:id="outputGasTempComboBox" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="outputGasTempTextField" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <columnConstraints>
+               <ColumnConstraints />
+               <ColumnConstraints />
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
+        </GridPane>
+        <GridPane alignment="CENTER_RIGHT" GridPane.columnIndex="2" GridPane.rowIndex="13">
+            <Label text="فشار گاز خروجی از ایستگاه: " GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <ComboBox fx:id="outputGasPressureComboBox" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="outputGasPressureTextField" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <columnConstraints>
+               <ColumnConstraints />
+               <ColumnConstraints />
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
+        </GridPane>
+
+        <Separator GridPane.columnIndex="2" GridPane.rowIndex="14" />
+
+        <GridPane alignment="CENTER_RIGHT" GridPane.columnIndex="2" GridPane.rowIndex="15">
+            <Label text="دمای محیط: " GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <ComboBox fx:id="environmentTempComboBox" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="environmentTempTextField" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <columnConstraints>
+               <ColumnConstraints />
+               <ColumnConstraints />
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
+        </GridPane>
+
+        <GridPane alignment="CENTER_RIGHT" GridPane.columnIndex="2" GridPane.rowIndex="16">
+            <Label text="سرعت باد (m/s):" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="windSpeedTextField" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <columnConstraints>
+               <ColumnConstraints />
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
+        </GridPane>
+
+        <Separator GridPane.columnIndex="2" GridPane.rowIndex="17" />
+
+        <GridPane alignment="CENTER_RIGHT" GridPane.columnIndex="2" GridPane.rowIndex="18">
+            <Label text="دبی گاز عبوری از ایستگاه (متر مکعب بر ساعت):" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="stationDebiTextField" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <columnConstraints>
+               <ColumnConstraints />
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
+        </GridPane>
+
+        <GridPane alignment="CENTER_RIGHT" GridPane.columnIndex="2" GridPane.rowIndex="22">
+            <HBox GridPane.columnIndex="2" GridPane.rowIndex="1">
+                <Button fx:id="okButton" minWidth="70" onAction="#okButton" text="Ok" />
+            </HBox>
+            <HBox minWidth="70" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <Button fx:id="clearButton" minWidth="70" onAction="#clearButton" text="Clear" />
+            </HBox>
+            <HBox minWidth="70" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <Button fx:id="cancelButton" minWidth="70" onAction="#cancelButton" text="Cancel" />
+            </HBox>
+            <columnConstraints>
+               <ColumnConstraints />
+               <ColumnConstraints />
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
+
+        </GridPane>
+         <columnConstraints>
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
+        </GridPane>
+
+
+
+
+
+
+
+
+
+
+    </children>
+</GridPane>

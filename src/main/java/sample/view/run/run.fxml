@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<?import javafx.scene.layout.HBox?>
+<GridPane alignment="center" hgap="10" prefHeight="62.0" prefWidth="265.0" stylesheets="/sample/view/run/run.css" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.run.RunController">
+   <columnConstraints>
+      <ColumnConstraints />
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+   </rowConstraints>
+   <children>
+       <Label onKeyPressed="#runNumInput" onKeyTyped="#runNumInput" text="تعداد ران " GridPane.columnIndex="1" GridPane.rowIndex="0" />
+       <TextField fx:id="runNumberInput" onKeyPressed="#runNumInput" onKeyReleased="#runNumInput" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+       <Label text="طول ران تا قبل از رگولاتور" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+       <TextField fx:id="runLengthInput" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+       <Label text="طول کلکتور " GridPane.columnIndex="1" GridPane.rowIndex="2" />
+       <TextField fx:id="runColectorLengthInput" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+       <Label text="سایز کلکتور (اینچ) " GridPane.columnIndex="1" GridPane.rowIndex="3" />
+       <ComboBox fx:id="collectorComboBox" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+
+
+       <TabPane fx:id="runTapPane" minHeight="100" minWidth="200" GridPane.columnIndex="0" GridPane.rowIndex="4" maxWidth="300">
+       </TabPane>
+
+       <HBox GridPane.columnIndex="0" GridPane.rowIndex="5">
+           <children>
+               <Button fx:id="okButton" text="Ok" onAction="#ok" styleClass="button"/>
+               <Button fx:id="clearButton" text="Clear" onAction="#clear" styleClass="button"/>
+               <Button fx:id="cancelButton" text="Cancel" onAction="#cancel" styleClass="button"/>
+
+           </children>
+
+       </HBox>
+   </children>
+</GridPane>

@@ -1,0 +1,10 @@
+.root{
+    -fx-background-color: #5eebd4;
+
+}
+.alignment {
+    -fx-alignment: center-right;
+}
+.centeralignment {
+    -fx-alignment: center;
+}

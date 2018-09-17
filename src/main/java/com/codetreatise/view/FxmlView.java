@@ -25,7 +25,19 @@ public enum FxmlView {
         public String getFxmlFile() {
             return "/fxml/Login.fxml";
         }
+    },
+    STATION {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("station.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/Station.fxml";
+        }
     };
+
 
     public abstract String getTitle();
 
