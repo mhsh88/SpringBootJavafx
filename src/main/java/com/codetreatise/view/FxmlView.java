@@ -36,7 +36,20 @@ public enum FxmlView {
         public String getFxmlFile() {
             return "/fxml/Station.fxml";
         }
-    };
+    },
+    BEFORE_HEATER {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("beforeHeater.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/BeforeHeater.fxml";
+        }
+    }
+    ;
+
 
 
     public abstract String getTitle();

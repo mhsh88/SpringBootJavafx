@@ -1,5 +1,7 @@
 package com.codetreatise.controller;
 
+import com.codetreatise.config.StageManager;
+import com.codetreatise.view.FxmlView;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +15,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import sample.controller.afterHeater.AfterHeaterFrame;
 import sample.controller.base.BaseController;
@@ -36,6 +40,10 @@ import java.util.ResourceBundle;
 
 @Controller
 public class StationController extends BaseController implements Initializable {
+    @Lazy
+    @Autowired
+    private StageManager stageManager;
+
     public VBox mainVbox;
     Stage stage;
     Scene scene;
@@ -110,7 +118,8 @@ public class StationController extends BaseController implements Initializable {
 
     public void beforeHeaterWindows(ActionEvent actionEvent) throws IOException {
 //        beforeHeaterFrame.close();
-        beforeHeaterFrame.show();
+        stageManager.switchScene(FxmlView.BEFORE_HEATER);
+//        beforeHeaterFrame.show();
     }
     public void heaterWindows(ActionEvent actionEvent) throws  IOException{
 //        heaterFrame.close();
