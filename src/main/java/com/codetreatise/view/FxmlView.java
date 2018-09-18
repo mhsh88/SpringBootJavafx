@@ -47,8 +47,65 @@ public enum FxmlView {
         public String getFxmlFile() {
             return "/fxml/BeforeHeater.fxml";
         }
+    },
+    HEATER {
+        @Override
+    public String getTitle() {
+        return getStringFromResourceBundle("heater.title");
     }
-    ;
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/Heater.fxml";
+        }
+
+    }, AFTER_HEATER{
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("afterHeater.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/AfterHeater.fxml";
+        }
+
+    }, RUN{
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("run.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/Run.fxml";
+        }
+
+
+    }, STATION_PROPERTY{
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("stationProperty.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/StationProperty.fxml";
+        }
+
+
+    }, SHOW_RESULT{
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("showResult.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/ShowResult.fxml";
+        }
+
+    };
 
 
 

@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
+import sample.controller.base.BaseController;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,7 +26,7 @@ import java.util.ResourceBundle;
  */
 
 @Controller
-public class LoginController implements Initializable {
+public class LoginController extends BaseController implements Initializable {
 
     @FXML
     private Button btnLogin;
@@ -75,4 +76,8 @@ public class LoginController implements Initializable {
 
     }
 
+    @Override
+    public void setOnShow() {
+        
+    }
 }

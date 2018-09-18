@@ -123,36 +123,42 @@ public class StationController extends BaseController implements Initializable {
     }
     public void heaterWindows(ActionEvent actionEvent) throws  IOException{
 //        heaterFrame.close();
-        heaterFrame.show();
+        stageManager.switchScene(FxmlView.HEATER);
+//        heaterFrame.show();
     }
 
     public void afterWindows(ActionEvent actionEvent) throws IOException {
 //        afterHeaterFrame.close();
-        afterHeaterFrame.show();
+//        afterHeaterFrame.show();
+        stageManager.switchScene(FxmlView.AFTER_HEATER);
     }
 
     public void runWindows(ActionEvent actionEvent) throws IOException{
 //        runFrame.close();
-        runFrame.show();
+//        runFrame.show();
+        stageManager.switchScene(FxmlView.RUN);
     }
 
     public void stationPropertyWindows(ActionEvent actionEvent) throws IOException {
 //        stationPropertyController.show();
 
 //        stationPropertyFrame.close();
-        stationPropertyFrame.show();
+//        stationPropertyFrame.show();
+        stageManager.switchScene(FxmlView.STATION_PROPERTY);
 
     }
 
     public void showResultsWindows(ActionEvent actionEvent) throws IOException {
 //        showResultsFrame.close();
-        showResultsFrame.show();
+//        showResultsFrame.show();
+        stageManager.switchScene(FxmlView.STATION_PROPERTY);
     }
 
     public void calculateButton(ActionEvent actionEvent) throws IOException {
         if(calculateController.calculate()){
 
-        showResultsFrame.show();
+//        showResultsFrame.show();
+            stageManager.switchScene(FxmlView.SHOW_RESULT);
         }
 //        calculateButtonFrame.close();
 

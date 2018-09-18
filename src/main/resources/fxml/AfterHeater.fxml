@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane prefHeight="500.0" prefWidth="1000.0" alignment="center" hgap="10" stylesheets="@../styles/AfterHeater.css" vgap="10"
+          minWidth="500" minHeight="400" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.codetreatise.controller.AfterHeaterController">
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+   </rowConstraints>
+   <children>
+      <GridPane vgap="5">
+         <Label alignment="CENTER_RIGHT" text="طول خط لوله " GridPane.columnIndex="2" GridPane.rowIndex="1" />
+         <Label text="متر (m)" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+         <TextField fx:id="lineLengthTextField" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+         <Label alignment="CENTER_RIGHT" text="سایز لوله:‌ " GridPane.columnIndex="2" GridPane.rowIndex="2" />
+         <ComboBox fx:id="mmOrInchComboBox" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+         <!--<Label text="قطر اسمی" GridPane.columnIndex="2" GridPane.rowIndex="4" />-->
+         <!--<ComboBox fx:id="nominalDiameterComboBox" GridPane.columnIndex="2" GridPane.rowIndex="5" />-->
+
+         <!--<Label text="قطر خارجی" GridPane.columnIndex="1" GridPane.rowIndex="4" />-->
+         <!--<ComboBox fx:id="outerDiameterComboBox" GridPane.columnIndex="1" GridPane.rowIndex="5" />-->
+
+         <!--<Label text="ضخامت دیواره" GridPane.columnIndex="0" GridPane.rowIndex="4" />-->
+         <!--<ComboBox fx:id="wallThicknessComboBox" GridPane.columnIndex="0" GridPane.rowIndex="5" />-->
+
+
+
+         <RadioButton fx:id="insulationRadioButton" text="عایق" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+         <Label fx:id="insulationThicknessLabel" text="ضخامت عایق " GridPane.columnIndex="2" GridPane.rowIndex="7" disable="true"/>
+         <ComboBox fx:id="insulationThicknessComboBox" GridPane.columnIndex="1" GridPane.rowIndex="7" disable="true" />
+         <TextField fx:id="insulationThicknessTextField" GridPane.columnIndex="0" GridPane.rowIndex="7" disable="true" />
+         <Label fx:id="insulationFactorLabel" text="ضریب انتقال حرارت" GridPane.columnIndex="2" GridPane.rowIndex="8" disable="true" />
+         <Label fx:id="insulationFactorDimensionLabel" text="(W/m°K)" GridPane.columnIndex="1" GridPane.rowIndex="8" disable="true" />
+         <TextField fx:id="insulationFactorTextField" GridPane.columnIndex="0" GridPane.rowIndex="8" disable="true"/>
+
+
+
+         <Label text="" GridPane.rowIndex="9" GridPane.columnIndex="2"/>
+         <Button fx:id="okButton" text="OK" GridPane.columnIndex="2" GridPane.rowIndex="10" onAction="#okAction"/>
+         <Button fx:id="clearButton" text="Clear" GridPane.columnIndex="1" GridPane.rowIndex="10" onAction="#clearButton"/>
+         <Button fx:id="cancelButton" text="Cancel" GridPane.columnIndex="0" GridPane.rowIndex="10" onAction="#cancelButton"/>
+
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
+      </GridPane>
+   </children>
+</GridPane>

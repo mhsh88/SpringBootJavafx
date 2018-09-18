@@ -10,7 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 import sample.controller.base.BaseController;
 import sample.model.Station;
 import sample.model.base.BaseModel;
@@ -20,14 +20,12 @@ import sample.model.pipeLine.PipeSize;
 import java.io.IOException;
 import java.util.Map;
 
-@Controller
-public class BeforeHeaterController extends BaseController{
+@Component
+public class AfterHeaterController extends BaseController{
 
     @Lazy
     @Autowired
     StageManager stageManager;
-
-    
 
     public Button okButton;
     public Button clearButton;
@@ -46,6 +44,26 @@ public class BeforeHeaterController extends BaseController{
     public Label insulationFactorDimensionLabel;
     public Label insulationThicknessLabel;
 
+//    public final static Map<String, PipeSize> sizeSelection = new HashMap<String, PipeSize>() {
+//        {
+//
+//            put("2", new PipeSize(3.9, 60.3));
+//
+//            put("3", new PipeSize(5.5, 88.9));
+//
+//            put("4", new PipeSize(6.02, 114.3));
+//            put("6", new PipeSize(7.11, 168.30));
+//            put("8", new PipeSize(8.18, 219.10));
+//            put("10", new PipeSize(9.27, 273.10));
+//            put("12", new PipeSize(9.53, 323.90));
+//            put("16", new PipeSize(9.53, 406.40));
+//            put("20", new PipeSize(9.53, 508));
+//            put("24", new PipeSize(9.53, 610));
+//            put("30", new PipeSize(9.53, 762));
+//
+//
+//        }
+//    };
 
     @FXML
     TextField textField = new TextField();
@@ -182,18 +200,15 @@ public class BeforeHeaterController extends BaseController{
         });
 
 
-
-
-
     }
     @Override
     public void setOnShow() {
-        PipeLine beforeHeater = (PipeLine) Station.getInstance().getList().get("beforeHeaterPipeLine");
-        if(beforeHeater != null){
-            lineLengthTextField.setText(String.valueOf(beforeHeater.getLength()));
-            mmOrInchComboBox.getSelectionModel().select(beforeHeater.getSize());
-            insulationRadioButton.setSelected(beforeHeater.isInsulation());
-            if(beforeHeater.isInsulation()){
+        PipeLine afterHeater = (PipeLine) Station.getInstance().getList().get("afterHeaterPipeLine");
+        if(afterHeater != null){
+            lineLengthTextField.setText(String.valueOf(afterHeater.getLength()));
+            mmOrInchComboBox.getSelectionModel().select(afterHeater.getSize());
+            insulationRadioButton.setSelected(afterHeater.isInsulation());
+            if(afterHeater.isInsulation()){
                 insulationThicknessLabel.setDisable(false);
                 insulationThicknessTextField.setDisable(false);
                 insulationThicknessComboBox.setDisable(false);
@@ -201,8 +216,8 @@ public class BeforeHeaterController extends BaseController{
                 insulationFactorLabel.setDisable(false);
                 insulationFactorTextField.setDisable(false);
                 insulationFactorDimensionLabel.setDisable(false);
-                insulationFactorTextField.setText(String.valueOf(beforeHeater.getInsulationFactor()));
-                insulationThicknessTextField.setText(String.valueOf(beforeHeater.getInsulationThickness() * 100));
+                insulationFactorTextField.setText(String.valueOf(afterHeater.getInsulationFactor()));
+                insulationThicknessTextField.setText(String.valueOf(afterHeater.getInsulationThickness() * 100));
                 insulationThicknessComboBox.getSelectionModel().select("سانتی متر (cm)");
 
             }else{
@@ -272,17 +287,18 @@ public class BeforeHeaterController extends BaseController{
                 return;
             }
         }
-        
-//        PipeLine pipeLine = new PipeLine(outerDiameter, pipesize.getInnerDiameter(), wallthickness, insulationThickness, insulationFactor);
+
+        //        PipeLine pipeLine = new PipeLine(outerDiameter, pipesize.getInnerDiameter(), wallthickness, insulationThickness, insulationFactor);
         PipeLine pipeLine = new PipeLine(mmOrInchComboBox.getValue().toString() , pipelineLength);
         pipeLine.setInsulationFactor(insulationFactor);
         pipeLine.setInsulationThickness(insulationThickness);
         pipeLine.setInsulation(insulationRadioButton.isSelected());
 
         Map<String, BaseModel> map = Station.getInstance().getList();
-        map.put("beforeHeaterPipeLine", pipeLine);
+        map.put("afterHeaterPipeLine", pipeLine);
+
+//        ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
         stageManager.switchScene(FxmlView.STATION);
-        //        ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
 
     }
 
@@ -291,15 +307,14 @@ public class BeforeHeaterController extends BaseController{
         lineLengthTextField.clear();
         insulationThicknessTextField.clear();
         insulationFactorTextField.clear();
-        Station.getInstance().getList().remove("beforeHeaterPipeLine");
+        Station.getInstance().getList().remove("afterHeaterPipeLine");
     }
 
     public void cancelButton(ActionEvent actionEvent) {
 
-        stageManager.switchScene(FxmlView.STATION);
 //        ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
+        stageManager.switchScene(FxmlView.STATION);
     }
-
 
 
 }
