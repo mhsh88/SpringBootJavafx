@@ -59,13 +59,21 @@ public class CityGateStationEntity extends BaseEntity {
     })
     public List<RunEntity> runs;
 
-    @OneToMany(mappedBy = "cityGateStation")
-    public List<GasEntity> gasEntities;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "gas_id")
+    private GasEntity gasEntity;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "condition_id")
     private ConditionEntity condition;
 
+    public ConditionEntity getCondition() {
+        return condition;
+    }
+
+    public void setCondition(ConditionEntity condition) {
+        this.condition = condition;
+    }
 
     public String getProvince() {
         return province;
@@ -141,13 +149,11 @@ public class CityGateStationEntity extends BaseEntity {
         this.heaters = heaters;
     }
 
-    public List<GasEntity> getGasEntities() {
-        return gasEntities;
+    public GasEntity getGasEntity() {
+        return gasEntity;
     }
 
-    public void setGasEntities(List<GasEntity> gasEntities) {
-        this.gasEntities = gasEntities;
+    public void setGasEntity(GasEntity gasEntity) {
+        this.gasEntity = gasEntity;
     }
-
-
 }

@@ -1,13 +1,21 @@
 package com.codetreatise.controller;
 
+import com.codetreatise.bean.station.CityGateStationEntity;
+import com.codetreatise.bean.station.ConditionEntity;
+import com.codetreatise.bean.station.GasEntity;
+import com.codetreatise.bean.unitNumber.Debi;
+import com.codetreatise.bean.unitNumber.Pressure;
+import com.codetreatise.bean.unitNumber.Temperature;
 import com.codetreatise.config.StageManager;
+import com.codetreatise.service.CityGateStationService;
+import com.codetreatise.service.ConditionService;
+import com.codetreatise.service.GasService;
 import com.codetreatise.view.FxmlView;
 import ir.behinehsazan.gasStation.model.mathCalculation.MathCalculation;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
@@ -30,6 +38,16 @@ public class StationPropertyController extends BaseController {
     @Lazy
     @Autowired
     StageManager stageManager;
+
+    @Autowired
+    GasService gasService;
+
+    @Autowired
+    ConditionService conditionService;
+
+    @Autowired
+    CityGateStationService cityGateStationService;
+
     final static private String PSI = "Psi";
     final static private String MPA = "MPa";
     final static private String KPA = "kPa";
@@ -1087,6 +1105,7 @@ public class StationPropertyController extends BaseController {
             component[18] = gasInputCheck(hydrogenSulfideTextField);
             component[19] = gasInputCheck(heliumTextField);
             component[20] = gasInputCheck(argonTextField);
+
         }
         catch (Exception e){
             showAlert("خطا", "خطا در اطلاعات ورودی","اطلاعات وارد شده برای اجزای گاز صحیح نمی باشد" , Alert.AlertType.ERROR );
@@ -1119,20 +1138,63 @@ public class StationPropertyController extends BaseController {
                 , 34.082
                 , 4.0026
                 , 39.948};
+        GasEntity gasEntity = new GasEntity();
         if(gasPercentType.getValue().toString().equals("درصد جرمی")){
 
 
             component =   MathCalculation.normal(MathCalculation.matrixDevide(MathCalculation.pointToPointDivistion(component, M_i), MathCalculation.dotProduct(component, M_i)));
+            gasEntity.setMoleWightPersent(true);
         }
 
-        stationPropertice.setComponent(component);
 
+
+        stationPropertice.setComponent(component);
+        gasEntity.setNitrogen(component[0]);
+        gasEntity.setCarbonDioxide(component[1]);
+        gasEntity.setMethan(component[2]);
+        gasEntity.setEthane(component[3]);
+        gasEntity.setPropane(component[4]);
+        gasEntity.setnButane(component[5]);
+        gasEntity.setIsoButane(component[6]);
+        gasEntity.setnPentane(component[7]);
+        gasEntity.setIsoPentane(component[8]);
+        gasEntity.setHexane(component[9]);
+        gasEntity.setHeptane(component[10]);
+        gasEntity.setOctane(component[11]);
+        gasEntity.setNonane(component[12]);
+        gasEntity.setDecane(component[13]);
+        gasEntity.setHydrogen(component[14]);
+        gasEntity.setOxygen(component[15]);
+        gasEntity.setCarbonMonoxide(component[16]);
+        gasEntity.setWater(component[17]);
+        gasEntity.setHydrogenSulfide(component[18]);
+        gasEntity.setHelium(component[19]);
+        gasEntity.setArgon(component[20]);
+
+        gasEntity = gasService.save(gasEntity);
+
+
+        CityGateStationEntity cityGateStationEntity = stageManager.getCityGateStationEntity();
+
+
+        cityGateStationEntity.setProvince(provinceTextField.getText());
+        cityGateStationEntity.setCity(cityTextField.getText());
+        cityGateStationEntity.setRegion(areaTextField.getText());
+        try {
+            cityGateStationEntity.setNominalCapacity(gasInputCheck(nominalCapacityTextField));
+        }
+        catch (Exception e){
+            cityGateStationEntity.setNominalCapacity(0.0);
+        }
+        cityGateStationEntity.setAddress(addressTextArea.getText());
 
         stationPropertice.setProvince(provinceTextField.getText());
         stationPropertice.setCity(cityTextField.getText());
         stationPropertice.setArea(areaTextField.getText());
         stationPropertice.setNominalCapacity(nominalCapacityTextField.getText());
         stationPropertice.setAddress(addressTextArea.getText());
+
+        ConditionEntity conditionEntity = new ConditionEntity();
 
         try {
             if(inputGasTempTextField.getText().equals("")){
@@ -1141,9 +1203,12 @@ public class StationPropertyController extends BaseController {
             }
              if(inputGasTempComboBox.getValue().toString().equals("°F")){
                  stationPropertice.setInputTemp((Double.parseDouble(inputGasTempTextField.getText() ) - 32)/1.8);
+                 conditionEntity.setInputTemperature(new Temperature(Double.parseDouble(inputGasTempTextField.getText() ), Temperature.FAHRENHEIT));
+
 
             }else if(inputGasTempComboBox.getValue().toString().equals("°C")){
                  stationPropertice.setInputTemp(Double.parseDouble(inputGasTempTextField.getText() ));
+                 conditionEntity.setInputTemperature(new Temperature(Double.parseDouble(inputGasTempTextField.getText() ), Temperature.CELSIUS));
              }
 
 
@@ -1156,6 +1221,8 @@ public class StationPropertyController extends BaseController {
         }
 
 
+
+
         try {
             if(inputGasPressureTextField.getText().equals("")){
                 showAlert("اخطار","فشار گاز ورودی به ایستگاه وارد نشده است","فشار گاز ورودی به ایستگاه را وارد نمایید", Alert.AlertType.WARNING);
@@ -1164,12 +1231,18 @@ public class StationPropertyController extends BaseController {
             double prefactor = 1.0;
             if(inputGasPressureComboBox.getValue().toString().equals("MPa")){
                 prefactor = 1000.0;
+                conditionEntity.setInputPressure(new Pressure(Double.parseDouble(inputGasPressureTextField.getText()), Pressure.MPA));
             }else if(inputGasPressureComboBox.getValue().toString().equals("kPa")){
                 prefactor = 1.0;
+                conditionEntity.setInputPressure(new Pressure(Double.parseDouble(inputGasPressureTextField.getText()), Pressure.KPA));
             }else if(inputGasPressureComboBox.getValue().toString().equals("Psi")){
                 prefactor = 6.89476;
-            }else
+                conditionEntity.setInputPressure(new Pressure(Double.parseDouble(inputGasPressureTextField.getText()), Pressure.PSI));
+
+            }else {
                 prefactor = 1.0;
+                conditionEntity.setInputPressure(new Pressure(Double.parseDouble(inputGasPressureTextField.getText()), Pressure.KPA));
+            }
 
 
             stationPropertice.setInputPressure(prefactor * Double.parseDouble(inputGasPressureTextField.getText()));
@@ -1189,12 +1262,17 @@ public class StationPropertyController extends BaseController {
             double prefactor = 1.0;
             if(outputGasPressureComboBox.getValue().toString().equals("MPa")){
                 prefactor = 1000.0;
+                conditionEntity.setOutputPressure(new Pressure(Double.parseDouble(outputGasTempTextField.getText()), Pressure.MPA));
             }else if(outputGasPressureComboBox.getValue().toString().equals("kPa")){
                 prefactor = 1.0;
+                conditionEntity.setOutputPressure(new Pressure(Double.parseDouble(outputGasTempTextField.getText()), Pressure.KPA));
             }else if(outputGasPressureComboBox.getValue().toString().equals("Psi")){
                 prefactor = 6.89476;
-            }else
+                conditionEntity.setOutputPressure(new Pressure(Double.parseDouble(outputGasTempTextField.getText()), Pressure.PSI));
+            }else {
                 prefactor = 1.0;
+                conditionEntity.setOutputPressure(new Pressure(Double.parseDouble(outputGasTempTextField.getText()), Pressure.KPA));
+            }
             stationPropertice.setOutputPressure(prefactor * Double.parseDouble(outputGasPressureTextField.getText()));
         }
         catch (Exception e){
@@ -1211,9 +1289,11 @@ public class StationPropertyController extends BaseController {
             }
             if(outputGasTempComboBox.getValue().toString().equals("°F")){
                 stationPropertice.setOutputTemp((Double.parseDouble(outputGasTempTextField.getText() ) - 32)/1.8);
+                conditionEntity.setInputTemperature(new Temperature(Double.parseDouble(outputGasTempTextField.getText()), Temperature.FAHRENHEIT));
 
             }else if(outputGasTempComboBox.getValue().toString().equals("°C")){
                 stationPropertice.setOutputTemp(Double.parseDouble(outputGasTempTextField.getText()));
+                conditionEntity.setInputTemperature(new Temperature(Double.parseDouble(outputGasTempTextField.getText()), Temperature.CELSIUS));
             }
         }
         catch (Exception e){
@@ -1230,9 +1310,11 @@ public class StationPropertyController extends BaseController {
 
                 if(environmentTempComboBox.getValue().toString().equals("°F")){
                     stationPropertice.setEnvironmentTemp((Double.parseDouble(environmentTempTextField.getText() ) - 32)/1.8);
+                    conditionEntity.setEnvTemperature(new Temperature(Double.parseDouble(environmentTempTextField.getText()), Temperature.FAHRENHEIT));
 
                 }else if(environmentTempComboBox.getValue().toString().equals("°C")){
                     stationPropertice.setEnvironmentTemp(Double.parseDouble(environmentTempTextField.getText()));
+                    conditionEntity.setEnvTemperature(new Temperature(Double.parseDouble(environmentTempTextField.getText()), Temperature.CELSIUS));
                 }
             }
             else{
@@ -1250,9 +1332,11 @@ public class StationPropertyController extends BaseController {
 
             if(!windSpeedTextField.getText().equals("")){
                 stationPropertice.setWindVelocity(Double.parseDouble(windSpeedTextField.getText()));
+                conditionEntity.setWindSpeed(Double.parseDouble(windSpeedTextField.getText()));
             }
             else if (windSpeedTextField.getText().equals("")){
                 stationPropertice.setWindVelocity(0);
+                conditionEntity.setWindSpeed(0.0);
             }
         }
         catch (Exception e){
@@ -1266,9 +1350,11 @@ public class StationPropertyController extends BaseController {
 
             if(!stationDebiTextField.getText().equals("")){
                 stationPropertice.setDebi(Double.parseDouble(stationDebiTextField.getText()));
+                conditionEntity.setDebiInput(new Debi(Double.parseDouble(stationDebiTextField.getText()), Debi.M3_PER_HOUR));
             }
             else if (stationDebiTextField.getText().equals("")){
                 stationPropertice.setDebi(0);
+                conditionEntity.setDebiInput(new Debi(0.0, Debi.M3_PER_HOUR));
             }
         }
         catch (Exception e){
@@ -1277,6 +1363,14 @@ public class StationPropertyController extends BaseController {
             showAlert("خطا","سرعت باد به درستی وارد نشده است","سرعت باد را به درستی وارد نمایید", Alert.AlertType.ERROR);
             return;
         }
+
+        conditionEntity = conditionService.save(conditionEntity);
+        cityGateStationEntity.setGasEntity(gasEntity);
+        cityGateStationEntity.setCondition(conditionEntity);
+        cityGateStationEntity = cityGateStationService.save(cityGateStationEntity);
+        stageManager.setCityGateStationEntity(cityGateStationEntity);
+
+
 
 
 

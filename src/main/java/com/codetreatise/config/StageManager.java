@@ -1,5 +1,6 @@
 package com.codetreatise.config;
 
+import com.codetreatise.bean.station.CityGateStationEntity;
 import com.codetreatise.view.FxmlView;
 import javafx.application.Platform;
 import javafx.scene.Parent;
@@ -16,6 +17,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  */
 public class StageManager {
 
+    private CityGateStationEntity cityGateStationEntity = new CityGateStationEntity();
     private static final Logger LOG = getLogger(StageManager.class);
     private final Stage primaryStage;
     private final SpringFXMLLoader springFXMLLoader;
@@ -23,6 +25,14 @@ public class StageManager {
     public StageManager(SpringFXMLLoader springFXMLLoader, Stage stage) {
         this.springFXMLLoader = springFXMLLoader;
         this.primaryStage = stage;
+    }
+
+    public CityGateStationEntity getCityGateStationEntity() {
+        return cityGateStationEntity;
+    }
+
+    public void setCityGateStationEntity(CityGateStationEntity cityGateStationEntity) {
+        this.cityGateStationEntity = cityGateStationEntity;
     }
 
     public void switchScene(final FxmlView view) {

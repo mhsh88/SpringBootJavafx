@@ -1,7 +1,6 @@
 package com.codetreatise.bean.station;
 
 import com.codetreatise.bean.base.BaseEntity;
-import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -34,10 +33,6 @@ public class GasEntity extends BaseEntity {
     private Boolean moleWightPersent;
     private String name;
 
-    @JsonView
-    @ManyToOne
-    @JoinColumn(referencedColumnName = "id")
-    public CityGateStationEntity cityGateStation;
 
     @Basic
     @Column(name = "carbon_dioxide")

@@ -1,6 +1,9 @@
 package com.codetreatise.bean.station;
 
 import com.codetreatise.bean.base.BaseEntity;
+import com.codetreatise.bean.unitNumber.Debi;
+import com.codetreatise.bean.unitNumber.Pressure;
+import com.codetreatise.bean.unitNumber.Temperature;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,8 +12,82 @@ import java.util.Objects;
 @Entity
 @Table(name = "conditions")
 public class ConditionEntity extends BaseEntity  {
-    private Double envTempreture;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "env_tempreture_id")
+    private Temperature envTemperature;
     private Double windSpeed;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "debi_input_id")
+    private Debi debiInput;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "input_tempeature_id")
+    private Temperature inputTemperature;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "input_pressure_id")
+    private Pressure inputPressure;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "output_tempeature_id")
+    private Temperature outputTemperature;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "output_pressure_id")
+    private Pressure outputPressure;
+
+
+    public Temperature getEnvTemperature() {
+        return envTemperature;
+    }
+
+    public void setEnvTemperature(Temperature envTemperature) {
+        this.envTemperature = envTemperature;
+    }
+
+
+    public Temperature getInputTemperature() {
+        return inputTemperature;
+    }
+
+    public void setInputTemperature(Temperature inputTemperature) {
+        this.inputTemperature = inputTemperature;
+    }
+
+    public Temperature getOutputTemperature() {
+        return outputTemperature;
+    }
+
+    public void setOutputTemperature(Temperature outputTemperature) {
+        this.outputTemperature = outputTemperature;
+    }
+
+
+    public Pressure getInputPressure() {
+        return inputPressure;
+    }
+
+    public void setInputPressure(Pressure inputPressure) {
+        this.inputPressure = inputPressure;
+    }
+
+
+    public Pressure getOutputPressure() {
+        return outputPressure;
+    }
+
+    public void setOutputPressure(Pressure outputPressure) {
+        this.outputPressure = outputPressure;
+    }
+
+
+    public Debi getDebiInput() {
+        return debiInput;
+    }
+
+    public void setDebiInput(Debi debiInput) {
+        this.debiInput = debiInput;
+    }
+
+    private Double envTempreture;
     private Double stationDebi;
     private Double stationInputTemprature;
     private Double stationInputPressure;
@@ -89,7 +166,7 @@ public class ConditionEntity extends BaseEntity  {
     private CityGateStationEntity station;
 
     @OneToOne(mappedBy = "condition", cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER, optional = false)
+            fetch = FetchType.EAGER, optional = true)
     private ResultEntity result;
 
     @ManyToOne(fetch=FetchType.LAZY)
