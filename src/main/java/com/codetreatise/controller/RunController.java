@@ -1,6 +1,13 @@
 package com.codetreatise.controller;
 
+import com.codetreatise.bean.station.CityGateStationEntity;
+import com.codetreatise.bean.station.PipeSpecificationsEntity;
+import com.codetreatise.bean.station.RunEntity;
+import com.codetreatise.bean.unitNumber.Debi;
 import com.codetreatise.config.StageManager;
+import com.codetreatise.service.CityGateStationService;
+import com.codetreatise.service.PipeSpecificationService;
+import com.codetreatise.service.RunService;
 import com.codetreatise.view.FxmlView;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -15,16 +22,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import sample.controller.base.BaseController;
 import sample.model.Station;
-import sample.model.run.Collector;
-import sample.model.run.Run;
-import sample.model.run.Runs;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class RunController extends BaseController{
@@ -32,6 +36,18 @@ public class RunController extends BaseController{
     @Lazy
     @Autowired
     StageManager stageManager;
+
+    @Autowired
+    CityGateStationService cityGateStationService;
+
+    @Autowired
+    RunService runService;
+
+    @Autowired
+    PipeSpecificationService pipeSpecificationService;
+
+
+
 
     public TextField runNumberInput;
     public TextField runLengthInput;
@@ -133,6 +149,11 @@ public class RunController extends BaseController{
         });
 
 
+        if(stageManager.getCityGateStationEntity()!=null){
+            setOnShow();
+        }
+
+
 
 
 
@@ -194,14 +215,34 @@ public class RunController extends BaseController{
 
 
     public void ok(ActionEvent actionEvent) {
+        CityGateStationEntity cityGateStationEntity = stageManager.getCityGateStationEntity();
+        if(cityGateStationEntity==null){
+            cityGateStationEntity = new CityGateStationEntity();
+        }
+        List<RunEntity> runs = cityGateStationEntity.getRuns();
+        if(runs == null){
+
+            runs = new ArrayList<>();
+        }
+        else{
+            runs.clear();
+        }
+        PipeSpecificationsEntity collector = cityGateStationEntity.getCollector();
+        if(collector==null){
+            collector = new PipeSpecificationsEntity();
+        }
+
         if(runNumberInput.getText().equals("") ||
                 runColectorLengthInput.getText().equals("") ||
                 runLengthInput.getText().equals("")){return;}
 
         int runNumber = Integer.parseInt(runNumberInput.getText());
-        ArrayList<Run> runs = new ArrayList<Run>();
-        Collector collector = new Collector(collectorComboBox.getValue().toString().toString(),
-                Double.parseDouble(runColectorLengthInput.getText()));
+//        ArrayList<Run> runs = new ArrayList<Run>();
+        collector.setInsulation(false);
+        collector.setLength(Double.parseDouble(runColectorLengthInput.getText()));
+        collector.setPipeSizeUnit(collectorComboBox.getValue().toString());
+//         collector = new Collector(collectorComboBox.getValue().toString().toString(),
+//                Double.parseDouble(runColectorLengthInput.getText()));
 
         double runLength = Double.parseDouble(runLengthInput.getText());
 
@@ -216,16 +257,30 @@ public class RunController extends BaseController{
 
             TextField rundebi = (TextField) tabObject.get(1);
             ComboBox runsize = (ComboBox) tabObject.get(3);
+            if(rundebi.getText().equals("")){
+                return;
+            }
 
 
 //            System.out.println(rundebi.getText() + " " + runsize.getValue().toString());
-            runs.add(new Run(runsize.getValue().toString(),runLength, Double.parseDouble(rundebi.getText()) ));
+            RunEntity run = new RunEntity(runLength, runsize.getValue().toString());
+            run = runService.save(run);
+            run.setDebiInput(new Debi( Double.parseDouble(rundebi.getText()), Debi.M3_PER_HOUR ));//TODO
+            run = runService.save(run);
+            runs.add(run);
+//            runs.add(new Run(runsize.getValue().toString(),runLength, Double.parseDouble(rundebi.getText()) ));
 
 
         }
 
-        Runs allRun = new Runs(runs, collector);
-        Station.getInstance().getList().put("Runs", allRun);
+        collector = pipeSpecificationService.save(collector);
+        runs = runService.save(runs);
+        cityGateStationEntity.setRuns(runs);
+        cityGateStationEntity.setCollector(collector);
+        cityGateStationEntity =  cityGateStationService.save(cityGateStationEntity);
+        stageManager.setCityGateStationEntity(cityGateStationEntity);
+//        Runs allRun = new Runs(runs, collector);
+//        Station.getInstance().getList().put("Runs", allRun);
 //        System.out.println(StationLogic.getInstance().getList().get("Runs"));
 //        ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
 
@@ -238,6 +293,12 @@ public class RunController extends BaseController{
         runLengthInput.clear();
         runTapPane.getTabs().clear();
         Station.getInstance().getList().remove("Runs");
+        CityGateStationEntity cityGateStationEntity = stageManager.getCityGateStationEntity();
+        cityGateStationEntity.getRuns().clear();
+        cityGateStationEntity.setCollector(null);
+        cityGateStationEntity = cityGateStationService.save(cityGateStationEntity);
+        stageManager.setCityGateStationEntity(cityGateStationEntity);
+
 
     }
 
@@ -248,56 +309,106 @@ public class RunController extends BaseController{
 
     @Override
     public void setOnShow() {
-        Runs runs = (Runs) Station.getInstance().getList().get("Runs");
-        if(runs != null){
-            runTapPane.getTabs().clear();
-            runNumberInput.setText(String.valueOf(runs.getRuns().size()));
-            if(runNumberInput.getText().equals("")) return;
-            int runNumber = Integer.parseInt(runNumberInput.getText());
+//        Runs runs = (Runs) Station.getInstance().getList().get("Runs");
+        CityGateStationEntity cityGateStationEntity = stageManager.getCityGateStationEntity();
+        List<RunEntity> runs;
+        if(cityGateStationEntity!=null){
+            if(cityGateStationEntity.getRuns()!=null && cityGateStationEntity.getRuns().size()>0){
+                runs = cityGateStationEntity.getRuns();
+                runNumberInput.setText(String.valueOf(runs.size()));
+                runLengthInput.setText(String.valueOf(runs.get(0).getLength()));
 
-            runLengthInput.setText(String.valueOf(runs.getRuns().get(runs.getRuns().size() - 1).getLength()));
-            runColectorLengthInput.setText(String.valueOf(runs.getCollector().getLength()));
-            collectorComboBox.getSelectionModel().select(runs.getCollector().getSize());
+                for (int i = 1; i <= runs.size(); i++) {
 
-            ArrayList<Run> run = runs.getRuns();
-
-            for (int i = 1; i <= runNumber; i++) {
-
-                Tab tab = new Tab();
+                    Tab tab = new Tab();
 
 
 
 
-                HBox childHBox = new HBox();
+                    HBox childHBox = new HBox();
 
-                tab.setText("ران  " + i);
-                GridPane runContainer = new GridPane();
-                runContainer.add(new Label("دبی گاز عبوری "), 1, 0);
-                TextField debiTextField = addDebiValidator(new TextField());
+                    tab.setText("ران  " + i);
+                    GridPane runContainer = new GridPane();
+                    runContainer.add(new Label("دبی گاز عبوری "), 1, 0);
+                    TextField debiTextField = addDebiValidator(new TextField());
 
-                debiTextField.setText(String.valueOf(run.get(i - 1).getDebi()));
-                runContainer.add(debiTextField, 0, 0);
-                runContainer.add(new Label("سایز (اینچ) "), 1, 1);
-                ComboBox comboBox = new ComboBox();
-                comboBox.getItems().removeAll();
-                comboBox.getItems().addAll( "2","3","4","6","8","10","12","16","20","24","30");
-                comboBox.getSelectionModel().select(run.get(i-1).getSize());
-                runContainer.add(comboBox, 0, 1);
+                    debiTextField.setText(String.valueOf(runs.get(i - 1).getDebiInput().getDebi())); // TODO add debi input unit
+                    runContainer.add(debiTextField, 0, 0);
+                    runContainer.add(new Label("سایز (اینچ) "), 1, 1);
+                    ComboBox comboBox = new ComboBox();
+                    comboBox.getItems().removeAll();
+                    comboBox.getItems().addAll( "2","3","4","6","8","10","12","16","20","24","30");
+                    comboBox.getSelectionModel().select(runs.get(i-1).getPipeSizeUnit());
+                    runContainer.add(comboBox, 0, 1);
 
-                childHBox.getChildren().add(runContainer);
-                childHBox.setAlignment(Pos.CENTER);
-                tab.setContent(childHBox);
-                runTapPane.getTabs().add(tab);
-                runTapPane.setMinSize(200,100);
-                runTapPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+                    childHBox.getChildren().add(runContainer);
+                    childHBox.setAlignment(Pos.CENTER);
+                    tab.setContent(childHBox);
+                    runTapPane.getTabs().add(tab);
+                    runTapPane.setMinSize(200,100);
+                    runTapPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
 
 
+
+                }
 
             }
-
-
+            if(cityGateStationEntity.getCollector()!=null){
+                runColectorLengthInput.setText(String.valueOf(cityGateStationEntity.getCollector().getLength()));
+                collectorComboBox.getSelectionModel().select(cityGateStationEntity.getCollector().getPipeSizeUnit());
+            }
         }
+
+//        if(runs != null){
+//            runTapPane.getTabs().clear();
+//            runNumberInput.setText(String.valueOf(runs.getRuns().size()));
+//            if(runNumberInput.getText().equals("")) return;
+//            int runNumber = Integer.parseInt(runNumberInput.getText());
+//
+//            runLengthInput.setText(String.valueOf(runs.getRuns().get(runs.getRuns().size() - 1).getLength()));
+//            runColectorLengthInput.setText(String.valueOf(runs.getCollector().getLength()));
+//            collectorComboBox.getSelectionModel().select(runs.getCollector().getSize());
+//
+//            ArrayList<Run> run = runs.getRuns();
+//
+//            for (int i = 1; i <= runNumber; i++) {
+//
+//                Tab tab = new Tab();
+//
+//
+//
+//
+//                HBox childHBox = new HBox();
+//
+//                tab.setText("ران  " + i);
+//                GridPane runContainer = new GridPane();
+//                runContainer.add(new Label("دبی گاز عبوری "), 1, 0);
+//                TextField debiTextField = addDebiValidator(new TextField());
+//
+//                debiTextField.setText(String.valueOf(run.get(i - 1).getDebi()));
+//                runContainer.add(debiTextField, 0, 0);
+//                runContainer.add(new Label("سایز (اینچ) "), 1, 1);
+//                ComboBox comboBox = new ComboBox();
+//                comboBox.getItems().removeAll();
+//                comboBox.getItems().addAll( "2","3","4","6","8","10","12","16","20","24","30");
+//                comboBox.getSelectionModel().select(run.get(i-1).getSize());
+//                runContainer.add(comboBox, 0, 1);
+//
+//                childHBox.getChildren().add(runContainer);
+//                childHBox.setAlignment(Pos.CENTER);
+//                tab.setContent(childHBox);
+//                runTapPane.getTabs().add(tab);
+//                runTapPane.setMinSize(200,100);
+//                runTapPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+//
+//
+//
+//
+//            }
+//
+//
+//        }
 
     }
 

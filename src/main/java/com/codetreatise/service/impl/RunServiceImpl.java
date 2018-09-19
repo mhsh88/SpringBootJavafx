@@ -49,4 +49,9 @@ public class RunServiceImpl implements RunService {
     public List<RunEntity> findAll() {
         return repository.findAll();
     }
+
+    @Override
+    public List<RunEntity> save(List<RunEntity> runs) {
+        return repository.save(runs);
+    }
 }

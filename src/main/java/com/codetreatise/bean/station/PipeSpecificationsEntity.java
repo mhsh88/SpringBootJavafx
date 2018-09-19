@@ -8,6 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "pipe_specifications")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class PipeSpecificationsEntity extends BaseEntity implements PipeSpecificatonConstants {
     private Double length;
     private Double insulationFactor;
@@ -16,9 +17,19 @@ public class PipeSpecificationsEntity extends BaseEntity implements PipeSpecific
     private String pipeSizeUnit;
     private boolean insulation;
 
+
+    public PipeSpecificationsEntity(){}
+    public PipeSpecificationsEntity(double runLength, String pipeSizeUnit) {
+        super();
+        this.length = runLength;
+        this.pipeSizeUnit = pipeSizeUnit;
+    }
+
     @ManyToOne
     @JoinColumn(name="pipe_size_id")
     public PipeSizeEntity pipeSize;
+
+
 
     @Basic
     @Column(name = "length")

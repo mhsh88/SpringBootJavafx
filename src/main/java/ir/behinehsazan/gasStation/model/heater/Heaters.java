@@ -39,7 +39,7 @@ public class Heaters extends GasConsumer{
 
         double heaterConsum = 0.0;
         double burnerTempComsum = 0.0;
-        for(int i = 0; i < heaters.size(); i++){
+        for(int i = 0; i < heaters.size(); i++){ //TODO it must be logically checked
             if(heaters.get(i).getBurners().size() > 0 && heaterConsumption > 0) {
                 burnerConsumption = heaterConsumption / heaters.get(i).getBurners().size() / heaters.get(i).getEfficiency();
             }

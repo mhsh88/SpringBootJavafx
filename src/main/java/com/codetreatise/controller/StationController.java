@@ -21,7 +21,6 @@ import org.springframework.stereotype.Controller;
 import sample.controller.afterHeater.AfterHeaterFrame;
 import sample.controller.base.BaseController;
 import sample.controller.beforeHeater.BeforeHeaterFrame;
-import sample.controller.calculate.CalculateController;
 import sample.controller.heaterController.HeaterFrame;
 import sample.controller.run.RunFrame;
 import sample.controller.showResults.ShowResultsFrame;
@@ -155,7 +154,7 @@ public class StationController extends BaseController implements Initializable {
     }
 
     public void calculateButton(ActionEvent actionEvent) throws IOException {
-        if(calculateController.calculate()){
+        if(calculateController.calculate(stageManager.getCityGateStationEntity())){
 
 //        showResultsFrame.show();
             stageManager.switchScene(FxmlView.SHOW_RESULT);

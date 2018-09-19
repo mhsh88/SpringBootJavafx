@@ -24,6 +24,15 @@ public class StationLogic extends GasConsumer {
     private BasePipe collector = new BasePipe();
     private Runs runs = new Runs();
     private Regulator regulator = new Regulator();
+    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     ArrayList<GasConsumer> allComponent = new ArrayList<GasConsumer>();
 
@@ -229,7 +238,7 @@ public class StationLogic extends GasConsumer {
     }
 
     public void setCollector(sample.model.run.Runs runs) {
-        if(runs != null && getTenv() != null) {
+        if(runs != null && getTenv() != null && runs.getCollector() != null) {
             double temp = -273.15;
             double pi = 0;
             double debi = 0.0;
@@ -273,7 +282,7 @@ public class StationLogic extends GasConsumer {
     }
 
     public void setRuns(sample.model.run.Runs runs) {
-        if(runs != null && getTenv() != null){
+        if(runs != null && getTenv() != null && runs.getRuns().size()>0){
             this.runs.getRuns().clear();
 
 

@@ -29,8 +29,9 @@ public class PipeSizeEntity extends BaseEntity {
     @OneToMany(mappedBy="pipeSize")
     public List<PipeSpecificationsEntity> pipeSpecifications;
 
-    @OneToMany(mappedBy = "pipeSize")
-    public List<RunEntity> runs;
+//
+//    @OneToMany(mappedBy = "pipeSize")
+//    public List<RunEntity> runs;
 
 
     @Basic

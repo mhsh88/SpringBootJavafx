@@ -6,7 +6,7 @@ import sample.model.burner.Burner;
 import java.util.ArrayList;
 
 public class HeaterModel extends BaseModel{
-    private double efficiency = 0.8;
+    private double efficiency;
     private ArrayList<Burner> burners = new ArrayList<Burner>();
 
 

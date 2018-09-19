@@ -273,4 +273,31 @@ public class GasEntity extends BaseEntity {
 
         return Objects.hash(id, nitrogen, carbonDioxide, methan, ethane, propane, nButane, isoButane, nPentane, isoPentane, hexane, heptane, octane, nonane, decane, hydrogen, oxygen, carbonMonoxide, water, hydrogenSulfide, helium, argon, moleWightPersent);
     }
+
+    @Transient
+    public Double[] getComponent() {
+        Double[] component = new Double[21];
+        component[0] = getNitrogen();
+        component[1] = getCarbonDioxide();
+        component[2] = getMethan();
+        component[3] = getEthane();
+        component[4] = getPropane();
+        component[5] = getnButane();
+        component[6] = getIsoButane();
+        component[7] = getnPentane();
+        component[8] = getIsoPentane();
+        component[9] = getHexane();
+        component[10] = getHeptane();
+        component[11] = getOctane();
+        component[12] = getNonane();
+        component[13] = getDecane();
+        component[14] = getHydrogen();
+        component[15] = getOxygen();
+        component[16] = getCarbonMonoxide();
+        component[17] = getWater();
+        component[18] = getHydrogenSulfide();
+        component[19] = getHelium();
+        component[20] = getArgon();
+        return component;
+    }
 }

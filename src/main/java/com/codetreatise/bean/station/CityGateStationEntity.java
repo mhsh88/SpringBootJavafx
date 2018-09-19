@@ -49,7 +49,7 @@ public class CityGateStationEntity extends BaseEntity {
     @LazyCollection(LazyCollectionOption.FALSE)
     public List<HeaterEntity> heaters;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany
     @JoinTable(
             name="station_run"
             , joinColumns={
@@ -68,6 +68,14 @@ public class CityGateStationEntity extends BaseEntity {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "condition_id")
     private ConditionEntity condition;
+
+    public List<RunEntity> getRuns() {
+        return runs;
+    }
+
+    public void setRuns(List<RunEntity> runs) {
+        this.runs = runs;
+    }
 
     public ConditionEntity getCondition() {
         return condition;

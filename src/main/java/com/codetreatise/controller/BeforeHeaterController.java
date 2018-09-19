@@ -373,7 +373,14 @@ public class BeforeHeaterController extends BaseController{
         lineLengthTextField.clear();
         insulationThicknessTextField.clear();
         insulationFactorTextField.clear();
-        Station.getInstance().getList().remove("beforeHeaterPipeLine");
+        CityGateStationEntity cityGateStationEntity = stageManager.getCityGateStationEntity();
+        if(cityGateStationEntity!=null){
+            cityGateStationEntity.setBeforeHeater(null);
+            cityGateStationEntity = cityGateStationService.save(cityGateStationEntity);
+            stageManager.setCityGateStationEntity(cityGateStationEntity);
+
+        }
+//        Station.getInstance().getList().remove("beforeHeaterPipeLine");
     }
 
     public void cancelButton(ActionEvent actionEvent) {

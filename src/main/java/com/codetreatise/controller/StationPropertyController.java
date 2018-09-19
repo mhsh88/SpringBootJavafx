@@ -1019,7 +1019,7 @@ public class StationPropertyController extends BaseController {
     }
     @Override
     public void setOnShow() {
-        StationPropertice stationPropertice = (StationPropertice) Station.getInstance().getList().get("stationPropertice");
+//        StationPropertice stationPropertice = (StationPropertice) Station.getInstance().getList().get("stationPropertice");
         CityGateStationEntity cityGateStationEntity = stageManager.getCityGateStationEntity();
         DecimalFormat dff = new DecimalFormat("#0.0");
         Double[] tempComponent = new Double[21];

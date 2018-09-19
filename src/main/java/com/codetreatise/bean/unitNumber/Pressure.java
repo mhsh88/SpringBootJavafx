@@ -6,6 +6,7 @@ import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -44,4 +45,32 @@ public class Pressure extends BaseEntity implements PressureConstants {
     public void setUnit(String unit) {
         this.unit = unit;
     }
+
+
+    @Transient
+    public double getCostumePressure(String unit){
+        switch (unit){
+            case KPA: return getToBase() / 1;
+            case MPA: return getToBase() / 1000;
+            case PSI: return getToBase() / 6.89476;
+            case KPA_GAUGE: return getToBase() - 101.235;
+            case MPA_GAUGE: return (getToBase() - 101.235) / 1000;
+            case PSI_GAUGE: return (getToBase() - 101.235) / 6.89476;
+            default: return getToBase();
+        }
+
+    }
+    @Transient
+    private double getToBase(){
+        switch (unit){
+            case KPA: return pressure * 1 ;
+            case MPA: return pressure * 1000;
+            case PSI: return pressure * 6.89476;
+            case KPA_GAUGE: return (pressure + 101.235) *  1 ;
+            case MPA_GAUGE: return pressure * 1000 + 101.235;
+            case PSI_GAUGE: return pressure * 6.89476 + 101.235;
+            default: return pressure;
+        }
+    }
+
 }

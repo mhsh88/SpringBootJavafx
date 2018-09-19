@@ -13,7 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import sample.controller.base.BaseController;
 import sample.model.Station;
 import sample.model.base.BaseModel;
@@ -23,7 +23,7 @@ import sample.model.pipeLine.PipeSize;
 import java.io.IOException;
 import java.util.Map;
 
-@Component
+@Controller
 public class AfterHeaterController extends BaseController{
 
     @Lazy
@@ -391,7 +391,14 @@ public class AfterHeaterController extends BaseController{
         lineLengthTextField.clear();
         insulationThicknessTextField.clear();
         insulationFactorTextField.clear();
-        Station.getInstance().getList().remove("afterHeaterPipeLine");
+        CityGateStationEntity cityGateStationEntity = stageManager.getCityGateStationEntity();
+        if(cityGateStationEntity!=null){
+            cityGateStationEntity.setAfterHeater(null);
+            cityGateStationEntity = cityGateStationService.save(cityGateStationEntity);
+            stageManager.setCityGateStationEntity(cityGateStationEntity);
+
+        }
+//        Station.getInstance().getList().remove("afterHeaterPipeLine");
     }
 
     public void cancelButton(ActionEvent actionEvent) {

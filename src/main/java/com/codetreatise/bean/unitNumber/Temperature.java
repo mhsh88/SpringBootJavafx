@@ -4,6 +4,7 @@ import com.codetreatise.bean.base.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -65,5 +66,27 @@ public class Temperature extends BaseEntity implements TemperatureConstants {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    @Transient
+    public double getCostumeTemperature(String unit){
+        switch (unit){
+            case FAHRENHEIT: return getToBase() * 9 / 5 - 459.67;
+            case CELSIUS: return getToBase() - 273.15;
+            case KELVIN: return getToBase();
+            case RANKINE: return getToBase() * 9 / 5;
+            default: return getToBase();
+        }
+
+    }
+    @Transient
+    private double getToBase(){
+        switch (unit){
+            case FAHRENHEIT: return (temperature + 459.67) * 5 / 9 ;
+            case CELSIUS: return temperature + 273.15;
+            case KELVIN: return temperature;
+            case RANKINE: return temperature * 1.8;
+            default: return temperature;
+        }
     }
 }
