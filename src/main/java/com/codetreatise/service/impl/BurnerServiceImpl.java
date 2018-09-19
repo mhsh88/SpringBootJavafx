@@ -49,4 +49,9 @@ public class BurnerServiceImpl implements BurnerService {
     public List<BurnersEntity> findAll() {
         return burnerRepository.findAll();
     }
+
+    @Override
+    public List<BurnersEntity> save(List<BurnersEntity> burners) {
+        return burnerRepository.save(burners);
+    }
 }

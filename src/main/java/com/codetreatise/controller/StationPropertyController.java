@@ -955,6 +955,13 @@ public class StationPropertyController extends BaseController {
 
 
 
+        CityGateStationEntity cityGateStationEntity = stageManager.getCityGateStationEntity();
+        if(cityGateStationEntity!= null){
+            setOnShow();
+        }
+
+
+
 
 
 
@@ -1013,70 +1020,135 @@ public class StationPropertyController extends BaseController {
     @Override
     public void setOnShow() {
         StationPropertice stationPropertice = (StationPropertice) Station.getInstance().getList().get("stationPropertice");
+        CityGateStationEntity cityGateStationEntity = stageManager.getCityGateStationEntity();
         DecimalFormat dff = new DecimalFormat("#0.0");
-        if(stationPropertice != null){
-            Double[] tempComponent = stationPropertice.getComponent();
+        Double[] tempComponent = new Double[21];
+        if(cityGateStationEntity!=null){
+//             = stationPropertice.getComponent();
+            if(cityGateStationEntity.getGasEntity()!=null){
 
-            double[] component = Arrays.stream(tempComponent).map(n -> df.format(n * 100)).mapToDouble(Double::valueOf).toArray();
+            tempComponent[0] = cityGateStationEntity.getGasEntity().getNitrogen();
+            tempComponent[1] =cityGateStationEntity.getGasEntity().getCarbonDioxide();
+            tempComponent[2] =cityGateStationEntity.getGasEntity().getMethan();
+            tempComponent[3] =cityGateStationEntity.getGasEntity().getEthane();
+            tempComponent[4] =cityGateStationEntity.getGasEntity().getPropane();
+            tempComponent[5] =cityGateStationEntity.getGasEntity().getnButane();
+            tempComponent[6] =cityGateStationEntity.getGasEntity().getIsoButane();
+            tempComponent[7] =cityGateStationEntity.getGasEntity().getnPentane();
+            tempComponent[8] =cityGateStationEntity.getGasEntity().getIsoPentane();
+            tempComponent[9] =cityGateStationEntity.getGasEntity().getHexane();
+            tempComponent[10] =cityGateStationEntity.getGasEntity().getHeptane();
+            tempComponent[11] =cityGateStationEntity.getGasEntity().getOctane();
+            tempComponent[12] =cityGateStationEntity.getGasEntity().getNonane();
+            tempComponent[13] =cityGateStationEntity.getGasEntity().getDecane();
+            tempComponent[14] =cityGateStationEntity.getGasEntity().getHydrogen();
+            tempComponent[15] =cityGateStationEntity.getGasEntity().getOxygen();
+            tempComponent[16] =cityGateStationEntity.getGasEntity().getCarbonMonoxide();
+            tempComponent[17] =cityGateStationEntity.getGasEntity().getWater();
+            tempComponent[18] =cityGateStationEntity.getGasEntity().getHydrogenSulfide();
+            tempComponent[19] =cityGateStationEntity.getGasEntity().getHelium();
+            tempComponent[20] =cityGateStationEntity.getGasEntity().getArgon();
 
-            nitrogenTextField.setText(String.valueOf(component[0]));
-            carbonDioxideTextField.setText(String.valueOf(component[1]));
-            methanTextField.setText(String.valueOf(component[2]));
-            ethaneTextField.setText(String.valueOf(component[3]));
-            propaneTextField.setText(String.valueOf(component[4]));
-            nButaneTextField.setText(String.valueOf(component[5]));
-            isoButaneTextField.setText(String.valueOf(component[6]));
-            nPentaneTextField.setText(String.valueOf(component[7]));
-            isoPentaneTextField.setText(String.valueOf(component[8]));
-            hexaneTextField.setText(String.valueOf(component[9]));
-            heptaneTextField.setText(String.valueOf(component[10]));
-            octaneTextField.setText(String.valueOf(component[11]));
-            nonaneTextField.setText(String.valueOf(component[12]));
-            decaneTextField.setText(String.valueOf(component[13]));
-            hydrogenTextField.setText(String.valueOf(component[14]));
-            oxygenTextField.setText(String.valueOf(component[15]));
-            carbonMonoxideTextField.setText(String.valueOf(component[16]));
-            waterTextField.setText(String.valueOf(component[17]));
-            hydrogenSulfideTextField.setText(String.valueOf(component[18]));
-            heliumTextField.setText(String.valueOf(component[19]));
-            argonTextField.setText(String.valueOf(component[20]));
-            inputGasTempTextField.setText(dff.format(stationPropertice.getInputTemp() - 273.15));
+
+
+                double[] component = Arrays.stream(tempComponent).map(n -> df.format(n * 100)).mapToDouble(Double::valueOf).toArray();
+
+                nitrogenTextField.setText(String.valueOf(component[0]));
+                carbonDioxideTextField.setText(String.valueOf(component[1]));
+                methanTextField.setText(String.valueOf(component[2]));
+                ethaneTextField.setText(String.valueOf(component[3]));
+                propaneTextField.setText(String.valueOf(component[4]));
+                nButaneTextField.setText(String.valueOf(component[5]));
+                isoButaneTextField.setText(String.valueOf(component[6]));
+                nPentaneTextField.setText(String.valueOf(component[7]));
+                isoPentaneTextField.setText(String.valueOf(component[8]));
+                hexaneTextField.setText(String.valueOf(component[9]));
+                heptaneTextField.setText(String.valueOf(component[10]));
+                octaneTextField.setText(String.valueOf(component[11]));
+                nonaneTextField.setText(String.valueOf(component[12]));
+                decaneTextField.setText(String.valueOf(component[13]));
+                hydrogenTextField.setText(String.valueOf(component[14]));
+                oxygenTextField.setText(String.valueOf(component[15]));
+                carbonMonoxideTextField.setText(String.valueOf(component[16]));
+                waterTextField.setText(String.valueOf(component[17]));
+                hydrogenSulfideTextField.setText(String.valueOf(component[18]));
+                heliumTextField.setText(String.valueOf(component[19]));
+                argonTextField.setText(String.valueOf(component[20]));
+
+                DecimalFormat totalNumberDF = new DecimalFormat("#0.00");
+                totalNumberText.setText(String.valueOf(totalNumberDF.format(Arrays.stream(component).sum())));
+            }
+
+
+
+            if(cityGateStationEntity.getCondition() != null){
+//                inputGasTempTextField.setText(dff.format(stationPropertice.getInputTemp() - 273.15));
+                inputGasTempTextField.setText(dff.format(cityGateStationEntity.getCondition().getInputTemperature().getTemperature()));
+                inputGasTempComboBox.getSelectionModel().select(cityGateStationEntity.getCondition().getInputTemperature().getUnit());
+
+                inputGasPressureTextField.setText(dff.format(cityGateStationEntity.getCondition().getInputPressure().getPressure()));
+                inputGasPressureComboBox.getSelectionModel().select(cityGateStationEntity.getCondition().getInputPressure().getUnit());
+
+                outputGasPressureTextField.setText(dff.format(cityGateStationEntity.getCondition().getOutputPressure().getPressure()));
+                outputGasPressureComboBox.getSelectionModel().select(cityGateStationEntity.getCondition().getOutputPressure().getUnit());
+
+                outputGasTempTextField.setText(dff.format(cityGateStationEntity.getCondition().getOutputTemperature().getTemperature()));
+                outputGasTempComboBox.getSelectionModel().select(cityGateStationEntity.getCondition().getOutputTemperature().getUnit());
+
+                if(cityGateStationEntity.getCondition().getEnvTemperature()!= null) {
+//                    environmentTempTextField.setText(dff.format(stationPropertice.getEnvironmentTemp() - 273.15));
+                    environmentTempTextField.setText(dff.format((cityGateStationEntity.getCondition().getEnvTemperature().getTemperature())));
+                    environmentTempComboBox.getSelectionModel().select(cityGateStationEntity.getCondition().getEnvTemperature().getUnit());
+
+                }
+                else environmentTempTextField.setText("");
+
+//                windSpeedTextField.setText(dff.format(stationPropertice.getWindVelocity()));
+                windSpeedTextField.setText(dff.format(cityGateStationEntity.getCondition().getWindSpeed()));
+
+                stationDebiTextField.setText(dff.format(cityGateStationEntity.getCondition().getDebiInput().getDebi()));
+                provinceTextField.setText(cityGateStationEntity.getProvince());
+                cityTextField.setText(cityGateStationEntity.getCity());
+                areaTextField.setText(cityGateStationEntity.getRegion());
+                nominalCapacityTextField.setText(cityGateStationEntity.getNominalCapacity());
+                addressTextArea.setText(cityGateStationEntity.getAddress());
+
+            }
+
 //            System.out.println(inputGasPressureComboBox.getValue().toString());
 
 //            Double temdsd = Double.parseDouble(dff.format((stationPropertice.getInputPressure() - 101.235) * 0.145038));
 //            System.out.println(temdsd.getClass());
 //            System.out.println(Math.round((stationPropertice.getInputPressure() - 101.235) * 0.145038));
-            double pressure = (inputGasPressureComboBox.getValue().toString().equals(PSI)) ? Double.parseDouble(dff.format((stationPropertice.getInputPressure() - 101.235) * 0.145038)) :
-                    (inputGasPressureComboBox.getValue().toString().equals(MPA) ? Math.round((stationPropertice.getInputPressure() - 101.235) / 1000): Math.round(stationPropertice.getInputPressure() - 101.235));
-            inputGasPressureTextField.setText(String.valueOf(pressure));
-            pressure = (outputGasPressureComboBox.getValue().toString().equals(PSI)) ? Double.parseDouble(dff.format(((stationPropertice.getOutputPressure() - 101.235) * 0.145038))) :
-                    (outputGasPressureComboBox.getValue().toString().equals(MPA) ? Math.round((stationPropertice.getOutputPressure() - 101.235) / 1000) : Math.round(stationPropertice.getOutputPressure() - 101.235));
-            outputGasPressureTextField.setText(String.valueOf(pressure));
-            outputGasTempTextField.setText(dff.format(stationPropertice.getOutputTemp() - 273.15));
-            if(stationPropertice.getEnvironmentTemp() != null) {
-                environmentTempTextField.setText(dff.format(stationPropertice.getEnvironmentTemp() - 273.15));
-            }
-            else environmentTempTextField.setText("");
-            windSpeedTextField.setText(dff.format(stationPropertice.getWindVelocity()));
-            stationDebiTextField.setText(dff.format(stationPropertice.getDebi()));
-            provinceTextField.setText(stationPropertice.getProvince());
-            cityTextField.setText(stationPropertice.getCity());
-            areaTextField.setText(stationPropertice.getArea());
-            nominalCapacityTextField.setText(stationPropertice.getNominalCapacity());
-            addressTextArea.setText(stationPropertice.getAddress());
+//            double pressure = (inputGasPressureComboBox.getValue().toString().equals(PSI)) ? Double.parseDouble(dff.format((stationPropertice.getInputPressure() - 101.235) * 0.145038)) :
+//                    (inputGasPressureComboBox.getValue().toString().equals(MPA) ? Math.round((stationPropertice.getInputPressure() - 101.235) / 1000): Math.round(stationPropertice.getInputPressure() - 101.235));
+//            inputGasPressureTextField.setText(String.valueOf(pressure));
+//            pressure = (outputGasPressureComboBox.getValue().toString().equals(PSI)) ? Double.parseDouble(dff.format(((stationPropertice.getOutputPressure() - 101.235) * 0.145038))) :
+//                    (outputGasPressureComboBox.getValue().toString().equals(MPA) ? Math.round((stationPropertice.getOutputPressure() - 101.235) / 1000) : Math.round(stationPropertice.getOutputPressure() - 101.235));
+//            outputGasPressureTextField.setText(String.valueOf(pressure));
+//            outputGasTempTextField.setText(dff.format(stationPropertice.getOutputTemp() - 273.15));
+//            if(stationPropertice.getEnvironmentTemp() != null) {
+//                environmentTempTextField.setText(dff.format(stationPropertice.getEnvironmentTemp() - 273.15));
+//            }
+//            else environmentTempTextField.setText("");
+//            windSpeedTextField.setText(dff.format(stationPropertice.getWindVelocity()));
+//            stationDebiTextField.setText(dff.format(stationPropertice.getDebi()));
+//            provinceTextField.setText(stationPropertice.getProvince());
+//            cityTextField.setText(stationPropertice.getCity());
+//            areaTextField.setText(stationPropertice.getArea());
+//            nominalCapacityTextField.setText(stationPropertice.getNominalCapacity());
+//            addressTextArea.setText(stationPropertice.getAddress());
 
-            DecimalFormat totalNumberDF = new DecimalFormat("#0.00");
-            totalNumberText.setText(String.valueOf(totalNumberDF.format(Arrays.stream(component).sum())));
 
 
         }
         else{
-            try {
-                initialize();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return;
+//            try {
+////                initialize();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            return;
         }
     }
 
@@ -1175,17 +1247,15 @@ public class StationPropertyController extends BaseController {
 
 
         CityGateStationEntity cityGateStationEntity = stageManager.getCityGateStationEntity();
+        if(cityGateStationEntity== null){
+            cityGateStationEntity = new CityGateStationEntity();
+        }
 
 
         cityGateStationEntity.setProvince(provinceTextField.getText());
         cityGateStationEntity.setCity(cityTextField.getText());
         cityGateStationEntity.setRegion(areaTextField.getText());
-        try {
-            cityGateStationEntity.setNominalCapacity(gasInputCheck(nominalCapacityTextField));
-        }
-        catch (Exception e){
-            cityGateStationEntity.setNominalCapacity(0.0);
-        }
+        cityGateStationEntity.setNominalCapacity(nominalCapacityTextField.getText());
         cityGateStationEntity.setAddress(addressTextArea.getText());
 
         stationPropertice.setProvince(provinceTextField.getText());
@@ -1262,16 +1332,16 @@ public class StationPropertyController extends BaseController {
             double prefactor = 1.0;
             if(outputGasPressureComboBox.getValue().toString().equals("MPa")){
                 prefactor = 1000.0;
-                conditionEntity.setOutputPressure(new Pressure(Double.parseDouble(outputGasTempTextField.getText()), Pressure.MPA));
+                conditionEntity.setOutputPressure(new Pressure(Double.parseDouble(outputGasPressureTextField.getText()), Pressure.MPA));
             }else if(outputGasPressureComboBox.getValue().toString().equals("kPa")){
                 prefactor = 1.0;
-                conditionEntity.setOutputPressure(new Pressure(Double.parseDouble(outputGasTempTextField.getText()), Pressure.KPA));
+                conditionEntity.setOutputPressure(new Pressure(Double.parseDouble(outputGasPressureTextField.getText()), Pressure.KPA));
             }else if(outputGasPressureComboBox.getValue().toString().equals("Psi")){
                 prefactor = 6.89476;
-                conditionEntity.setOutputPressure(new Pressure(Double.parseDouble(outputGasTempTextField.getText()), Pressure.PSI));
+                conditionEntity.setOutputPressure(new Pressure(Double.parseDouble(outputGasPressureTextField.getText()), Pressure.PSI));
             }else {
                 prefactor = 1.0;
-                conditionEntity.setOutputPressure(new Pressure(Double.parseDouble(outputGasTempTextField.getText()), Pressure.KPA));
+                conditionEntity.setOutputPressure(new Pressure(Double.parseDouble(outputGasPressureTextField.getText()), Pressure.KPA));
             }
             stationPropertice.setOutputPressure(prefactor * Double.parseDouble(outputGasPressureTextField.getText()));
         }
@@ -1289,11 +1359,11 @@ public class StationPropertyController extends BaseController {
             }
             if(outputGasTempComboBox.getValue().toString().equals("°F")){
                 stationPropertice.setOutputTemp((Double.parseDouble(outputGasTempTextField.getText() ) - 32)/1.8);
-                conditionEntity.setInputTemperature(new Temperature(Double.parseDouble(outputGasTempTextField.getText()), Temperature.FAHRENHEIT));
+                conditionEntity.setOutputTemperature(new Temperature(Double.parseDouble(outputGasTempTextField.getText()), Temperature.FAHRENHEIT));
 
             }else if(outputGasTempComboBox.getValue().toString().equals("°C")){
                 stationPropertice.setOutputTemp(Double.parseDouble(outputGasTempTextField.getText()));
-                conditionEntity.setInputTemperature(new Temperature(Double.parseDouble(outputGasTempTextField.getText()), Temperature.CELSIUS));
+                conditionEntity.setOutputTemperature(new Temperature(Double.parseDouble(outputGasTempTextField.getText()), Temperature.CELSIUS));
             }
         }
         catch (Exception e){

@@ -19,7 +19,8 @@ public class CityGateStationEntity extends BaseEntity {
 
     @Size(max = 255)
     public String region;
-    public Double nominalCapacity;
+    @Size(max = 10)
+    public String nominalCapacity;
     @Lob
     public String address;
 
@@ -36,7 +37,7 @@ public class CityGateStationEntity extends BaseEntity {
     public PipeSpecificationsEntity collector;
 
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
             name="station_heater"
             , joinColumns={
@@ -48,7 +49,7 @@ public class CityGateStationEntity extends BaseEntity {
     @LazyCollection(LazyCollectionOption.FALSE)
     public List<HeaterEntity> heaters;
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name="station_run"
             , joinColumns={
@@ -57,6 +58,7 @@ public class CityGateStationEntity extends BaseEntity {
             , inverseJoinColumns={
             @JoinColumn(name="run_id", nullable=false)
     })
+    @LazyCollection(LazyCollectionOption.FALSE)
     public List<RunEntity> runs;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -99,11 +101,11 @@ public class CityGateStationEntity extends BaseEntity {
         this.region = region;
     }
 
-    public Double getNominalCapacity() {
+    public String getNominalCapacity() {
         return nominalCapacity;
     }
 
-    public void setNominalCapacity(Double nominalCapacity) {
+    public void setNominalCapacity(String nominalCapacity) {
         this.nominalCapacity = nominalCapacity;
     }
 

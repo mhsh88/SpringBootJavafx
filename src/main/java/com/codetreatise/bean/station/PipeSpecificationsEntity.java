@@ -1,16 +1,20 @@
 package com.codetreatise.bean.station;
 
 import com.codetreatise.bean.base.BaseEntity;
+import com.codetreatise.bean.constants.PipeSpecificatonConstants;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "pipe_specifications")
-public class PipeSpecificationsEntity extends BaseEntity {
+public class PipeSpecificationsEntity extends BaseEntity implements PipeSpecificatonConstants {
     private Double length;
     private Double insulationFactor;
     private Double insulationThickness;
+    private String insulationThicknessUnit;
+    private String pipeSizeUnit;
+    private boolean insulation;
 
     @ManyToOne
     @JoinColumn(name="pipe_size_id")
@@ -45,6 +49,35 @@ public class PipeSpecificationsEntity extends BaseEntity {
     public void setInsulationThickness(Double insulationThickness) {
         this.insulationThickness = insulationThickness;
     }
+
+    @Column(name = "insulation_thickness_unit")
+    public String getInsulationThicknessUnit() {
+        return insulationThicknessUnit;
+    }
+
+    public void setInsulationThicknessUnit(String insulationThicknessUnit) {
+        this.insulationThicknessUnit = insulationThicknessUnit;
+    }
+
+    @Column(name = "pipe_size_unit")
+    public String getPipeSizeUnit() {
+        return pipeSizeUnit;
+    }
+
+    public void setPipeSizeUnit(String pipeSizeUnit) {
+        this.pipeSizeUnit = pipeSizeUnit;
+    }
+
+    @Column(name = "is_insulation")
+    public boolean isInsulation() {
+        return insulation;
+    }
+
+    public void setInsulation(boolean insulation) {
+        this.insulation = insulation;
+    }
+
+
 
     @Override
     public boolean equals(Object o) {

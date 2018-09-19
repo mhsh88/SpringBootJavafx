@@ -17,7 +17,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  */
 public class StageManager {
 
-    private CityGateStationEntity cityGateStationEntity = new CityGateStationEntity();
+    private CityGateStationEntity cityGateStationEntity;
     private static final Logger LOG = getLogger(StageManager.class);
     private final Stage primaryStage;
     private final SpringFXMLLoader springFXMLLoader;

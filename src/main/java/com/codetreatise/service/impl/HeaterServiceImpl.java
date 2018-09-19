@@ -49,4 +49,9 @@ public class HeaterServiceImpl implements HeaterService {
     public List<HeaterEntity> findAll() {
         return repository.findAll();
     }
+
+    @Override
+    public List<HeaterEntity> save(List<HeaterEntity> heaters) {
+        return repository.save(heaters);
+    }
 }

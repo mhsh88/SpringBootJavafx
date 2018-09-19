@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "burner",uniqueConstraints={@UniqueConstraint(columnNames ={"text"})})
+@Table(name = "burner")
 @EntityListeners({AuditingEntityListener.class})
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class BurnersEntity extends BaseEntity{
@@ -19,6 +19,15 @@ public class BurnersEntity extends BaseEntity{
 
     private Double oxygenPercent;
     private Double flueGasTemprature;
+
+    public BurnersEntity(){
+        super();
+    }
+    public BurnersEntity(double oxygenPercent, double flueGasTemprature) {
+        super();
+        this.oxygenPercent = oxygenPercent;
+        this.flueGasTemprature = flueGasTemprature;
+    }
 
 
     @Basic

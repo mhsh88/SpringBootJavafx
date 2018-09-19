@@ -1,12 +1,15 @@
 package com.codetreatise.controller;
 
+import com.codetreatise.bean.station.CityGateStationEntity;
+import com.codetreatise.bean.station.PipeSpecificationsEntity;
 import com.codetreatise.config.StageManager;
+import com.codetreatise.service.CityGateStationService;
+import com.codetreatise.service.PipeSpecificationService;
 import com.codetreatise.view.FxmlView;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -26,6 +29,12 @@ public class BeforeHeaterController extends BaseController{
     @Lazy
     @Autowired
     StageManager stageManager;
+
+    @Autowired
+    PipeSpecificationService pipeSpecificationService;
+
+    @Autowired
+    CityGateStationService cityGateStationService;
 
     
 
@@ -54,8 +63,8 @@ public class BeforeHeaterController extends BaseController{
     @FXML
     public void initialize() throws IOException {
         insulationThicknessComboBox.getItems().removeAll();
-        insulationThicknessComboBox.getItems().addAll("سانتی متر (cm)", "اینچ (inch)");
-        insulationThicknessComboBox.getSelectionModel().select("سانتی متر (cm)");
+        insulationThicknessComboBox.getItems().addAll(PipeSpecificationsEntity.CENTIMETER, PipeSpecificationsEntity.INCH);
+        insulationThicknessComboBox.getSelectionModel().select(PipeSpecificationsEntity.CENTIMETER);
 //        insulationThicknessComboBox.getItems().removeAll(wallThicknessComboBox.getItems());
 //        insulationThicknessComboBox.getItems().addAll("سانتی متر (cm)", "اینچ (inch)");
 //        insulationThicknessComboBox.getSelectionModel().select("سانتی متر (cm)");
@@ -182,6 +191,10 @@ public class BeforeHeaterController extends BaseController{
         });
 
 
+        CityGateStationEntity cityGateStationEntity = stageManager.getCityGateStationEntity();
+        if(cityGateStationEntity!= null){
+            setOnShow();
+        }
 
 
 
@@ -189,33 +202,63 @@ public class BeforeHeaterController extends BaseController{
     @Override
     public void setOnShow() {
         PipeLine beforeHeater = (PipeLine) Station.getInstance().getList().get("beforeHeaterPipeLine");
-        if(beforeHeater != null){
-            lineLengthTextField.setText(String.valueOf(beforeHeater.getLength()));
-            mmOrInchComboBox.getSelectionModel().select(beforeHeater.getSize());
-            insulationRadioButton.setSelected(beforeHeater.isInsulation());
-            if(beforeHeater.isInsulation()){
-                insulationThicknessLabel.setDisable(false);
-                insulationThicknessTextField.setDisable(false);
-                insulationThicknessComboBox.setDisable(false);
-                insulationThicknessTextField.setDisable(false);
-                insulationFactorLabel.setDisable(false);
-                insulationFactorTextField.setDisable(false);
-                insulationFactorDimensionLabel.setDisable(false);
-                insulationFactorTextField.setText(String.valueOf(beforeHeater.getInsulationFactor()));
-                insulationThicknessTextField.setText(String.valueOf(beforeHeater.getInsulationThickness() * 100));
-                insulationThicknessComboBox.getSelectionModel().select("سانتی متر (cm)");
+        CityGateStationEntity cityGateStationEntity = stageManager.getCityGateStationEntity();
 
-            }else{
-                insulationThicknessLabel.setDisable(true);
-                insulationThicknessTextField.setDisable(true);
-                insulationThicknessComboBox.setDisable(true);
-                insulationThicknessTextField.setDisable(true);
-                insulationThicknessTextField.clear();
-                insulationFactorLabel.setDisable(true);
-                insulationFactorTextField.setDisable(true);
-                insulationFactorDimensionLabel.setDisable(true);
-                insulationFactorTextField.clear();
+        if(cityGateStationEntity != null){
+            if(cityGateStationEntity.getBeforeHeater() != null){
+                lineLengthTextField.setText(String.valueOf(cityGateStationEntity.getBeforeHeater().getLength()));
+                mmOrInchComboBox.getSelectionModel().select(cityGateStationEntity.getBeforeHeater().getPipeSizeUnit());
+                insulationRadioButton.setSelected(cityGateStationEntity.getBeforeHeater().isInsulation());
+                if(cityGateStationEntity.getBeforeHeater().isInsulation()){
+                    insulationThicknessLabel.setDisable(false);
+                    insulationThicknessTextField.setDisable(false);
+                    insulationThicknessComboBox.setDisable(false);
+                    insulationThicknessTextField.setDisable(false);
+                    insulationFactorLabel.setDisable(false);
+                    insulationFactorTextField.setDisable(false);
+                    insulationFactorDimensionLabel.setDisable(false);
+                    insulationFactorTextField.setText(String.valueOf(cityGateStationEntity.getBeforeHeater().getInsulationFactor()));
+                    insulationThicknessTextField.setText(String.valueOf(cityGateStationEntity.getBeforeHeater().getInsulationThickness()));
+                    insulationThicknessComboBox.getSelectionModel().select(cityGateStationEntity.getBeforeHeater().getInsulationThicknessUnit());
+
+                }else{
+                    insulationThicknessLabel.setDisable(true);
+                    insulationThicknessTextField.setDisable(true);
+                    insulationThicknessComboBox.setDisable(true);
+                    insulationThicknessTextField.setDisable(true);
+                    insulationThicknessTextField.clear();
+                    insulationFactorLabel.setDisable(true);
+                    insulationFactorTextField.setDisable(true);
+                    insulationFactorDimensionLabel.setDisable(true);
+                    insulationFactorTextField.clear();
+                }
             }
+//            lineLengthTextField.setText(String.valueOf(beforeHeater.getLength()));
+//            mmOrInchComboBox.getSelectionModel().select(beforeHeater.getSize());
+//            insulationRadioButton.setSelected(beforeHeater.isInsulation());
+//            if(beforeHeater.isInsulation()){
+//                insulationThicknessLabel.setDisable(false);
+//                insulationThicknessTextField.setDisable(false);
+//                insulationThicknessComboBox.setDisable(false);
+//                insulationThicknessTextField.setDisable(false);
+//                insulationFactorLabel.setDisable(false);
+//                insulationFactorTextField.setDisable(false);
+//                insulationFactorDimensionLabel.setDisable(false);
+//                insulationFactorTextField.setText(String.valueOf(beforeHeater.getInsulationFactor()));
+//                insulationThicknessTextField.setText(String.valueOf(beforeHeater.getInsulationThickness() * 100));
+//                insulationThicknessComboBox.getSelectionModel().select("سانتی متر (cm)");
+//
+//            }else{
+//                insulationThicknessLabel.setDisable(true);
+//                insulationThicknessTextField.setDisable(true);
+//                insulationThicknessComboBox.setDisable(true);
+//                insulationThicknessTextField.setDisable(true);
+//                insulationThicknessTextField.clear();
+//                insulationFactorLabel.setDisable(true);
+//                insulationFactorTextField.setDisable(true);
+//                insulationFactorDimensionLabel.setDisable(true);
+//                insulationFactorTextField.clear();
+//            }
 
 
 
@@ -229,6 +272,14 @@ public class BeforeHeaterController extends BaseController{
     }
 
     public void okAction(ActionEvent actionEvent) {
+        CityGateStationEntity cityGateStationEntity = stageManager.getCityGateStationEntity();
+        if(cityGateStationEntity == null){
+            cityGateStationEntity = new CityGateStationEntity();
+        }
+        PipeSpecificationsEntity pipeSpecificationsEntity = cityGateStationEntity.getBeforeHeater();
+        if(pipeSpecificationsEntity==null){
+            pipeSpecificationsEntity = new PipeSpecificationsEntity();
+        }
         double insulationThickness = 0;
         double insulationFactor = 0;
         double pipelineLength = 0;
@@ -245,12 +296,18 @@ public class BeforeHeaterController extends BaseController{
         double outerDiameter = pipesize.getOuterDiameter();
         double wallthickness = pipesize.getWallThickness();
         if (insulationRadioButton.isSelected()) {
-            if(!insulationThicknessTextField.getAlignment().equals("")) {
+            if(!insulationThicknessTextField.getText().equals("")) {
                 double factor = 0.01;
-                if(insulationThicknessComboBox.getValue().toString().equals("سانتی متر (cm)"))
+                if(insulationThicknessComboBox.getValue().toString().equals("سانتی متر (cm)")) {
                     factor = 0.01;
-                else if(insulationThicknessComboBox.getValue().toString().equals("اینچ (inch)"))
+                    pipeSpecificationsEntity.setInsulationThickness(Double.parseDouble(insulationThicknessTextField.getText()));
+                    pipeSpecificationsEntity.setInsulationThicknessUnit(PipeSpecificationsEntity.CENTIMETER);
+                }
+                else if(insulationThicknessComboBox.getValue().toString().equals("اینچ (inch)")) {
                     factor = 0.0254;
+                    pipeSpecificationsEntity.setInsulationThickness(Double.parseDouble(insulationThicknessTextField.getText()));
+                    pipeSpecificationsEntity.setInsulationThicknessUnit(PipeSpecificationsEntity.INCH);
+                }
                 insulationThickness = factor * Double.parseDouble(insulationThicknessTextField.getText());
                 System.out.println(insulationThickness);
             }
@@ -274,10 +331,35 @@ public class BeforeHeaterController extends BaseController{
         }
         
 //        PipeLine pipeLine = new PipeLine(outerDiameter, pipesize.getInnerDiameter(), wallthickness, insulationThickness, insulationFactor);
+
+
         PipeLine pipeLine = new PipeLine(mmOrInchComboBox.getValue().toString() , pipelineLength);
         pipeLine.setInsulationFactor(insulationFactor);
         pipeLine.setInsulationThickness(insulationThickness);
         pipeLine.setInsulation(insulationRadioButton.isSelected());
+
+        pipeSpecificationsEntity.setPipeSizeUnit(mmOrInchComboBox.getValue().toString());
+        pipeSpecificationsEntity.setLength(pipelineLength);
+        pipeSpecificationsEntity.setInsulationFactor(insulationFactor);
+        if(insulationRadioButton.isSelected()){
+            pipeSpecificationsEntity.setInsulation(insulationRadioButton.isSelected());
+        }
+        else{
+            pipeSpecificationsEntity.setInsulation(insulationRadioButton.isSelected());
+            pipeSpecificationsEntity.setInsulationThicknessUnit(null);
+            pipeSpecificationsEntity.setInsulationThickness(null);
+            pipeSpecificationsEntity.setInsulationFactor(null);
+        }
+
+
+
+        pipeSpecificationsEntity = pipeSpecificationService.save(pipeSpecificationsEntity);
+        cityGateStationEntity.setBeforeHeater(pipeSpecificationsEntity);
+        cityGateStationEntity = cityGateStationService.save(cityGateStationEntity);
+        stageManager.setCityGateStationEntity(cityGateStationEntity);
+
+
+
 
         Map<String, BaseModel> map = Station.getInstance().getList();
         map.put("beforeHeaterPipeLine", pipeLine);
