@@ -417,8 +417,9 @@ public class StationController extends BaseController implements Initializable {
         saveMenu(actionEvent);
     }
 
-
-
+    public void stationSelect(ActionEvent actionEvent) {
+        stageManager.switchScene(FxmlView.STATION_SELECT);
+    }
 }
 
 

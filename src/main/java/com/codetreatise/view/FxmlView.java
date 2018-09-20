@@ -105,6 +105,16 @@ public enum FxmlView {
             return "/fxml/ShowResult.fxml";
         }
 
+    }, STATION_SELECT {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("stationSelect.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/StationSelect.fxml";
+        }
     };
 
 
