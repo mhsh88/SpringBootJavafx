@@ -2,10 +2,11 @@ package com.codetreatise.bean.station;
 
 
 import com.codetreatise.bean.base.BaseEntity;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.*;
 
+import javax.persistence.Entity;
 import javax.persistence.*;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -65,11 +66,13 @@ public class CityGateStationEntity extends BaseEntity {
     @JoinColumn(name = "gas_id")
     private GasEntity gasEntity;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER,orphanRemoval = true)
+    @Cascade(value = { org.hibernate.annotations.CascadeType.DELETE, org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     @JoinColumn(name = "condition_id")
+    @Fetch(FetchMode.SELECT)
     private ConditionEntity condition;
 
-    @OneToMany(cascade = {CascadeType.PERSIST})
+    @OneToMany/*(cascade = {CascadeType.PERSIST, CascadeType.ALL})*/
     @JoinColumn(name = "station_id")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<SecEntity> sec;

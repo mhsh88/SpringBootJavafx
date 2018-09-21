@@ -7,33 +7,75 @@ import com.codetreatise.bean.unitNumber.Temperature;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Entity
 @Table(name = "conditions")
-public class ConditionEntity extends BaseEntity  {
+public class ConditionEntity extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "env_tempreture_id")
     private Temperature envTemperature;
     private Double windSpeed;
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "debi_input_id")
     private Debi debiInput;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "input_tempeature_id")
     private Temperature inputTemperature;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "input_pressure_id")
     private Pressure inputPressure;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "output_tempeature_id")
     private Temperature outputTemperature;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "output_pressure_id")
     private Pressure outputPressure;
 
+//    @OneToOne(mappedBy = "condition",
+//            fetch = FetchType.LAZY, optional = true)
+//    @Cascade(value = { org.hibernate.annotations.CascadeType.DELETE, org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+//    private CityGateStationEntity station;
+    @OneToOne(mappedBy = "condition", cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER, optional = true)
+    private ResultEntity result;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private SecEntity sec;
+    //    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDate time;
+
+
+    @Transient
+    public String getOutputPressureWithUnit() {
+        return outputPressure.getPressure() + " " + outputPressure.getUnit();
+    }
+
+    @Transient
+    public String getOutputTempWithUnit() {
+        return outputTemperature.getTemperature() + " " + outputTemperature.getUnit();
+    }
+
+    @Transient
+    public String getInputPressureWithUnit() {
+        return inputPressure.getPressure() + " " + inputPressure.getUnit();
+    }
+
+    @Transient
+    public String getInputTempWithUnit() {
+        return inputTemperature.getTemperature() + " " + inputTemperature.getUnit();
+    }
+
+    @Transient
+    public String getDebiWithUnit() {
+        return debiInput.getDebi() + " " + debiInput.getUnit();
+    }
+
+    @Transient
+    public String getEnvTempWithUnit() {
+        return envTemperature.getTemperature() + " " + envTemperature.getUnit();
+    }
 
     public Temperature getEnvTemperature() {
         return envTemperature;
@@ -42,7 +84,6 @@ public class ConditionEntity extends BaseEntity  {
     public void setEnvTemperature(Temperature envTemperature) {
         this.envTemperature = envTemperature;
     }
-
 
     public Temperature getInputTemperature() {
         return inputTemperature;
@@ -60,7 +101,6 @@ public class ConditionEntity extends BaseEntity  {
         this.outputTemperature = outputTemperature;
     }
 
-
     public Pressure getInputPressure() {
         return inputPressure;
     }
@@ -68,7 +108,6 @@ public class ConditionEntity extends BaseEntity  {
     public void setInputPressure(Pressure inputPressure) {
         this.inputPressure = inputPressure;
     }
-
 
     public Pressure getOutputPressure() {
         return outputPressure;
@@ -78,7 +117,6 @@ public class ConditionEntity extends BaseEntity  {
         this.outputPressure = outputPressure;
     }
 
-
     public Debi getDebiInput() {
         return debiInput;
     }
@@ -87,23 +125,6 @@ public class ConditionEntity extends BaseEntity  {
         this.debiInput = debiInput;
     }
 
-    private Double envTempreture;
-    private Double stationDebi;
-    private Double stationInputTemprature;
-    private Double stationInputPressure;
-    private Double stationOutputTemprature;
-    private Double stationOutputPressure;
-
-
-    @Basic
-    @Column(name = "env_tempreture")
-    public Double getEnvTempreture() {
-        return envTempreture;
-    }
-
-    public void setEnvTempreture(Double envTempreture) {
-        this.envTempreture = envTempreture;
-    }
 
     @Basic
     @Column(name = "wind_speed")
@@ -115,66 +136,13 @@ public class ConditionEntity extends BaseEntity  {
         this.windSpeed = windSpeed;
     }
 
-    @Basic
-    @Column(name = "station_debi")
-    public Double getStationDebi() {
-        return stationDebi;
-    }
 
-    public void setStationDebi(Double stationDebi) {
-        this.stationDebi = stationDebi;
-    }
 
-    @Basic
-    @Column(name = "station_input_temprature")
-    public Double getStationInputTemprature() {
-        return stationInputTemprature;
-    }
 
-    public void setStationInputTemprature(Double stationInputTemprature) {
-        this.stationInputTemprature = stationInputTemprature;
-    }
 
-    @Basic
-    @Column(name = "station_input_pressure")
-    public Double getStationInputPressure() {
-        return stationInputPressure;
-    }
 
-    public void setStationInputPressure(Double stationInputPressure) {
-        this.stationInputPressure = stationInputPressure;
-    }
 
-    @Basic
-    @Column(name = "station_output_temprature")
-    public Double getStationOutputTemprature() {
-        return stationOutputTemprature;
-    }
 
-    public void setStationOutputTemprature(Double stationOutputTemprature) {
-        this.stationOutputTemprature = stationOutputTemprature;
-    }
-
-    @Basic
-    @Column(name = "station_output_pressure")
-    public Double getStationOutputPressure() {
-        return stationOutputPressure;
-    }
-
-    @OneToOne(mappedBy = "condition", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY, optional = true)
-    private CityGateStationEntity station;
-
-    @OneToOne(mappedBy = "condition", cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER, optional = true)
-    private ResultEntity result;
-
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="sec_id")
-    private SecEntity sec;
-
-//    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDate time;
 
     public SecEntity getSec() {
         return sec;
@@ -200,36 +168,13 @@ public class ConditionEntity extends BaseEntity  {
         this.result = result;
     }
 
-    public CityGateStationEntity getStation() {
-        return station;
-    }
+//    public CityGateStationEntity getStation() {
+//        return station;
+//    }
+//
+//    public void setStation(CityGateStationEntity station) {
+//        this.station = station;
+//    }
 
-    public void setStation(CityGateStationEntity station) {
-        this.station = station;
-    }
 
-    public void setStationOutputPressure(Double stationOutputPressure) {
-        this.stationOutputPressure = stationOutputPressure;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ConditionEntity that = (ConditionEntity) o;
-        return id == that.id &&
-                Objects.equals(envTempreture, that.envTempreture) &&
-                Objects.equals(windSpeed, that.windSpeed) &&
-                Objects.equals(stationDebi, that.stationDebi) &&
-                Objects.equals(stationInputTemprature, that.stationInputTemprature) &&
-                Objects.equals(stationInputPressure, that.stationInputPressure) &&
-                Objects.equals(stationOutputTemprature, that.stationOutputTemprature) &&
-                Objects.equals(stationOutputPressure, that.stationOutputPressure);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(id, envTempreture, windSpeed, stationDebi, stationInputTemprature, stationInputPressure, stationOutputTemprature, stationOutputPressure);
-    }
 }

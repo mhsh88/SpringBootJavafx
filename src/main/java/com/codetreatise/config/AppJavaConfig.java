@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
+import sample.util.excel.ExcelPOIHelper;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -43,6 +44,11 @@ public class AppJavaConfig {
     @Lazy(value = true) //Stage only created after Spring context bootstap
     public StageManager stageManager(Stage stage) throws IOException {
         return new StageManager(springFXMLLoader, stage);
+    }
+
+    @Bean
+    public ExcelPOIHelper excelPOIHelper(){
+        return new ExcelPOIHelper();
     }
 
 }

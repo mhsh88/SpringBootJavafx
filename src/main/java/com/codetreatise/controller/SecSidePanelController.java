@@ -1,38 +1,51 @@
 package com.codetreatise.controller;
 
 import com.codetreatise.bean.station.CityGateStationEntity;
+import com.codetreatise.bean.station.ConditionEntity;
 import com.codetreatise.bean.station.SecEntity;
+import com.codetreatise.bean.unitNumber.Debi;
+import com.codetreatise.bean.unitNumber.Pressure;
+import com.codetreatise.bean.unitNumber.Temperature;
 import com.codetreatise.config.StageManager;
 import com.codetreatise.service.CityGateStationService;
+import com.codetreatise.service.ConditionService;
 import com.codetreatise.service.SecService;
 import com.jfoenix.controls.JFXButton;
+import ir.huri.jcal.JalaliCalendar;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import sample.util.FileLocation;
+import sample.util.excel.ExcelPOIHelper;
+import sample.util.excel.MyCell;
 
+import javax.management.BadAttributeValueExpException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.time.Instant;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.time.ZoneId;
+import java.util.*;
 
 @Controller
 public class SecSidePanelController implements Initializable {
 
+    public TableColumn colSelect;
     private SecEntity secEntity;
     private String chooseFileName;
     private String chooseFileLocation;
@@ -45,6 +58,12 @@ public class SecSidePanelController implements Initializable {
 
     @Autowired
     CityGateStationService cityGateStationService;
+
+    @Autowired
+    SecController secController;
+
+    @Autowired
+    ConditionService conditionService;
 
     @FXML
     private Button save;
@@ -69,6 +88,50 @@ public class SecSidePanelController implements Initializable {
 
     private ObservableList<SecEntity> secList = FXCollections.observableArrayList();
 
+    Callback<TableColumn<SecEntity, Boolean>, TableCell<SecEntity, Boolean>> cellFactory =
+            new Callback<TableColumn<SecEntity, Boolean>, TableCell<SecEntity, Boolean>>() {
+                @Override
+                public TableCell<SecEntity, Boolean> call(final TableColumn<SecEntity, Boolean> param) {
+                    final TableCell<SecEntity, Boolean> cell = new TableCell<SecEntity, Boolean>() {
+                        final Button btnEdit = new Button();
+                        Image imgEdit = new Image(getClass().getResourceAsStream("/images/point-at.png"));
+
+                        @Override
+                        public void updateItem(Boolean check, boolean empty) {
+                            super.updateItem(check, empty);
+                            if (empty) {
+                                setGraphic(null);
+                                setText(null);
+                            } else {
+                                btnEdit.setOnAction(e -> {
+                                    SecEntity secEntity = getTableView().getItems().get(getIndex());
+                                    secController.setSecEntity(secEntity);
+                                    secController.drawer.close();
+                                    secController.initialize(null, null);
+
+                                });
+
+                                btnEdit.setStyle("-fx-background-color: transparent;");
+                                ImageView iv = new ImageView();
+                                iv.setImage(imgEdit);
+                                iv.setPreserveRatio(true);
+                                iv.setSmooth(true);
+                                iv.setCache(true);
+                                btnEdit.setGraphic(iv);
+
+                                setGraphic(btnEdit);
+                                setAlignment(Pos.CENTER);
+                                setText(null);
+                            }
+                        }
+
+                    };
+                    return cell;
+                }
+            };
+    @Autowired
+    private ExcelPOIHelper excelPOIHelper;
+
     public SecEntity getSecEntity() {
         return secEntity;
     }
@@ -76,6 +139,7 @@ public class SecSidePanelController implements Initializable {
     public void setSecEntity(SecEntity secEntity) {
         this.secEntity = secEntity;
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -182,7 +246,8 @@ public class SecSidePanelController implements Initializable {
                 secEntity.setTime(getDate()==null? LocalDate.now() : getDate());
             }
             else if(chooseFileName != null){
-                if(validateExcelFile(chooseFileLocation)) {
+                List<ConditionEntity> list = validateExcelFile(chooseFileLocation);
+                if(list!=null) {
                     SecEntity fileSecEntity = new SecEntity();
                     fileSecEntity.setExcelFile(getExcelFile());
 
@@ -190,7 +255,8 @@ public class SecSidePanelController implements Initializable {
                     fileSecEntity.setName(name.getText());
                     fileSecEntity.setFileLocation(chooseFileLocation);
                     fileSecEntity.setFileName(chooseFileName);
-
+                    list = conditionService.save(list);
+                    fileSecEntity.setConditions(list);
                     secEntity = fileSecEntity;
                 }
 
@@ -236,8 +302,62 @@ public class SecSidePanelController implements Initializable {
         return new byte[0];
     }
 
-    private boolean validateExcelFile(String chooseFileLocation) {
-        return true;
+    private List<ConditionEntity> validateExcelFile(String chooseFileLocation) {
+        List<ConditionEntity> conditionEntities = null;
+        try {
+            Map<Integer, List<MyCell>> data
+                    = excelPOIHelper.readExcel(chooseFileLocation);
+            return conditionEntities = checkExcelData(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return conditionEntities;
+    }
+
+    private List<ConditionEntity> checkExcelData(Map<Integer, List<MyCell>> data) {
+
+        List<ConditionEntity> conditionEntities = new ArrayList<>();
+            for(int i : data.keySet()) {
+                try {
+                    List<MyCell> list = data.get(i);
+                    ConditionEntity conditionEntity = new ConditionEntity();
+                    conditionEntity.setEnvTemperature(new Temperature(Double.parseDouble(list.get(0).getContent()), Temperature.CELSIUS));
+                    conditionEntity.setWindSpeed(Double.parseDouble(list.get(1).getContent()));
+                    conditionEntity.setDebiInput(new Debi(Double.parseDouble(list.get(2).getContent()), Debi.M3));
+                    conditionEntity.setInputTemperature(new Temperature(Double.parseDouble(list.get(3).getContent()), Temperature.CELSIUS));
+                    conditionEntity.setInputPressure(new Pressure(Double.parseDouble(list.get(4).getContent()), Pressure.PSI_GAUGE));
+                    conditionEntity.setOutputTemperature(new Temperature(Double.parseDouble(list.get(5).getContent()), Temperature.CELSIUS));
+                    conditionEntity.setOutputPressure(new Pressure(Double.parseDouble(list.get(6).getContent()), Pressure.PSI_GAUGE));
+                    LocalDate localDate = getLocaleDate(list.get(7).getContent());
+                    conditionEntity.setTime(localDate);
+                    conditionEntities.add(conditionEntity);
+
+
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                }
+            }
+            return conditionEntities;
+    }
+
+    private LocalDate getLocaleDate(String content) throws BadAttributeValueExpException {
+        try {
+            if (content != null) {
+                String[] timeString = content.split("/");
+                JalaliCalendar jalaliCalendar = new JalaliCalendar(Integer.parseInt(timeString[0]), Integer.parseInt(timeString[1]), Integer.parseInt(timeString[2]));
+                return getLocalDateFromDate(jalaliCalendar.toGregorian().getTime());
+            }
+        }
+        catch (Exception e){
+            return null;
+        }
+        return null;
+    }
+    public static LocalDate getLocalDateFromDate(Date date){
+        return LocalDate.from(Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()));
     }
 
     public LocalDate getDate() {
@@ -253,6 +373,7 @@ public class SecSidePanelController implements Initializable {
         colSecName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colDate.setCellValueFactory(new PropertyValueFactory<>("time"));
         colFile.setCellValueFactory(new PropertyValueFactory<>("fileName"));
+        colSelect.setCellFactory(cellFactory);
 //        colEdit.setCellFactory(conditionCellFactory);
     }
 

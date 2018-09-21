@@ -1,15 +1,19 @@
 package com.codetreatise.controller;
 
-import com.codetreatise.bean.User;
-import com.codetreatise.bean.station.SecEntity;
 import com.codetreatise.bean.station.ConditionEntity;
+import com.codetreatise.bean.station.SecEntity;
+import com.codetreatise.bean.unitNumber.Debi;
+import com.codetreatise.bean.unitNumber.Pressure;
+import com.codetreatise.bean.unitNumber.Temperature;
 import com.codetreatise.config.SpringFXMLLoader;
 import com.codetreatise.config.StageManager;
 import com.codetreatise.service.ConditionService;
+import com.codetreatise.service.SecService;
 import com.codetreatise.service.UserService;
 import com.codetreatise.view.FxmlView;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -24,6 +28,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -37,6 +42,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -52,87 +58,54 @@ import java.util.regex.Pattern;
 @Controller
 public class SecController implements Initializable {
 
+    public Button calculationBtn;
+    private SecEntity secEntity;
+
+    public SecEntity getSecEntity() {
+        return secEntity;
+    }
+
+    public void setSecEntity(SecEntity secEntity) {
+        this.secEntity = secEntity;
+    }
+
+    public ComboBox envTempCombo;
+    public TextField envTemp;
+    public JFXTextField gasOutputPressure;
+    public ComboBox gasOutputPressureCombo;
+    public JFXTextField gasOutputTemp;
+    public ComboBox gasOutputTempCombo;
+    public JFXTextField gasInputPressure;
+    public ComboBox gasInputPressureCombo;
+    public JFXTextField gasInputTemp;
+    public ComboBox gasInputTempCombo;
+    public JFXTextField counter;
+    public JFXTextField windSpeed;
+
+    public TableColumn<ConditionEntity, String> colOutputPressure;
+    public TableColumn<ConditionEntity, String> colOutputTemp;
+    public TableColumn<ConditionEntity, String> colInputPressure;
+    public TableColumn<ConditionEntity, String> colInputTemp;
+    public TableColumn<ConditionEntity, String> colDebi;
+    public TableColumn<ConditionEntity, String> colWindSpeed;
+    public TableColumn<ConditionEntity, String> colEnvTemp;
+    public TableColumn<ConditionEntity, LocalDate> colDate;
+    public MenuItem updateCondition;
     @Lazy
     @Autowired
     StageManager stageManager;
+    @Autowired
+    SecService secService;
     @FXML
     public Button chooseFileBtn;
-    @FXML
-    public TableView<SecEntity> secTable;
-    @FXML
-    public TableColumn<SecEntity, String> colFile;
-    @FXML
-    public TableColumn<SecEntity, LocalDate> colDate;
-    @FXML
-    public TableColumn<SecEntity, String> colSecName;
-    @FXML
-    public TableColumn<SecEntity, Boolean> colSecEdit;
     @FXML
     public JFXDrawer drawer;
     @FXML
     public JFXHamburger hamburger;
 
-
-    @FXML
-    private Button btnLogout;
-
-    @FXML
-    private Label userId;
-
-    @FXML
-    private TextField firstName;
-
-    @FXML
-    private TextField name;
-
     @FXML
     private DatePicker time;
 
-
-    Callback<TableColumn<SecEntity, Boolean>, TableCell<SecEntity, Boolean>> secCellFactory =
-            new Callback<TableColumn<SecEntity, Boolean>, TableCell<SecEntity, Boolean>>() {
-                @Override
-                public TableCell<SecEntity, Boolean> call(final TableColumn<SecEntity, Boolean> param) {
-                    final TableCell<SecEntity, Boolean> cell = new TableCell<SecEntity, Boolean>() {
-                        final Button btnEdit = new Button();
-                        Image imgEdit = new Image(getClass().getResourceAsStream("/images/edit.png"));
-
-                        @Override
-                        public void updateItem(Boolean check, boolean empty) {
-                            super.updateItem(check, empty);
-                            if (empty) {
-                                setGraphic(null);
-                                setText(null);
-                            } else {
-                                btnEdit.setOnAction(e -> {
-                                    SecEntity SecEntity = getTableView().getItems().get(getIndex());
-//                                    updateUser(user);
-                                });
-
-                                btnEdit.setStyle("-fx-background-color: transparent;");
-                                ImageView iv = new ImageView();
-                                iv.setImage(imgEdit);
-                                iv.setPreserveRatio(true);
-                                iv.setSmooth(true);
-                                iv.setCache(true);
-                                btnEdit.setGraphic(iv);
-
-                                setGraphic(btnEdit);
-                                setAlignment(Pos.CENTER);
-                                setText(null);
-                            }
-                        }
-
-                        private void updateUser(User user) {
-                            userId.setText(Long.toString(user.getId()));
-                            firstName.setText(user.getFirstName());
-                            name.setText(user.getLastName());
-                            time.setValue(user.getDob());
-                        }
-                    };
-                    return cell;
-                }
-            };
 
     Callback<TableColumn<ConditionEntity, Boolean>, TableCell<ConditionEntity, Boolean>> conditionCellFactory =
             new Callback<TableColumn<ConditionEntity, Boolean>, TableCell<ConditionEntity, Boolean>>() {
@@ -140,7 +113,7 @@ public class SecController implements Initializable {
                 public TableCell<ConditionEntity, Boolean> call(final TableColumn<ConditionEntity, Boolean> param) {
                     final TableCell<ConditionEntity, Boolean> cell = new TableCell<ConditionEntity, Boolean>() {
                         final Button btnEdit = new Button();
-                        Image imgEdit = new Image(getClass().getResourceAsStream("/images/edit.png"));
+                        Image imgEdit = new Image(getClass().getResourceAsStream("/images/pencil-edit-button.png"));
 
                         @Override
                         public void updateItem(Boolean check, boolean empty) {
@@ -151,7 +124,9 @@ public class SecController implements Initializable {
                             } else {
                                 btnEdit.setOnAction(e -> {
                                     ConditionEntity conditionEntity = getTableView().getItems().get(getIndex());
-//                                    updateUser(user);
+
+                                    updateCondition(conditionEntity);
+//                                    u(user);
                                 });
 
                                 btnEdit.setStyle("-fx-background-color: transparent;");
@@ -168,12 +143,22 @@ public class SecController implements Initializable {
                             }
                         }
 
-                        private void updateUser(User user) {
-                            userId.setText(Long.toString(user.getId()));
-                            firstName.setText(user.getFirstName());
-                            name.setText(user.getLastName());
-                            time.setValue(user.getDob());
-                        }
+                        private void updateCondition(ConditionEntity conditionEntity) {
+                            conditionId = conditionEntity.getId();
+                            envTempCombo.getSelectionModel().select(conditionEntity.getEnvTemperature().getUnit());
+                            gasInputTempCombo.getSelectionModel().select(conditionEntity.getInputTemperature().getUnit());
+                            gasInputPressureCombo.getSelectionModel().select(conditionEntity.getInputPressure().getUnit());
+                            gasOutputTempCombo.getSelectionModel().select(conditionEntity.getOutputTemperature().getUnit());
+                            gasOutputPressureCombo.getSelectionModel().select(conditionEntity.getOutputPressure().getUnit());
+                            envTemp.setText(String.valueOf(conditionEntity.getEnvTemperature().getTemperature()));
+                            windSpeed.setText(String.valueOf(conditionEntity.getWindSpeed()));
+                            counter.setText(String.valueOf(conditionEntity.getDebiInput().getDebi()));
+                            gasOutputPressure.setText(String.valueOf(conditionEntity.getOutputPressure().getPressure()));
+                            gasInputTemp.setText(String.valueOf(conditionEntity.getInputTemperature().getTemperature()));
+                            gasInputPressure.setText(String.valueOf(conditionEntity.getInputPressure().getPressure()));
+                            gasOutputTemp.setText(String.valueOf(conditionEntity.getOutputTemperature().getTemperature()));
+                            time.setValue(conditionEntity.getTime());
+                            }
                     };
                     return cell;
                 }
@@ -185,33 +170,20 @@ public class SecController implements Initializable {
     @FXML
     private Button reset;
     @FXML
-    private Button saveUser;
+    private Button saveCondition;
     @FXML
     private TableView<ConditionEntity> conditionTable;
     @FXML
-    private TableColumn<ConditionEntity, Long> colUserId;
-    @FXML
-    private TableColumn<ConditionEntity, String> colFirstName;
-    @FXML
-    private TableColumn<ConditionEntity, String> colLastName;
-    @FXML
-    private TableColumn<ConditionEntity, LocalDate> colDOB;
-    @FXML
-    private TableColumn<ConditionEntity, String> colGender;
-    @FXML
-    private TableColumn<ConditionEntity, String> colRole;
-    @FXML
-    private TableColumn<ConditionEntity, String> colEmail;
-    @FXML
     private TableColumn<ConditionEntity, Boolean> colEdit;
     @FXML
-    private MenuItem deleteUsers;
+    private MenuItem deleteConditions;
 
     @Autowired
     private UserService userService;
     @Autowired
     private ConditionService conditionService;
     private ObservableList<ConditionEntity> conditionList = FXCollections.observableArrayList();
+    private Long conditionId;
 
 
     @FXML
@@ -229,90 +201,168 @@ public class SecController implements Initializable {
 
     @FXML
     void reset(ActionEvent event) {
-        clearFields();
+
     }
 
     @FXML
-    private void saveUser(ActionEvent event) {
+    private void saveCondition(ActionEvent event) {
+        if(secEntity==null) {
+            showNullSec();
+            return;
+        }
+        if(secEntity.getExcelFile()!=null || secEntity.getFileLocation()!=null || secEntity.getFileName()!=null){
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("");
+            alert.setHeaderText(" دارای فایل اکسل است.");
+            alert.setContentText("امکان حذف یا اضافه و ویرایش وجود ندارد. ");
 
-        if (validate("First Name", getFirstName(), "[a-zA-Z]+") &&
-                validate("Last Name", getLastName(), "[a-zA-Z]+") &&
-                emptyValidation("DOB", time.getEditor().getText().isEmpty())) {
-
-            if (userId.getText() == null || userId.getText() == "") {
-                if (validate("Email", getEmail(), "[a-zA-Z0-9][a-zA-Z0-9._]*@[a-zA-Z0-9]+([.][a-zA-Z]+)+") &&
-                        emptyValidation("Password", getPassword().isEmpty())) {
-
-                    User user = new User();
-                    user.setFirstName(getFirstName());
-                    user.setLastName(getLastName());
-                    user.setDob(getDob());
-                    user.setEmail(getEmail());
-                    user.setPassword(getPassword());
-
-                    User newUser = userService.save(user);
-
-                    saveAlert(newUser);
-                }
-
-            } else {
-                User user = userService.find(Long.parseLong(userId.getText()));
-                user.setFirstName(getFirstName());
-                user.setLastName(getLastName());
-                user.setDob(getDob());
-                User updatedUser = userService.update(user);
-                updateAlert(updatedUser);
-            }
-
-            clearFields();
-            loadUserDetails();
+            alert.showAndWait();
+            return;
         }
 
 
+        ConditionEntity conditionEntity;
+        List<ConditionEntity> conditionEntities;
+        if(conditionId!=null) {
+            if (!envTemp.getText().equals("") && !counter.getText().equals("") &&
+                    !gasInputTemp.getText().equals("") && gasInputPressure.getText().equals("") &&
+                    !gasOutputPressure.getText().equals("") && !gasOutputTemp.getText().equals("")) {
+
+                conditionEntity = new ConditionEntity();
+                conditionEntity.setEnvTemperature(new Temperature(Double.parseDouble(envTemp.getText()), envTempCombo.getValue().toString()));
+                conditionEntity.setDebiInput(new Debi(Double.parseDouble(counter.getText()), Debi.M3));
+                conditionEntity.setInputTemperature(new Temperature(Double.parseDouble(gasInputTemp.getText()), gasInputTempCombo.getValue().toString()));
+                conditionEntity.setInputPressure(new Pressure(Double.parseDouble(gasInputTemp.getText()), gasInputPressureCombo.getValue().toString()));
+                conditionEntity.setOutputTemperature(new Temperature(Double.parseDouble(gasOutputTemp.getText()), gasOutputTempCombo.getValue().toString()));
+                conditionEntity.setOutputPressure(new Pressure(Double.parseDouble(gasOutputPressure.getText()), gasOutputPressureCombo.getValue().toString()));
+                conditionEntity.setWindSpeed(Double.parseDouble(windSpeed.getText().equals("")? "0.0": windSpeed.getText()));
+                conditionEntity.setTime(time.getValue());
+                conditionEntity = conditionService.save(conditionEntity);
+                conditionEntities = secEntity.getConditions();
+                conditionEntities.add(conditionEntity);
+                secEntity.setConditions(conditionEntities);
+                secService.save(secEntity);
+                secEntity = secService.find(secEntity.getId());
+
+
+
+
+                saveAlert(conditionEntity);
+
+
+            }
+            else {
+                conditionEntity = conditionService.find(conditionId);
+                conditionEntity.setEnvTemperature(new Temperature(Double.parseDouble(envTemp.getText()), envTempCombo.getValue().toString()));
+                conditionEntity.setDebiInput(new Debi(Double.parseDouble(counter.getText()), Debi.M3));
+                conditionEntity.setInputTemperature(new Temperature(Double.parseDouble(gasInputTemp.getText()), gasInputTempCombo.getValue().toString()));
+                conditionEntity.setInputPressure(new Pressure(Double.parseDouble(gasInputTemp.getText()), gasInputPressureCombo.getValue().toString()));
+                conditionEntity.setOutputTemperature(new Temperature(Double.parseDouble(gasOutputTemp.getText()), gasOutputTempCombo.getValue().toString()));
+                conditionEntity.setOutputPressure(new Pressure(Double.parseDouble(gasOutputPressure.getText()), gasOutputPressureCombo.getValue().toString()));
+                conditionEntity.setWindSpeed(Double.parseDouble(windSpeed.getText().equals("")? "0.0": windSpeed.getText()));
+                conditionEntity.setTime(time.getValue()==null?LocalDate.now(): time.getValue());
+                conditionEntity = conditionService.save(conditionEntity);
+                conditionEntities = secEntity.getConditions();
+                conditionEntities.add(conditionEntity);
+                secEntity.setConditions(conditionEntities);
+                secService.save(secEntity);
+                secEntity = secService.find(secEntity.getId());
+
+
+
+                updateAlert(conditionEntity);
+            }
+        }
+        else{
+
+            conditionEntity = new ConditionEntity();
+            conditionEntity.setEnvTemperature(new Temperature(Double.parseDouble(envTemp.getText()), envTempCombo.getValue().toString()));
+            conditionEntity.setDebiInput(new Debi(Double.parseDouble(counter.getText()), Debi.M3));
+            conditionEntity.setInputTemperature(new Temperature(Double.parseDouble(gasInputTemp.getText()), gasInputTempCombo.getValue().toString()));
+            conditionEntity.setInputPressure(new Pressure(Double.parseDouble(gasInputTemp.getText()), gasInputPressureCombo.getValue().toString()));
+            conditionEntity.setOutputTemperature(new Temperature(Double.parseDouble(gasOutputTemp.getText()), gasOutputTempCombo.getValue().toString()));
+            conditionEntity.setOutputPressure(new Pressure(Double.parseDouble(gasOutputPressure.getText()), gasOutputPressureCombo.getValue().toString()));
+            conditionEntity.setWindSpeed(Double.parseDouble(windSpeed.getText().equals("")? "0.0": windSpeed.getText()));
+            conditionEntity.setTime(time.getValue()==null? LocalDate.now():time.getValue());
+            conditionEntity = conditionService.save(conditionEntity);
+            conditionEntities = secEntity.getConditions();
+            conditionEntities.add(conditionEntity);
+            secEntity.setConditions(conditionEntities);
+            secService.save(secEntity);
+            secEntity = secService.find(secEntity.getId());
+
+
+
+            saveAlert(conditionEntity);
+        }
+
+            clearFields();
+            loadConditionDetails();
+
+
+
+
+
     }
 
     @FXML
-    private void deleteUsers(ActionEvent event) {
-//        List<User> users = conditionTable.getSelectionModel().getSelectedItems();
+    private void deleteCondition(ActionEvent event) {
+        if(secEntity!=null && (secEntity.getExcelFile()!=null || secEntity.getFileLocation()!=null || secEntity.getFileName()!=null)){
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("");
+            alert.setHeaderText(" دارای فایل اکسل است.");
+            alert.setContentText("امکان حذف یا اضافه و ویرایش وجود ندارد. ");
+
+            alert.showAndWait();
+            return;
+        }
+        List<ConditionEntity> conditionEntityList = conditionTable.getSelectionModel().getSelectedItems();
 
         Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation Dialog");
+        alert.setTitle("اطمینان از حذف");
         alert.setHeaderText(null);
-        alert.setContentText("Are you sure you want to delete selected?");
+        alert.setContentText("آیا اطمینان به حذف این موارد دارید؟");
         Optional<ButtonType> action = alert.showAndWait();
 
-//        if (action.get() == ButtonType.OK) userService.deleteInBatch(users);
+        if (action.get() == ButtonType.OK) conditionService.deleteInBatch(conditionEntityList);
 
-        loadUserDetails();
+        clearFields();
+        loadConditionDetails();
     }
 
     private void clearFields() {
-        userId.setText(null);
-        firstName.clear();
-        name.clear();
+        envTempCombo.getSelectionModel().select(Temperature.CELSIUS);
+        gasInputTempCombo.getSelectionModel().select(Temperature.CELSIUS);
+        gasInputPressureCombo.getSelectionModel().select(Pressure.PSI_GAUGE);
+        gasOutputTempCombo.getSelectionModel().select(Temperature.CELSIUS);
+        gasOutputPressureCombo.getSelectionModel().select(Pressure.PSI_GAUGE);
+
+        envTemp.clear();
+        windSpeed.clear();
+        counter.clear();
+        gasOutputPressure.clear();
+        gasInputTemp.clear();
+        gasInputPressure.clear();
+        gasOutputTemp.clear();
         time.getEditor().clear();
-//        rbMale.setSelected(true);
-//        rbFemale.setSelected(false);
-//        cbRole.getSelectionModel().clearSelection();
-        email.clear();
-        password.clear();
+        conditionId = null;
     }
 
-    private void saveAlert(User user) {
+    private void saveAlert(ConditionEntity condition) {
 
         Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("User saved successfully.");
+        alert.setTitle("عملیات موفق");
         alert.setHeaderText(null);
-        alert.setContentText("The user " + user.getFirstName() + " " + user.getLastName() + " has been created and \n" + getGenderTitle(user.getGender()) + " id is " + user.getId() + ".");
+        alert.setContentText("شرایط با موفقیت ثبت شد.");
         alert.showAndWait();
     }
 
-    private void updateAlert(User user) {
+    private void updateAlert(ConditionEntity user) {
 
         Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("User updated successfully.");
+        alert.setTitle("عملیات موفق");
         alert.setHeaderText(null);
-        alert.setContentText("The user " + user.getFirstName() + " " + user.getLastName() + " has been updated.");
+        alert.setContentText("شرایط با موفقیت به روز رسانی شد.");
         alert.showAndWait();
     }
 
@@ -320,13 +370,6 @@ public class SecController implements Initializable {
         return (gender.equals("Male")) ? "his" : "her";
     }
 
-    public String getFirstName() {
-        return firstName.getText();
-    }
-
-    public String getLastName() {
-        return name.getText();
-    }
 
     public LocalDate getDob() {
         return time.getValue();
@@ -361,7 +404,7 @@ public class SecController implements Initializable {
         transition.setRate(-1);
         hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
             transition.setRate(transition.getRate() * -1);
-            transition.play();
+//            transition.play();
 
             if (drawer.isOpened()) {
                 drawer.close();
@@ -369,69 +412,85 @@ public class SecController implements Initializable {
                 drawer.open();
             }
         });
+        drawer.setOnDrawerOpening(event ->
+        {
+            AnchorPane.setRightAnchor(drawer, 0.0);
+            AnchorPane.setLeftAnchor(drawer, 0.0);
+            AnchorPane.setTopAnchor(drawer, 0.0);
+            AnchorPane.setBottomAnchor(drawer, 0.0);
+        });
+
+        drawer.setOnDrawerClosed(event ->
+        {
+            AnchorPane.clearConstraints(drawer);
+
+            AnchorPane.setLeftAnchor(drawer, -306.0);
+            AnchorPane.setTopAnchor(drawer, 0.0);
+            AnchorPane.setBottomAnchor(drawer, 0.0);
+        });
+
+        envTempCombo.getItems().removeAll(envTempCombo.getItems());
+        envTempCombo.getItems().addAll(Temperature.CELSIUS, Temperature.FAHRENHEIT,Temperature.KELVIN, Temperature.RANKINE);
+        envTempCombo.getSelectionModel().select(Temperature.CELSIUS);
+
+        gasInputTempCombo.getItems().removeAll(gasInputTempCombo.getItems());
+        gasInputTempCombo.getItems().addAll(Temperature.CELSIUS, Temperature.FAHRENHEIT,Temperature.KELVIN, Temperature.RANKINE);
+        gasInputTempCombo.getSelectionModel().select(Temperature.CELSIUS);
+
+        gasInputPressureCombo.getItems().removeAll(gasInputPressureCombo.getItems());
+        gasInputPressureCombo.getItems().addAll(Pressure.KPA, Pressure.MPA, Pressure.PSI, Pressure.KPA_GAUGE, Pressure.MPA_GAUGE, Pressure.PSI_GAUGE);
+        gasInputPressureCombo.getSelectionModel().select(Pressure.PSI_GAUGE);
+
+        gasOutputTempCombo.getItems().removeAll(gasOutputTempCombo.getItems());
+        gasOutputTempCombo.getItems().addAll(Temperature.CELSIUS, Temperature.FAHRENHEIT,Temperature.KELVIN, Temperature.RANKINE);
+        gasOutputTempCombo.getSelectionModel().select(Temperature.CELSIUS);
+
+        gasOutputPressureCombo.getItems().removeAll(gasOutputPressureCombo.getItems());
+        gasOutputPressureCombo.getItems().addAll(Pressure.KPA, Pressure.MPA, Pressure.PSI, Pressure.KPA_GAUGE, Pressure.MPA_GAUGE, Pressure.PSI_GAUGE);
+        gasOutputPressureCombo.getSelectionModel().select(Pressure.PSI_GAUGE);
 
 
-        secTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        setSecColumn();
+
+
         conditionTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        clearFields();
 
         setColumnProperties();
 
         // Add all users into table
-        loadUserDetails();
+        loadConditionDetails();
     }
 
-    private void setSecColumn() {
 
-        colSecName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        colDate.setCellValueFactory(new PropertyValueFactory<>("time"));
-        colFile.setCellValueFactory(new PropertyValueFactory<>("excelFile"));
-//        colSecEdit.setCellFactory(secCellFactory);
-    }
 
     /*
      *  Set All conditionTable column properties
      */
     private void setColumnProperties() {
-		/* Override date format in table
-		 * colDOB.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<LocalDate>() {
-			 String pattern = "dd/MM/yyyy";
-			 DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
-		     @Override
-		     public String toString(LocalDate date) {
-		         if (date != null) {
-		             return dateFormatter.format(date);
-		         } else {
-		             return "";
-		         }
-		     }
 
-		     @Override
-		     public LocalDate fromString(String string) {
-		         if (string != null && !string.isEmpty()) {
-		             return LocalDate.parse(string, dateFormatter);
-		         } else {
-		             return null;
-		         }
-		     }
-		 }));*/
 
-        colUserId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        colLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        colDOB.setCellValueFactory(new PropertyValueFactory<>("dob"));
-        colGender.setCellValueFactory(new PropertyValueFactory<>("gender"));
-        colRole.setCellValueFactory(new PropertyValueFactory<>("role"));
-        colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        colOutputPressure.setCellValueFactory(new PropertyValueFactory<>("outputPressureWithUnit"));
+        colOutputTemp.setCellValueFactory(new PropertyValueFactory<>("outputTempWithUnit"));
+        colInputPressure.setCellValueFactory(new PropertyValueFactory<>("inputPressureWithUnit"));
+        colInputTemp.setCellValueFactory(new PropertyValueFactory<>("inputTempWithUnit"));
+        colDebi.setCellValueFactory(new PropertyValueFactory<>("debiWithUnit"));
+        colWindSpeed.setCellValueFactory(new PropertyValueFactory<>("windSpeed"));
+        colEnvTemp.setCellValueFactory(new PropertyValueFactory<>("envTempWithUnit"));
+        colDate.setCellValueFactory(new PropertyValueFactory<>("time"));
         colEdit.setCellFactory(conditionCellFactory);
     }
 
     /*
      *  Add All users to observable list and update table
      */
-    private void loadUserDetails() {
+    private void loadConditionDetails() {
         conditionList.clear();
-        conditionList.addAll(conditionService.findAll());
+        if(secEntity != null) {
+            if(secEntity.getId() !=null){
+                secEntity = secService.find(secEntity.getId());
+            }
+            conditionList.addAll(conditionService.findBySec(secEntity));
+        }
 
         conditionTable.setItems(conditionList);
     }
@@ -513,5 +572,29 @@ public class SecController implements Initializable {
             if (fileExtension.equals("cgs") || fileExtension.equals("CGS")) {
             }
         }
+    }
+
+    public void calculateSec(ActionEvent actionEvent) {
+        if(secEntity == null) {
+            showNullSec();
+            return;
+        }
+
+    }
+
+    private void showNullSec() {
+
+
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("انتخاب مصرف انرژی ویژه");
+            alert.setHeaderText(null);
+            alert.setContentText("مصرف انرژی ویژه (SEC) انتخاب نشده است. ابتدا باید مصرف انرژی ویژه (SEC) انتخاب شود.");
+
+            alert.showAndWait();
+
+            drawer.open();
+
+            return;
+
     }
 }

@@ -1,6 +1,8 @@
 package ir.behinehsazan.gasStation.model.base;
 
-public interface Base {
+import java.io.Serializable;
+
+public interface Base extends Serializable {
 
     void calculate();
 }

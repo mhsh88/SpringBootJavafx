@@ -455,10 +455,10 @@ public class ShowResultsController implements Initializable {
             Cell cell = row.createCell(4);
             cell.setCellValue("شرکت بهینه سازان صنعت تاسیسات");
             CellStyle style = wb.createCellStyle();
-            style.setAlignment(CellStyle.ALIGN_CENTER);
-            style.setVerticalAlignment(CellStyle.ALIGN_CENTER);
+//            style.setAlignment(CellStyle.ALIGN_CENTER);
+//            style.setVerticalAlignment(CellStyle.ALIGN_CENTER);
             org.apache.poi.ss.usermodel.Font font = wb.createFont();
-            font.setBoldweight(org.apache.poi.ss.usermodel.Font.BOLDWEIGHT_BOLD);
+//            font.setBoldweight(org.apache.poi.ss.usermodel.Font.BOLDWEIGHT_BOLD);
             font.setFontHeightInPoints((short) 18);
             style.setFont(font);
             cell.setCellStyle(style);

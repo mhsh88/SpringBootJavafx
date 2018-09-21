@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+
 <AnchorPane stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.controller.SecController">
     <children>
 
-        <BorderPane prefHeight="600.0" prefWidth="1000.0" >
+        <BorderPane prefHeight="600.0" prefWidth="1000.0">
             <right>
                 <VBox prefHeight="571.0" prefWidth="306.0" spacing="10.0" styleClass="background" stylesheets="@../styles/Styles.css" BorderPane.alignment="CENTER">
                     <children>
@@ -26,28 +38,50 @@
                                 <Insets bottom="10.0" left="150.0" top="30.0" />
                             </VBox.margin>
                         </Label>
-                        <TableView fx:id="secTable" prefHeight="200.0" prefWidth="679.0" tableMenuButtonVisible="true">
-                            <columns>
-                                <TableColumn fx:id="colFile" maxWidth="3500.0" prefWidth="75.0" text="فایل" />
-                                <TableColumn fx:id="colDate" maxWidth="4000.0" prefWidth="75.0" text="تاریخ" />
-                                <TableColumn fx:id="colSecName" maxWidth="4000.0" prefWidth="75.0" text="نام" />
-                            </columns>
-                            <columnResizePolicy>
-                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                            </columnResizePolicy>
-                            <contextMenu>
-                                <ContextMenu>
-                                    <items>
-                                        <MenuItem fx:id="deleteUsers" mnemonicParsing="false" onAction="#deleteUsers" text="Delete" />
-                                    </items>
-                                </ContextMenu>
-                            </contextMenu>
-                        </TableView>
-                        <TextField fx:id="name" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="246.0" promptText="نام">
-                            <VBox.margin>
-                                <Insets left="25.0" right="25.0" />
-                            </VBox.margin>
-                        </TextField>
+                        <HBox prefHeight="20.0" prefWidth="200.0">
+                            <children>
+                                <JFXComboBox fx:id="envTempCombo" focusColor="#09ca62" prefWidth="150.0" styleClass="jfx-text-field" unFocusColor="#4d4d4d" />
+                                <JFXTextField fx:id="envTemp" alignment="CENTER_RIGHT" focusColor="#09ca62" prefHeight="30.0" prefWidth="246.0" promptText="دمای محیط" styleClass="jfx-text-field" unFocusColor="#4d4d4d" />
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="200.0">
+                            <children>
+                                <!--<JFXComboBox fx:id="windSpeedCombo" focusColor="#09ca62" prefWidth="150.0" styleClass="jfx-text-field" unFocusColor="#4d4d4d" />-->
+                                <JFXTextField fx:id="windSpeed" alignment="CENTER_RIGHT" focusColor="#09ca62" prefHeight="30.0" prefWidth="195.0" promptText="سرعت باد">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin></JFXTextField>
+                            </children>
+                        </HBox>
+                        <HBox alignment="TOP_RIGHT" prefHeight="20.0" prefWidth="200.0">
+                            <children>
+                                <JFXTextField fx:id="counter" alignment="CENTER_RIGHT" focusColor="#09ca62" prefHeight="30.0" prefWidth="195.0" promptText="رقم کنتور" />
+                            </children>
+                        </HBox>
+                        <HBox prefHeight="20.0" prefWidth="200.0">
+                            <children>
+                                <JFXComboBox fx:id="gasInputTempCombo" focusColor="#09ca62" prefWidth="150.0" styleClass="jfx-text-field" unFocusColor="#4d4d4d" />
+                                <JFXTextField fx:id="gasInputTemp" alignment="CENTER_RIGHT" focusColor="#09ca62" prefHeight="30.0" prefWidth="246.0" promptText="دمای گاز ورودی" />
+                            </children>
+                        </HBox>
+                        <HBox prefHeight="20.0" prefWidth="200.0">
+                            <children>
+                                <JFXComboBox fx:id="gasInputPressureCombo" focusColor="#09ca62" prefWidth="150.0" styleClass="jfx-text-field" unFocusColor="#4d4d4d" />
+                                <JFXTextField fx:id="gasInputPressure" alignment="CENTER_RIGHT" focusColor="#09ca62" prefHeight="30.0" prefWidth="246.0" promptText="فشار گاز ورودی" />
+                            </children>
+                        </HBox>
+                        <HBox prefHeight="20.0" prefWidth="200.0">
+                            <children>
+                                <JFXComboBox fx:id="gasOutputTempCombo" focusColor="#09ca62" prefWidth="150.0" styleClass="jfx-text-field" unFocusColor="#4d4d4d" />
+                                <JFXTextField fx:id="gasOutputTemp" alignment="CENTER_RIGHT" focusColor="#09ca62" prefHeight="30.0" prefWidth="246.0" promptText="دمای گاز خروجی" />
+                            </children>
+                        </HBox>
+                        <HBox prefHeight="20.0" prefWidth="200.0">
+                            <children>
+                                <JFXComboBox fx:id="gasOutputPressureCombo" focusColor="#09ca62" prefWidth="150.0" styleClass="jfx-text-field" unFocusColor="#4d4d4d" />
+                                <JFXTextField fx:id="gasOutputPressure" alignment="CENTER_RIGHT" focusColor="#09ca62" prefHeight="30.0" prefWidth="246.0" promptText="فشار گاز خروجی" />
+                            </children>
+                        </HBox>
                         <DatePicker fx:id="time" editable="false" prefHeight="30.0" prefWidth="245.0" promptText="تاریخ">
                             <VBox.margin>
                                 <Insets left="25.0" />
@@ -55,22 +89,7 @@
                         </DatePicker>
                         <HBox alignment="TOP_CENTER" prefHeight="30.0" prefWidth="300.0" spacing="10.0">
                             <children>
-                                <Button fx:id="chooseFileBtn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#chooseFile" prefHeight="30.0" prefWidth="160.0" styleClass="btnRec" text="Choose File" textFill="WHITE">
-                                    <font>
-                                        <Font size="15.0" />
-                                    </font>
-                                    <effect>
-                                        <DropShadow blurType="ONE_PASS_BOX" color="#6468b2" />
-                                    </effect>
-                                </Button>
-                            </children>
-                            <opaqueInsets>
-                                <Insets />
-                            </opaqueInsets>
-                        </HBox>
-                        <HBox alignment="TOP_CENTER" prefHeight="30.0" prefWidth="300.0" spacing="10.0">
-                            <children>
-                                <Button fx:id="saveUser" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#saveUser" prefHeight="30.0" prefWidth="75.0" styleClass="btnGreen" text="Save" textFill="WHITE">
+                                <Button fx:id="saveCondition" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#saveCondition" prefHeight="30.0" prefWidth="75.0" styleClass="btnGreen" text="Save" textFill="WHITE">
                                     <font>
                                         <Font size="15.0" />
                                     </font>
@@ -84,6 +103,23 @@
                                     </effect>
                                 </Button>
                             </children>
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <VBox.margin>
+                                <Insets />
+                            </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER">
+                            <Button fx:id="calculationBtn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#calculateSec" prefHeight="30.0" prefWidth="160.0" styleClass="btnCal" text="Calculate" textFill="WHITE">
+                                <font>
+                                    <Font size="15.0" />
+                                </font>
+                                <effect>
+                                    <DropShadow blurType="ONE_PASS_BOX" color="#6468b2" />
+                                </effect>
+                            </Button>
+
                             <opaqueInsets>
                                 <Insets />
                             </opaqueInsets>
@@ -118,16 +154,19 @@
                                 </Button>
                             </children>
                         </HBox>
-                        <TableView fx:id="conditionTable" prefHeight="300.0" prefWidth="679.0" tableMenuButtonVisible="true">
+                        <TableView fx:id="conditionTable" prefHeight="400.0" prefWidth="800.0" tableMenuButtonVisible="true">
                             <columns>
-                                <TableColumn fx:id="colUserId" maxWidth="700.0" prefWidth="20.0" text="ID" />
-                                <TableColumn fx:id="colFirstName" maxWidth="4000.0" prefWidth="75.0" text="First Name" />
-                                <TableColumn fx:id="colLastName" maxWidth="4000.0" prefWidth="75.0" text="Last Name" />
-                                <TableColumn fx:id="colDOB" maxWidth="4000.0" prefWidth="75.0" text="Date of Birth" />
-                                <TableColumn fx:id="colGender" maxWidth="4000.0" prefWidth="60.0" text="Gender" />
-                                <TableColumn fx:id="colRole" maxWidth="4000.0" prefWidth="75.0" text="Role" />
-                                <TableColumn fx:id="colEmail" maxWidth="6000.0" prefWidth="130.0" text="Email" />
-                                <TableColumn fx:id="colEdit" maxWidth="3500.0" prefWidth="75.0" text="Edit" />
+
+                                <TableColumn fx:id="colDate" maxWidth="3500.0" prefWidth="50.0" text="تاریخ" />
+                                <TableColumn fx:id="colOutputPressure" maxWidth="6000.0" prefWidth="30.0" text="فشار خروجی" />
+                                <TableColumn fx:id="colOutputTemp" maxWidth="4000.0" prefWidth="50.0" text="دمای خروجی" />
+                                <TableColumn fx:id="colInputPressure" maxWidth="4000.0" prefWidth="50.0" text="فشار ورودی" />
+                                <TableColumn fx:id="colInputTemp" maxWidth="4000.0" prefWidth="50.0" text="دمای ورودی" />
+                                <TableColumn fx:id="colDebi" maxWidth="4000.0" prefWidth="100.0" text="رقم کنتور" />
+                                <TableColumn fx:id="colWindSpeed" maxWidth="4000.0" prefWidth="10.0" text="سرعت باد" />
+                                <TableColumn fx:id="colEnvTemp" maxWidth="700.0" minWidth="70.0" prefWidth="50.0" text="دمای محیط" />
+                                <TableColumn fx:id="colEdit" maxWidth="3500.0" minWidth="5.0" prefWidth="30.0" text="ویرایش" />
+
                             </columns>
                             <VBox.margin>
                                 <Insets left="10.0" right="5.0" />
@@ -138,7 +177,7 @@
                             <contextMenu>
                                 <ContextMenu>
                                     <items>
-                                        <MenuItem fx:id="deleteUsers" mnemonicParsing="false" onAction="#deleteUsers" text="Delete" />
+                                        <MenuItem fx:id="deleteConditions" mnemonicParsing="false" onAction="#deleteCondition" text="Delete" />
                                     </items>
                                 </ContextMenu>
                             </contextMenu>
@@ -148,7 +187,7 @@
             </center>
         </BorderPane>
 
-        <JFXDrawer fx:id="drawer" defaultDrawerSize="306.0" prefHeight="600.0" prefWidth="306.0" direction="LEFT"/>
+        <JFXDrawer fx:id="drawer" defaultDrawerSize="306.0" direction="LEFT" prefHeight="600.0" prefWidth="306.0" />
     </children>
 
 </AnchorPane>

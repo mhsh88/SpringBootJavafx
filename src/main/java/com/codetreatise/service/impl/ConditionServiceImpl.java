@@ -1,6 +1,7 @@
 package com.codetreatise.service.impl;
 
 import com.codetreatise.bean.station.ConditionEntity;
+import com.codetreatise.bean.station.SecEntity;
 import com.codetreatise.repository.ConditionRepository;
 import com.codetreatise.service.ConditionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +49,15 @@ public class ConditionServiceImpl implements ConditionService {
     @Override
     public List<ConditionEntity> findAll() {
         return conditionRepository.findAll();
+    }
+
+    @Override
+    public List<ConditionEntity> findBySec(SecEntity secEntity) {
+        return conditionRepository.findBySec(secEntity);
+    }
+
+    @Override
+    public List<ConditionEntity> save(List<ConditionEntity> list) {
+        return conditionRepository.save(list);
     }
 }

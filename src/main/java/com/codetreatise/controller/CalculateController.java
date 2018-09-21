@@ -64,20 +64,21 @@ public class CalculateController extends BaseController{
     double Th;
 
 
-    public boolean calculate(CityGateStationEntity cityGateStationEntity) {
+    public List<StationLogic> calculate(CityGateStationEntity cityGateStationEntity) {
         boolean state = false;
+        List<StationLogic> stationLogics = new ArrayList<>();
 
 //        CityGateStationEntity cityGateStationEntity = stageManager.getCityGateStationEntity();
 
         Runs runs = new Runs();
         if (cityGateStationEntity == null) {
             showAlert("خطا", "خطا در اطلاعات ورودی", "اطلاعات ایستگاه تکمیل نشده است", Alert.AlertType.ERROR);
-            return false;
+            return null;
         }
         if (cityGateStationEntity != null) {
             if (cityGateStationEntity.getCondition() == null || cityGateStationEntity.getGasEntity() == null) {
                 showAlert("خطا", "خطا در اطلاعات ورودی", "اطلاعات ایستگاه تکمیل نشده است", Alert.AlertType.ERROR);
-                return false;
+                return null;
             }
             if (cityGateStationEntity.getRuns() != null && cityGateStationEntity.getRuns().size() > 0) {
 
@@ -124,9 +125,9 @@ public class CalculateController extends BaseController{
         }
 
 
-        StationLogic stationLogicWithUserInput = getStationLogic(cityGateStationEntity, runs, true);
-        StationLogic stationLogicWithHydrate = getStationLogic(cityGateStationEntity, runs, false);
-        return state;
+        stationLogics.add(getStationLogic(cityGateStationEntity, runs, true));
+        stationLogics.add(getStationLogic(cityGateStationEntity, runs, false));
+        return stationLogics;
     }
 
 //        Station station = Station.getInstance();

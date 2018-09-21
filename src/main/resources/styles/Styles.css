@@ -3,6 +3,9 @@
 .btnGreen {
     -fx-background-color: #3cbc53;
 }
+.btnCal {
+    -fx-background-color: #bc4e4b;
+}
 .btnRec {
     -fx-background-color: #bcaf3f;
 }
@@ -10,4 +13,9 @@
 .background {
     -fx-background-color: DODGERBLUE;
 }
-
+.jfx-text-field {
+    -fx-prompt-text-fill: #a0a3a1;
+    -fx-text-fill: #303030;
+    -fx-font-size: 14px;
+    -fx-background-color: #f1f5f3;
+}

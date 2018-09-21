@@ -1,6 +1,8 @@
 package ir.behinehsazan.gasStation.model.mathCalculation;
 
-public interface FindRoot {
+import java.io.Serializable;
+
+public interface FindRoot extends Serializable {
     default double rootFind(){
         double x = 0, del = 1e-10, a = -100000    , b = 100000;
         double dx = b-a;

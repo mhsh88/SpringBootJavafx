@@ -1,7 +1,14 @@
 package com.codetreatise.controller;
 
+import com.codetreatise.bean.station.CityGateStationEntity;
+import com.codetreatise.bean.station.ConditionEntity;
+import com.codetreatise.bean.station.ResultEntity;
 import com.codetreatise.config.StageManager;
+import com.codetreatise.service.CityGateStationService;
+import com.codetreatise.service.ConditionService;
+import com.codetreatise.service.ResultService;
 import com.codetreatise.view.FxmlView;
+import ir.behinehsazan.gasStation.model.station.StationLogic;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -32,17 +39,21 @@ import sample.util.FileLocation;
 
 import java.io.*;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 @Controller
 public class StationController extends BaseController implements Initializable {
     @Lazy
     @Autowired
     private StageManager stageManager;
+    @Autowired
+    private ResultService resultService;
 
+    @Autowired
+    private ConditionService conditionService;
+
+    @Autowired
+    private CityGateStationService cityGateStationService;
     public VBox mainVbox;
     Stage stage;
     Scene scene;
@@ -154,7 +165,24 @@ public class StationController extends BaseController implements Initializable {
     }
 
     public void calculateButton(ActionEvent actionEvent) throws IOException {
-        if(calculateController.calculate(stageManager.getCityGateStationEntity())){
+        List<StationLogic> result = calculateController.calculate(stageManager.getCityGateStationEntity());
+        if(result!=null && result.size()>0){
+            CityGateStationEntity cityGateStationEntity = stageManager.getCityGateStationEntity();
+            ConditionEntity conditionEntity = cityGateStationEntity.getCondition();
+            ResultEntity resultEntity = conditionEntity.getResult();
+            if(resultEntity==null){
+                resultEntity = new ResultEntity();
+            }
+            resultEntity.setSingleCalculation(result);
+            resultEntity = resultService.save(resultEntity);
+            conditionEntity.setResult(resultEntity);
+            conditionEntity = conditionService.save(conditionEntity);
+            cityGateStationEntity.setCondition(conditionEntity);
+            cityGateStationEntity = cityGateStationService.save(cityGateStationEntity);
+            stageManager.setCityGateStationEntity(cityGateStationEntity);
+
+
+
 
 //        showResultsFrame.show();
             stageManager.switchScene(FxmlView.SHOW_RESULT);

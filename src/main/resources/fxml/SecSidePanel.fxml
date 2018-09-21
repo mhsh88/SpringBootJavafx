@@ -17,7 +17,7 @@
 
 <VBox prefHeight="600.0" prefWidth="306.0" spacing="10.0" styleClass="background" stylesheets="@../styles/Styles.css" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.controller.SecSidePanelController">
       <children>
-         <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="محاسبات SEC" textAlignment="JUSTIFY" textFill="WHITE">
+         <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="انتخاب SEC" textAlignment="JUSTIFY" textFill="WHITE">
             <font>
                <Font size="20.0" />
             </font>
@@ -27,6 +27,7 @@
          </Label>
          <TableView fx:id="secTable" prefHeight="200.0" prefWidth="679.0" tableMenuButtonVisible="true">
             <columns>
+               <TableColumn fx:id="colSelect" maxWidth="3500.0" prefWidth="75.0" text="انتخاب"/>
                <TableColumn fx:id="colFile" maxWidth="3500.0" prefWidth="75.0" text="فایل" />
                <TableColumn fx:id="colDate" maxWidth="4000.0" prefWidth="75.0" text="تاریخ" />
                <TableColumn fx:id="colSecName" maxWidth="4000.0" prefWidth="75.0" text="نام" />

@@ -10,11 +10,13 @@ import ir.behinehsazan.gasStation.model.run.base.BaseRun;
 import sample.model.heaters.HeatersModel;
 import sample.model.pipeLine.PipeLine;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class StationLogic extends GasConsumer {
+
+public class StationLogic extends GasConsumer implements Serializable {
 
 
     double stationConsumption;

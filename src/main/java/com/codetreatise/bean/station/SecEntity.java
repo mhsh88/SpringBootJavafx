@@ -1,6 +1,8 @@
 package com.codetreatise.bean.station;
 
 import com.codetreatise.bean.base.BaseEntity;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -11,7 +13,9 @@ import java.util.List;
 @Table(name = "sec")
 public class SecEntity extends BaseEntity {
 
-    @OneToMany(mappedBy="sec")
+    @OneToMany
+    @JoinColumn(name = "sec_id")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<ConditionEntity> conditions;
 
 //    @ManyToOne(fetch=FetchType.LAZY)
