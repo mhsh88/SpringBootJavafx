@@ -2,7 +2,6 @@ package com.codetreatise.config;
 
 import com.codetreatise.bean.station.CityGateStationEntity;
 import com.codetreatise.view.FxmlView;
-import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -22,6 +21,10 @@ public class StageManager {
     private final Stage primaryStage;
     private final SpringFXMLLoader springFXMLLoader;
 
+    public SpringFXMLLoader getSpringFXMLLoader() {
+        return springFXMLLoader;
+    }
+
     public StageManager(SpringFXMLLoader springFXMLLoader, Stage stage) {
         this.springFXMLLoader = springFXMLLoader;
         this.primaryStage = stage;
@@ -36,8 +39,14 @@ public class StageManager {
     }
 
     public void switchScene(final FxmlView view) {
-        Parent viewRootNodeHierarchy = loadViewNodeHierarchy(view.getFxmlFile());
-        show(viewRootNodeHierarchy, view.getTitle());
+        try {
+            Parent viewRootNodeHierarchy = loadViewNodeHierarchy(view.getFxmlFile());
+            show(viewRootNodeHierarchy, view.getTitle());
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            switchScene(FxmlView.STATION);
+        }
     }
 
     private void show(final Parent rootnode, String title) {
@@ -87,7 +96,7 @@ public class StageManager {
 
     private void logAndExit(String errorMsg, Exception exception) {
         LOG.error(errorMsg, exception, exception.getCause());
-        Platform.exit();
+//        Platform.exit();
     }
 
 }

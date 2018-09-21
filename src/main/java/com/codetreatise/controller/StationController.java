@@ -420,6 +420,14 @@ public class StationController extends BaseController implements Initializable {
     public void stationSelect(ActionEvent actionEvent) {
         stageManager.switchScene(FxmlView.STATION_SELECT);
     }
+
+    public void userShow(ActionEvent actionEvent) {
+        stageManager.switchScene(FxmlView.USER);
+    }
+
+    public void secSelection(ActionEvent actionEvent) {
+        stageManager.switchScene(FxmlView.SEC);
+    }
 }
 
 

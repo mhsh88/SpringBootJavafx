@@ -6,7 +6,7 @@ import com.codetreatise.bean.unitNumber.Pressure;
 import com.codetreatise.bean.unitNumber.Temperature;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -171,16 +171,24 @@ public class ConditionEntity extends BaseEntity  {
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="sec_id")
-    private BaseSecEntity baseSecEntity;
+    private SecEntity sec;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date time;
+//    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDate time;
 
-    public Date getTime() {
+    public SecEntity getSec() {
+        return sec;
+    }
+
+    public void setSec(SecEntity sec) {
+        this.sec = sec;
+    }
+
+    public LocalDate getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(LocalDate time) {
         this.time = time;
     }
 
@@ -190,14 +198,6 @@ public class ConditionEntity extends BaseEntity  {
 
     public void setResult(ResultEntity result) {
         this.result = result;
-    }
-
-    public BaseSecEntity getBaseSecEntity() {
-        return baseSecEntity;
-    }
-
-    public void setBaseSecEntity(BaseSecEntity baseSecEntity) {
-        this.baseSecEntity = baseSecEntity;
     }
 
     public CityGateStationEntity getStation() {

@@ -3,6 +3,9 @@
 .btnGreen {
     -fx-background-color: #3cbc53;
 }
+.btnRec {
+    -fx-background-color: #bcaf3f;
+}
 
 .background {
     -fx-background-color: DODGERBLUE;

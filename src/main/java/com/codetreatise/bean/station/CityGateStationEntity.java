@@ -69,6 +69,19 @@ public class CityGateStationEntity extends BaseEntity {
     @JoinColumn(name = "condition_id")
     private ConditionEntity condition;
 
+    @OneToMany(cascade = {CascadeType.PERSIST})
+    @JoinColumn(name = "station_id")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<SecEntity> sec;
+
+    public List<SecEntity> getSec() {
+        return sec;
+    }
+
+    public void setSec(List<SecEntity> sec) {
+        this.sec = sec;
+    }
+
     public List<RunEntity> getRuns() {
         return runs;
     }

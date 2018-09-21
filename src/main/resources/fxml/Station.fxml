@@ -66,7 +66,9 @@
          <Button layoutX="831.0" layoutY="41.0" mnemonicParsing="false" onAction="#stationPropertyWindows" styleClass="stationProperty" />
          <Button layoutX="831.0" layoutY="261.0" mnemonicParsing="false" onAction="#showResultsWindows" styleClass="showResults" visible="false" />
          <Button layoutX="827.0" layoutY="150.0" mnemonicParsing="false" onAction="#calculateButton" styleClass="calculateButton" />
-            <JFXButton buttonType="RAISED" layoutX="698.0" layoutY="68.0" mnemonicParsing="false" ripplerFill="#dd2dc6" text="Station Select" onAction="#stationSelect"/>
+            <JFXButton buttonType="RAISED" layoutX="698.0" layoutY="68.0" mnemonicParsing="false" onAction="#stationSelect" ripplerFill="#dd2dc6" text="Station Select" />
+            <JFXButton layoutX="721.0" layoutY="128.0" mnemonicParsing="false" onAction="#userShow" text="User" />
+            <JFXButton layoutX="832.0" layoutY="291.0" mnemonicParsing="false" text="SEC" onAction="#secSelection"/>
 
 
         </children>

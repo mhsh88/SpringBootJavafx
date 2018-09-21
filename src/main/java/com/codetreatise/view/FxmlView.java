@@ -115,6 +115,16 @@ public enum FxmlView {
         public String getFxmlFile() {
             return "/fxml/StationSelect.fxml";
         }
+    }, SEC {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("sec.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/Sec.fxml";
+        }
     };
 
 
