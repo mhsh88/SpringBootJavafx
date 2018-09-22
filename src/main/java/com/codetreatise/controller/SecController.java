@@ -1,5 +1,6 @@
 package com.codetreatise.controller;
 
+import com.codetreatise.bean.station.CityGateStationEntity;
 import com.codetreatise.bean.station.ConditionEntity;
 import com.codetreatise.bean.station.SecEntity;
 import com.codetreatise.bean.unitNumber.Debi;
@@ -11,10 +12,14 @@ import com.codetreatise.service.ConditionService;
 import com.codetreatise.service.SecService;
 import com.codetreatise.service.UserService;
 import com.codetreatise.view.FxmlView;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.util.TokenBuffer;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
+import ir.behinehsazan.gasStation.model.gas.Gas;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -57,6 +62,7 @@ import java.util.regex.Pattern;
 
 @Controller
 public class SecController implements Initializable {
+    ObjectMapper mapper = new ObjectMapper();
 
     public Button calculationBtn;
     private SecEntity secEntity;
@@ -580,6 +586,11 @@ public class SecController implements Initializable {
             return;
         }
 
+        CityGateStationEntity  cityGateStationEntity = stageManager.getCityGateStationEntity();
+        List<ConditionEntity> conditionList = secEntity.getConditions();
+        
+        cityGateStationEntity.getSec();
+
     }
 
     private void showNullSec() {
@@ -596,5 +607,18 @@ public class SecController implements Initializable {
 
             return;
 
+    }
+
+    private ObjectNode removeGasProperty(Gas gas) throws IOException {
+        TokenBuffer tb = new TokenBuffer(null, false);
+
+        mapper.writeValue(tb, gas);
+        Gas copyGas = mapper.readValue(tb.asParser(), Gas.class);
+        copyGas.setComponent(gas.getComponent());
+        ObjectNode gasNode = (ObjectNode) mapper.readTree(mapper.writeValueAsString(copyGas));
+        gasNode.remove("component");
+        gasNode.remove("t");
+        gasNode.remove("p");
+        return  gasNode;
     }
 }
