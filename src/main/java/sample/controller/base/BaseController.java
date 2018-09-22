@@ -1,14 +1,16 @@
 package sample.controller.base;
 
 import javafx.event.EventHandler;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-public abstract class BaseController {
+public abstract class BaseController implements Initializable {
     private Stage stage;
 
     public abstract void setOnShow();
+
     public static void showAlert(String title, String info, String message, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);

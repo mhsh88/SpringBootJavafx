@@ -27,7 +27,7 @@
                 <VBox prefHeight="571.0" prefWidth="306.0" spacing="10.0" styleClass="background" stylesheets="@../styles/Styles.css" BorderPane.alignment="CENTER">
                     <children>
                         <!--<JFXHamburger fx:id="hamburger" layoutX="460.0" layoutY="14.0" />-->
-                        <HBox>
+                        <HBox alignment="TOP_RIGHT">
                             <JFXHamburger fx:id="hamburger" layoutX="100.0" layoutY="14.0" />
                         </HBox>
                         <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="محاسبات SEC" textAlignment="JUSTIFY" textFill="WHITE">
@@ -127,6 +127,21 @@
                                 <Insets />
                             </VBox.margin>
                         </HBox>
+                  <HBox alignment="CENTER">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <children>
+                        <Button fx:id="resultBtn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#showResult" prefHeight="30.0" prefWidth="160.0" styleClass="btnResult" text="Show Result" textFill="WHITE">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <effect>
+                              <DropShadow blurType="ONE_PASS_BOX" color="#6468b2" />
+                           </effect>
+                        </Button>
+                     </children>
+                  </HBox>
                     </children>
                     <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -141,7 +156,7 @@
                     <children>
                         <HBox alignment="TOP_RIGHT" prefHeight="41.0" prefWidth="640.0">
                             <children>
-                                <Button fx:id="btnLogout" mnemonicParsing="false" onAction="#backAction" prefHeight="22.0" prefWidth="70.0" styleClass="background" text="Back" textFill="#fff9f9" textOverrun="CLIP">
+                                <Button fx:id="backButton" mnemonicParsing="false" onAction="#backAction" prefHeight="22.0" prefWidth="70.0" styleClass="background" text="Back" textFill="#fff9f9" textOverrun="CLIP">
                                     <font>
                                         <Font size="14.0" />
                                     </font>

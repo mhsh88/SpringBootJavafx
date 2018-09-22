@@ -4,6 +4,8 @@ import com.codetreatise.bean.base.BaseEntity;
 import com.codetreatise.bean.unitNumber.Debi;
 import com.codetreatise.bean.unitNumber.Pressure;
 import com.codetreatise.bean.unitNumber.Temperature;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -37,8 +39,9 @@ public class ConditionEntity extends BaseEntity {
 //            fetch = FetchType.LAZY, optional = true)
 //    @Cascade(value = { org.hibernate.annotations.CascadeType.DELETE, org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 //    private CityGateStationEntity station;
-    @OneToOne(mappedBy = "condition", cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER, optional = true)
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "condition_id")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private ResultEntity result;
 
     @ManyToOne(fetch = FetchType.LAZY)

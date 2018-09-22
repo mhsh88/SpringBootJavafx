@@ -58,6 +58,7 @@ public class StageManager {
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
         primaryStage.centerOnScreen();
+//        primaryStage.setMaximized(true);
 
         try {
             primaryStage.show();
@@ -99,4 +100,7 @@ public class StageManager {
 //        Platform.exit();
     }
 
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
 }

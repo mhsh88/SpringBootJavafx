@@ -2,6 +2,7 @@ package com.codetreatise.controller;
 
 import com.codetreatise.bean.station.CityGateStationEntity;
 import com.codetreatise.bean.station.ConditionEntity;
+import com.codetreatise.bean.station.ResultEntity;
 import com.codetreatise.bean.station.SecEntity;
 import com.codetreatise.bean.unitNumber.Debi;
 import com.codetreatise.bean.unitNumber.Pressure;
@@ -9,17 +10,17 @@ import com.codetreatise.bean.unitNumber.Temperature;
 import com.codetreatise.config.SpringFXMLLoader;
 import com.codetreatise.config.StageManager;
 import com.codetreatise.service.ConditionService;
+import com.codetreatise.service.ResultService;
 import com.codetreatise.service.SecService;
 import com.codetreatise.service.UserService;
 import com.codetreatise.view.FxmlView;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.util.TokenBuffer;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
-import ir.behinehsazan.gasStation.model.gas.Gas;
+import ir.behinehsazan.gasStation.model.station.StationLogic;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -41,19 +42,22 @@ import javafx.util.Callback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
+import sample.controller.base.BaseController;
 import sample.util.FileLocation;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 /**
  * @author Ram Alapure
@@ -61,11 +65,15 @@ import java.util.regex.Pattern;
  */
 
 @Controller
-public class SecController implements Initializable {
+public class SecController extends BaseController implements Initializable {
+    public Button resultBtn;
+    public Button backButton;
     ObjectMapper mapper = new ObjectMapper();
 
     public Button calculationBtn;
     private SecEntity secEntity;
+    @Autowired
+    private ResultService resultService;
 
     public SecEntity getSecEntity() {
         return secEntity;
@@ -102,6 +110,8 @@ public class SecController implements Initializable {
     StageManager stageManager;
     @Autowired
     SecService secService;
+    @Autowired
+    CalculateController calculateController;
     @FXML
     public Button chooseFileBtn;
     @FXML
@@ -587,9 +597,126 @@ public class SecController implements Initializable {
         }
 
         CityGateStationEntity  cityGateStationEntity = stageManager.getCityGateStationEntity();
+
+        if(cityGateStationEntity == null){
+            showAlert("توجه","اطلاعات ایستگاه تکمیل نشده است!", "لطفا اطلاعات ایستگاه را تکمیل فرمایید.", AlertType.WARNING);
+            return;
+        }
+        else{
+            if(cityGateStationEntity.getGasEntity()==null){
+                showAlert("توجه","اطلاعات ایستگاه تکمیل نشده است!", "لطفا اطلاعات گاز را تکمیل فرمایید.", AlertType.WARNING);
+                return;
+            }
+        }
+        CityGateStationEntity copyCgs = null;
+        try {
+//            copyCgs = getCopy(cityGateStationEntity);
+            copyCgs = (CityGateStationEntity) cityGateStationEntity.clone();
+        }
+//        catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
         List<ConditionEntity> conditionList = secEntity.getConditions();
-        
-        cityGateStationEntity.getSec();
+        ExecutorService service = Executors.newFixedThreadPool(500);
+        CityGateStationEntity finalCopyCgs = copyCgs;
+        service.submit(new Runnable() {
+            public void run() {
+                backGroundSecCalculation(finalCopyCgs,conditionList);
+            }
+
+            private void backGroundSecCalculation(CityGateStationEntity finalCopyCgs, List<ConditionEntity> conditionList) {
+
+                List<ConditionEntity> conditionToSave = new ArrayList<>();
+                if(conditionList.size()>1) {
+//            ConditionEntity firstCondtion = conditionList.get(0);
+                    Iterator<ConditionEntity> it=conditionList.iterator();
+                    ConditionEntity firstCondtion = conditionList.listIterator().next();
+                    ConditionEntity secondCondtion;
+                    ConditionEntity calOne;
+//            while (conditionList.listIterator().hasNext()) {
+                    while (it.hasNext()) {
+//                secondCondtion = conditionList.listIterator().next();
+                        secondCondtion = it.next();
+
+                        calOne = new ConditionEntity();
+
+                        try {
+                            calOne.setEnvTemperature(new Temperature((firstCondtion.getEnvTemperature().getCostumeTemperature(Temperature.KELVIN) + secondCondtion.getEnvTemperature().getCostumeTemperature(Temperature.KELVIN)) / 2, Temperature.KELVIN));
+                            calOne.setWindSpeed((firstCondtion.getWindSpeed() + secondCondtion.getWindSpeed()) / 2);
+                            long hours = DAYS.between(firstCondtion.getTime(), secondCondtion.getTime()) * 24;
+                            calOne.setDebiInput(new Debi((secondCondtion.getDebiInput().getCostumeDebi(Debi.M3) - firstCondtion.getDebiInput().getCostumeDebi(Debi.M3)) / hours, Debi.M3_PER_HOUR));
+                            calOne.setInputTemperature(new Temperature((firstCondtion.getInputTemperature().getCostumeTemperature(Temperature.KELVIN) + secondCondtion.getInputTemperature().getCostumeTemperature(Temperature.KELVIN)) / 2, Temperature.KELVIN));
+                            calOne.setInputPressure(new Pressure((firstCondtion.getInputPressure().getCostumePressure(Pressure.KPA) + secondCondtion.getInputPressure().getCostumePressure(Pressure.KPA)) / 2, Pressure.KPA));
+                            calOne.setOutputTemperature(new Temperature((firstCondtion.getOutputTemperature().getCostumeTemperature(Temperature.KELVIN) + secondCondtion.getOutputTemperature().getCostumeTemperature(Temperature.KELVIN)) / 2, Temperature.KELVIN));
+                            calOne.setOutputPressure(new Pressure((firstCondtion.getOutputPressure().getCostumePressure(Pressure.KPA) + secondCondtion.getOutputPressure().getCostumePressure(Pressure.KPA)) / 2, Pressure.KPA));
+                            calOne.setTime(secondCondtion.getTime());
+                        }
+                        catch (Exception e){
+
+                            e.printStackTrace();
+
+                        }
+
+                        if(calOne!=null) {
+                            finalCopyCgs.setCondition(calOne);
+                            List<StationLogic> result = null;
+                            List<StationLogic> result15 = null;
+                            List<StationLogic> result8 = null;
+                            try {
+                                finalCopyCgs.setRequiredHydrate(true);
+                                result = calculateController.calculate(finalCopyCgs);
+                                finalCopyCgs.getCondition().setOutputTemperature(new Temperature(15.5, Temperature.CELSIUS));
+                                finalCopyCgs.setRequiredHydrate(false);
+                                result15 = calculateController.calculate(finalCopyCgs);
+                                finalCopyCgs.getCondition().setOutputTemperature(new Temperature(8.0, Temperature.CELSIUS));
+                                finalCopyCgs.setRequiredHydrate(false);
+                                result8 = calculateController.calculate(finalCopyCgs);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                return;
+                            }
+
+                            ResultEntity resultEntity = secondCondtion.getResult();
+                            if(resultEntity==null){
+                                resultEntity = new ResultEntity();
+                            }
+                            resultEntity.setSingleCalculation(result);
+                            resultEntity.setFifteenTemp(result15);
+                            resultEntity.setEightTemp(result8);
+                            resultEntity = resultService.save(resultEntity);
+                            secondCondtion.setResult(resultEntity);
+                            conditionService.save(secondCondtion);
+                            conditionToSave.add(secondCondtion);
+
+                        }
+
+
+
+
+
+                        firstCondtion = secondCondtion;
+
+                    }
+                }
+
+
+
+            }
+        });
+
+
+//        Alert alert = new Alert(AlertType.WARNING);
+//        alert.setTitle("محاسبات در حال انجام است");
+//        alert.setHeaderText(null);
+//        alert.setContentText("محاسبات در حال انجام است.");
+//
+//        alert.showAndWait();
+        return;
+
+
 
     }
 
@@ -609,16 +736,41 @@ public class SecController implements Initializable {
 
     }
 
-    private ObjectNode removeGasProperty(Gas gas) throws IOException {
+    private CityGateStationEntity getCopy(CityGateStationEntity obj) throws IOException {
         TokenBuffer tb = new TokenBuffer(null, false);
 
-        mapper.writeValue(tb, gas);
-        Gas copyGas = mapper.readValue(tb.asParser(), Gas.class);
-        copyGas.setComponent(gas.getComponent());
-        ObjectNode gasNode = (ObjectNode) mapper.readTree(mapper.writeValueAsString(copyGas));
-        gasNode.remove("component");
-        gasNode.remove("t");
-        gasNode.remove("p");
-        return  gasNode;
+//        mapper.writeValue(tb, obj);
+        CityGateStationEntity copycgs = mapper.readValue(tb.asParser(), CityGateStationEntity.class);
+        return copycgs;
+//        copyGas.setComponent(gas.getComponent());
+//        ObjectNode gasNode = (ObjectNode) mapper.readTree(mapper.writeValueAsString(copyGas));
+//        gasNode.remove("component");
+//        gasNode.remove("t");
+//        gasNode.remove("p");
+//        return  gasNode;
+    }
+
+    public void showResult(ActionEvent actionEvent) {
+        if(stageManager.getCityGateStationEntity() == null){
+            showAlert("توجه","اطلاعات ایستگاه تکمیل نشده است!", "لطفا اطلاعات ایستگاه را تکمیل فرمایید.", AlertType.WARNING);
+            return;
+        }
+        else{
+            if(stageManager.getCityGateStationEntity().getGasEntity()==null){
+                showAlert("توجه","اطلاعات ایستگاه تکمیل نشده است!", "لطفا اطلاعات گاز را تکمیل فرمایید.", AlertType.WARNING);
+                return;
+            }
+        }
+        if(secEntity==null) {
+            showNullSec();
+            return;
+        }
+
+        stageManager.switchScene(FxmlView.SHOW_RESULT);
+    }
+
+    @Override
+    public void setOnShow() {
+
     }
 }

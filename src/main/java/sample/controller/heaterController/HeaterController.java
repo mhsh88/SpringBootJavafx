@@ -20,7 +20,9 @@ import sample.model.heater.HeaterModel;
 import sample.model.heaters.HeatersModel;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 public class HeaterController extends BaseController{
 
@@ -406,5 +408,14 @@ public class HeaterController extends BaseController{
             }
         });
         return textField;
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        try {
+            initialize();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

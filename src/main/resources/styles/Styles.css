@@ -19,3 +19,11 @@
     -fx-font-size: 14px;
     -fx-background-color: #f1f5f3;
 }
+
+.btnResult {
+    -fx-background-color: #ac2986;
+}
+
+.refreshBtn {
+    -fx-background-color: #e34e3a;
+}

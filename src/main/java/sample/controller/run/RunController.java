@@ -18,7 +18,9 @@ import sample.model.run.Run;
 import sample.model.run.Runs;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 public class RunController extends BaseController{
 
@@ -317,5 +319,10 @@ public class RunController extends BaseController{
             }
         });
         return textField;
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
     }
 }

@@ -26,9 +26,10 @@ import org.springframework.stereotype.Controller;
 import sample.controller.base.BaseController;
 import sample.model.Station;
 
-import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 @Controller
 public class RunController extends BaseController{
@@ -59,7 +60,7 @@ public class RunController extends BaseController{
     public Button cancelButton;
 
     @FXML
-    public void initialize() throws IOException {
+    public void initialize(URL location, ResourceBundle resources) {
         collectorComboBox.getItems().removeAll();
         collectorComboBox.getItems().addAll( "2","3","4","6","8","10","12","16","20","24","30");
         collectorComboBox.getSelectionModel().select("8");
@@ -442,4 +443,5 @@ public class RunController extends BaseController{
         });
         return textField;
     }
+
 }

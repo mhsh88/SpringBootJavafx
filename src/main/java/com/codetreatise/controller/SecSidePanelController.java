@@ -175,7 +175,20 @@ public class SecSidePanelController implements Initializable {
         alert.setContentText("آیا اطمینان به حذف این مورد دارید؟");
         Optional<ButtonType> action = alert.showAndWait();
 
-        if (action.get() == ButtonType.OK) secService.deleteInBatch(users);
+        if (action.get() == ButtonType.OK) {
+
+            for(SecEntity secEntity : users){
+
+                secEntity.setConditions(null);
+                secService.save(secEntity);
+
+            }
+            if(users.contains(secController.getSecEntity())){
+                secController.setSecEntity(null);
+                secController.initialize(null,null);
+            }
+            secService.deleteInBatch(users);
+        }
 
         CityGateStationEntity cityGateStationEntity = stageManager.getCityGateStationEntity();
         if(cityGateStationEntity!= null){cityGateStationEntity = cityGateStationService.find(cityGateStationEntity.getId());}
@@ -279,6 +292,9 @@ public class SecSidePanelController implements Initializable {
         }
         secEntity = secService.save(secEntity);
         secList = cityGateStationEntity.getSec();
+        if(secList == null){
+            secList = new ArrayList<>();
+        }
         secList.add(secEntity);
         cityGateStationEntity.setSec(secList);
         cityGateStationEntity = cityGateStationService.save(cityGateStationEntity);

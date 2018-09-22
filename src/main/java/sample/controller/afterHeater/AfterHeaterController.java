@@ -13,7 +13,9 @@ import sample.model.pipeLine.PipeLine;
 import sample.model.pipeLine.PipeSize;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 public class AfterHeaterController extends BaseController{
 
@@ -305,4 +307,8 @@ public class AfterHeaterController extends BaseController{
         ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
     }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
 }

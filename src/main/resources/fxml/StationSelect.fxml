@@ -14,7 +14,7 @@
                 <HBox alignment="TOP_RIGHT" prefHeight="41.0" prefWidth="640.0">
                     <children>
                         <Button fx:id="btnLogout" mnemonicParsing="false" onAction="#logout" prefHeight="22.0"
-                                prefWidth="70.0" styleClass="background" text="Logout" textFill="#fff9f9"
+                                prefWidth="70.0" styleClass="background" text="Back" textFill="#fff9f9"
                                 textOverrun="CLIP">
                             <font>
                                 <Font size="14.0"/>

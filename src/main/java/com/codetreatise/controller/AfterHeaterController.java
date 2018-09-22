@@ -20,8 +20,9 @@ import sample.model.base.BaseModel;
 import sample.model.pipeLine.PipeLine;
 import sample.model.pipeLine.PipeSize;
 
-import java.io.IOException;
+import java.net.URL;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 @Controller
 public class AfterHeaterController extends BaseController{
@@ -80,7 +81,8 @@ public class AfterHeaterController extends BaseController{
 
 
     @FXML
-    public void initialize() throws IOException {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
         insulationThicknessComboBox.getItems().removeAll();
         insulationThicknessComboBox.getItems().addAll(PipeSpecificationsEntity.CENTIMETER, PipeSpecificationsEntity.INCH);
         insulationThicknessComboBox.getSelectionModel().select(PipeSpecificationsEntity.CENTIMETER);
@@ -406,6 +408,7 @@ public class AfterHeaterController extends BaseController{
 //        ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
         stageManager.switchScene(FxmlView.STATION);
     }
+
 
 
 }

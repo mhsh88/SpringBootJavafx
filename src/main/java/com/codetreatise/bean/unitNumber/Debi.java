@@ -25,7 +25,8 @@ public class Debi extends BaseEntity implements DebiConstants {
     }
     public Debi(double parseDouble, String m3PerHour) {
         super();
-        this.debi = parseDouble;
+
+        this.debi = parseDouble >= 0 ? parseDouble : 0.0;
         this.unit = m3PerHour;
     }
 

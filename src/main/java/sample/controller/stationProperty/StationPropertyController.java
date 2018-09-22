@@ -15,10 +15,11 @@ import sample.model.Station;
 import sample.model.base.BaseModel;
 import sample.model.stationProperties.StationPropertice;
 
-import java.io.IOException;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 public class StationPropertyController extends BaseController {
     final static private String PSI = "Psi";
@@ -96,7 +97,7 @@ public class StationPropertyController extends BaseController {
     }
 
     @FXML
-    public void initialize() throws IOException {
+    public void initialize(URL location, ResourceBundle resources) {
         gasPercentType.getItems().removeAll(gasPercentType.getItems());
         gasPercentType.getItems().addAll("درصد مولی", "درصد جرمی");
         gasPercentType.getSelectionModel().select("درصد مولی");
@@ -1044,11 +1045,7 @@ public class StationPropertyController extends BaseController {
 
         }
         else{
-            try {
-                initialize();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            initialize(null, null);
             return;
         }
     }

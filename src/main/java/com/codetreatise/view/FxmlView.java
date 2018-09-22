@@ -102,7 +102,7 @@ public enum FxmlView {
 
         @Override
         public String getFxmlFile() {
-            return "/fxml/ShowResult.fxml";
+            return "/fxml/ShowChart.fxml";
         }
 
     }, STATION_SELECT {

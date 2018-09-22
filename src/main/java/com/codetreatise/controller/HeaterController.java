@@ -28,9 +28,10 @@ import sample.controller.calculate.CalculateController;
 import sample.model.Station;
 import sample.model.heaters.HeatersModel;
 
-import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 @Controller
 public class HeaterController extends BaseController{
@@ -51,7 +52,7 @@ public class HeaterController extends BaseController{
     public TabPane tabPane = new TabPane();
 
     @FXML
-    public void initialize() throws IOException {
+    public void initialize(URL location, ResourceBundle resources) {
         tabPane.getTabs().clear();
         tabPane.setMinSize(400,200);
 

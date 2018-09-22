@@ -33,9 +33,11 @@ import sample.model.run.Runs;
 import sample.model.showResultEntity.Table;
 import sample.model.stationProperties.StationPropertice;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 @Controller
 public class CalculateController extends BaseController{
@@ -64,7 +66,7 @@ public class CalculateController extends BaseController{
     double Th;
 
 
-    public List<StationLogic> calculate(CityGateStationEntity cityGateStationEntity) {
+    public List<StationLogic> calculate(CityGateStationEntity cityGateStationEntity) throws Exception {
         boolean state = false;
         List<StationLogic> stationLogics = new ArrayList<>();
 
@@ -72,13 +74,14 @@ public class CalculateController extends BaseController{
 
         Runs runs = new Runs();
         if (cityGateStationEntity == null) {
-            showAlert("خطا", "خطا در اطلاعات ورودی", "اطلاعات ایستگاه تکمیل نشده است", Alert.AlertType.ERROR);
-            return null;
+//            showAlert("خطا", "خطا در اطلاعات ورودی", "اطلاعات ایستگاه تکمیل نشده است", Alert.AlertType.ERROR);
+            throw new Exception("city gate station is null");
+//            return null;
         }
         if (cityGateStationEntity != null) {
             if (cityGateStationEntity.getCondition() == null || cityGateStationEntity.getGasEntity() == null) {
-                showAlert("خطا", "خطا در اطلاعات ورودی", "اطلاعات ایستگاه تکمیل نشده است", Alert.AlertType.ERROR);
-                return null;
+//                showAlert("خطا", "خطا در اطلاعات ورودی", "اطلاعات ایستگاه تکمیل نشده است", Alert.AlertType.ERROR);
+                throw new Exception("city gate station is null");
             }
             if (cityGateStationEntity.getRuns() != null && cityGateStationEntity.getRuns().size() > 0) {
 
@@ -97,6 +100,7 @@ public class CalculateController extends BaseController{
             }
 
         }
+
         if (runs != null && runs.getRuns() != null && runs.getRuns().size() > 0) {
             double tempDebi = 0;
             for (int i = 0; i < runs.getRuns().size(); i++) {
@@ -115,8 +119,8 @@ public class CalculateController extends BaseController{
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == okButton) {
                     cityGateStationEntity.getCondition().getDebiInput().setDebi(tempDebi);
-                    cityGateStationEntity = cityGateStationService.save(cityGateStationEntity);
-                    stageManager.setCityGateStationEntity(cityGateStationEntity);
+//                    cityGateStationEntity = cityGateStationService.save(cityGateStationEntity);
+//                    stageManager.setCityGateStationEntity(cityGateStationEntity);
                     // ... user chose "One"
                 } else {
                     // ... user chose CANCEL or closed the dialog
@@ -126,7 +130,10 @@ public class CalculateController extends BaseController{
 
 
         stationLogics.add(getStationLogic(cityGateStationEntity, runs, true));
-        stationLogics.add(getStationLogic(cityGateStationEntity, runs, false));
+        if(cityGateStationEntity.isRequiredHydrate()){
+            stationLogics.add(getStationLogic(cityGateStationEntity, runs, false));
+        }
+
         return stationLogics;
     }
 
@@ -136,7 +143,9 @@ public class CalculateController extends BaseController{
 //        StationPropertice stationPropertice = (StationPropertice) station.getList().get("stationPropertice");
 //        HeatersModel heatersModel = (HeatersModel) station.getList().get("HeatersModel");
     private StationLogic getStationLogic(CityGateStationEntity cityGateStationEntity, Runs runs, boolean userInput){
+
         StationLogic stationLogic = new StationLogic();
+
         PipeLine beforeHeaterPipeline = null;
         if(cityGateStationEntity.getBeforeHeater()!=null){
             PipeSpecificationsEntity pipeSpecificationsEntity = cityGateStationEntity.getBeforeHeater();
@@ -194,6 +203,8 @@ public class CalculateController extends BaseController{
             }
             stationLogic.setTout(Th + 273.15 + 2);
         }
+        if(!userInput)
+            stationLogic.setMessage("T_h");
         stationLogic.setPout(conditionEntity.getOutputPressure().getCostumePressure(PressureConstants.KPA));
 
        stationLogic.setBeforeHeater(beforeHeaterPipeline);
@@ -565,6 +576,11 @@ public class CalculateController extends BaseController{
 
     @Override
     public void setOnShow() {
+
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
 
     }
 }

@@ -12,7 +12,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "city_gate_station")
-public class CityGateStationEntity extends BaseEntity {
+public class CityGateStationEntity extends BaseEntity implements Cloneable {
+
+    @Transient
+    private boolean requiredHydrate = true;
     @Size(max = 255)
     public String province;
     @Size(max = 255)
@@ -76,6 +79,15 @@ public class CityGateStationEntity extends BaseEntity {
     @JoinColumn(name = "station_id")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<SecEntity> sec;
+
+    @Transient
+    public boolean isRequiredHydrate() {
+        return requiredHydrate;
+    }
+
+    public void setRequiredHydrate(boolean requiredHydrate) {
+        this.requiredHydrate = requiredHydrate;
+    }
 
     public List<SecEntity> getSec() {
         return sec;
@@ -181,5 +193,19 @@ public class CityGateStationEntity extends BaseEntity {
 
     public void setGasEntity(GasEntity gasEntity) {
         this.gasEntity = gasEntity;
+    }
+
+    @Override
+    @Transient
+    public Object clone() throws CloneNotSupportedException {
+        try
+        {
+            CityGateStationEntity clonedMyClass = (CityGateStationEntity) super.clone();
+            // if you have custom object, then you need create a new one in here
+            return clonedMyClass ;
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return new CityGateStationEntity();
+        }
     }
 }

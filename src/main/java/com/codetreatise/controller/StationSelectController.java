@@ -2,6 +2,7 @@ package com.codetreatise.controller;
 
 import com.codetreatise.bean.User;
 import com.codetreatise.bean.station.CityGateStationEntity;
+import com.codetreatise.bean.station.SecEntity;
 import com.codetreatise.config.StageManager;
 import com.codetreatise.service.CityGateStationService;
 import com.codetreatise.service.UserService;
@@ -66,6 +67,9 @@ public class StationSelectController implements Initializable {
 
     @FXML
     private ComboBox<String> cbRole;
+
+    @Autowired
+            private SecController secController;
 
     Callback<TableColumn<CityGateStationEntity, Boolean>, TableCell<CityGateStationEntity, Boolean>> cellFactory =
             new Callback<TableColumn<CityGateStationEntity, Boolean>, TableCell<CityGateStationEntity, Boolean>>() {
@@ -219,12 +223,31 @@ public class StationSelectController implements Initializable {
         List<CityGateStationEntity> cityGateStationEntities = userTable.getSelectionModel().getSelectedItems();
 
         Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation Dialog");
+        alert.setTitle("تایید حذف");
         alert.setHeaderText(null);
-        alert.setContentText("Are you sure you want to delete selected?");
+        alert.setContentText("آیا اطمینان به حذف این مورد دارید؟");
         Optional<ButtonType> action = alert.showAndWait();
 
-        if (action.get() == ButtonType.OK) cityGateStationService.deleteInBatch(cityGateStationEntities);
+
+
+        if (action.get() == ButtonType.OK){
+
+            for(CityGateStationEntity cityGateStationEntity : cityGateStationEntities){
+                SecEntity secEntity = secController.getSecEntity();
+                List<SecEntity> secEntities = cityGateStationEntity.getSec();
+                if(secEntities.contains(secEntity)){
+                    secController.setSecEntity(null);
+                }
+
+
+                cityGateStationEntity.setSec(null);
+                cityGateStationService.save(cityGateStationEntity);
+
+            }
+
+
+            cityGateStationService.deleteInBatch(cityGateStationEntities);
+        }
 
         loadUserDetails();
     }

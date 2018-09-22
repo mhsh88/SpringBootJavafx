@@ -12,8 +12,9 @@ import sample.model.base.BaseModel;
 import sample.model.pipeLine.PipeLine;
 import sample.model.pipeLine.PipeSize;
 
-import java.io.IOException;
+import java.net.URL;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 
 public class BeforeHeaterController extends BaseController{
@@ -43,7 +44,7 @@ public class BeforeHeaterController extends BaseController{
 
 
     @FXML
-    public void initialize() throws IOException {
+    public void initialize(URL location, ResourceBundle resources) {
         insulationThicknessComboBox.getItems().removeAll();
         insulationThicknessComboBox.getItems().addAll("سانتی متر (cm)", "اینچ (inch)");
         insulationThicknessComboBox.getSelectionModel().select("سانتی متر (cm)");

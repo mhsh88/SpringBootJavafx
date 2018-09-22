@@ -165,7 +165,12 @@ public class StationController extends BaseController implements Initializable {
     }
 
     public void calculateButton(ActionEvent actionEvent) throws IOException {
-        List<StationLogic> result = calculateController.calculate(stageManager.getCityGateStationEntity());
+        List<StationLogic> result = null;
+        try {
+            result = calculateController.calculate(stageManager.getCityGateStationEntity());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if(result!=null && result.size()>0){
             CityGateStationEntity cityGateStationEntity = stageManager.getCityGateStationEntity();
             ConditionEntity conditionEntity = cityGateStationEntity.getCondition();
@@ -187,6 +192,8 @@ public class StationController extends BaseController implements Initializable {
 //        showResultsFrame.show();
             stageManager.switchScene(FxmlView.SHOW_RESULT);
         }
+
+        //TODO must include alert
 //        calculateButtonFrame.close();
 
 

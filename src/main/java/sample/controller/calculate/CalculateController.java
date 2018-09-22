@@ -21,8 +21,10 @@ import sample.model.run.Runs;
 import sample.model.showResultEntity.Table;
 import sample.model.stationProperties.StationPropertice;
 
+import java.net.URL;
 import java.util.List;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 public class CalculateController extends BaseController{
     public final static String celciusDegree = " (C°)";
@@ -559,6 +561,11 @@ public class CalculateController extends BaseController{
 
     @Override
     public void setOnShow() {
+
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
 
     }
 }
