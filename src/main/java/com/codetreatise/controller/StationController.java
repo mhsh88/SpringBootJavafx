@@ -79,13 +79,8 @@ public class StationController extends BaseController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 //    Stage stage = (Stage)mainVbox.getScene().getWindow();
 //        mainVbox.prefWidthProperty().bind(stage.widthProperty().multiply(0.80));
-        Tooltip tt = new Tooltip();
-        tt.setText("انتخاب ایستگاه");
-        tt.setStyle("-fx-base: #AE3522; "
-                + "-fx-text-fill: white;"
-                + "");
 
-        stationSelect.setTooltip(tt);
+
 
     }
 

@@ -2,29 +2,30 @@ package com.codetreatise.controller;
 
 import com.codetreatise.config.StageManager;
 import com.codetreatise.view.FxmlView;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.util.TokenBuffer;
 import com.itextpdf.text.*;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import javafx.application.Platform;
+import ir.behinehsazan.gasStation.model.station.StationLogic;
 import javafx.beans.property.ObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.control.TitledPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import org.apache.poi.hssf.usermodel.HSSFHeader;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -46,7 +47,9 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Controller
 public class ShowResultsController implements Initializable {
+    ObjectMapper mapper = new ObjectMapper();
 
+    public AnchorPane mainAnchor;
     @Lazy
     @Autowired
     StageManager stageManager;
@@ -93,35 +96,55 @@ public class ShowResultsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+//        mainAnchor.getChildren().add(null);
+        List<StationLogic> stationLogics = stageManager.getCityGateStationEntity().getCondition().getResult().getSingleCalculation();
 
-        name.setCellValueFactory(new PropertyValueFactory<Table, String>("name"));
-        meter.setCellValueFactory(new PropertyValueFactory<Table, String>("meter"));
-        value.setCellValueFactory(new PropertyValueFactory<Table, String>("value"));
-        hydrateName.setCellValueFactory(new PropertyValueFactory<Table, String>("name"));
-        hydrateMeter.setCellValueFactory(new PropertyValueFactory<Table, String>("meter"));
-        hydrateValue.setCellValueFactory(new PropertyValueFactory<Table, String>("value"));
+        for(StationLogic stationLogic : stationLogics){
 
-//        showResult();
-        tableID.setItems(data);
-        tableID.setColumnResizePolicy((param) -> true);
-        Platform.runLater(() -> customResize(tableID));
-        name.prefWidthProperty().bind(tableID.widthProperty().divide(3));
-        meter.prefWidthProperty().bind(tableID.widthProperty().divide(3));
-        value.prefWidthProperty().bind(tableID.widthProperty().divide(3));
-        tableID.setEditable(true);
-        name.setCellFactory(new Callback<TableColumn<Table, String>, TableCell<Table, String>>() {
-            @Override
-            public TableCell<Table, String> call(TableColumn<Table, String> param) {
-                return new TextFieldTableCell<>();
-            }
-        });
-//        showResult();
-        hydrateTable.setItems(dataWithThydrate);
-        hydrateTable.setColumnResizePolicy((param) -> true);
-        Platform.runLater(() -> customResize(hydrateTable));
-        hydrateName.prefWidthProperty().bind(hydrateTable.widthProperty().divide(3));
-        hydrateMeter.prefWidthProperty().bind(tableID.widthProperty().divide(3));
-        hydrateValue.prefWidthProperty().bind(hydrateTable.widthProperty().divide(3));
+            TitledPane titledPane = new TitledPane();
+            if(stationLogic.getMessage()!=null && stationLogic.getMessage().equals("Th"))
+                titledPane.setText("دمای هیدرات");
+            else
+                titledPane.setText("اطلاعات ورودی");
+
+            mainAnchor.getChildren().add(new TitledPane());
+
+        }
+
+
+
+
+
+
+
+//        name.setCellValueFactory(new PropertyValueFactory<Table, String>("name"));
+//        meter.setCellValueFactory(new PropertyValueFactory<Table, String>("meter"));
+//        value.setCellValueFactory(new PropertyValueFactory<Table, String>("value"));
+//        hydrateName.setCellValueFactory(new PropertyValueFactory<Table, String>("name"));
+//        hydrateMeter.setCellValueFactory(new PropertyValueFactory<Table, String>("meter"));
+//        hydrateValue.setCellValueFactory(new PropertyValueFactory<Table, String>("value"));
+//
+////        showResult();
+//        tableID.setItems(data);
+//        tableID.setColumnResizePolicy((param) -> true);
+//        Platform.runLater(() -> customResize(tableID));
+//        name.prefWidthProperty().bind(tableID.widthProperty().divide(3));
+//        meter.prefWidthProperty().bind(tableID.widthProperty().divide(3));
+//        value.prefWidthProperty().bind(tableID.widthProperty().divide(3));
+//        tableID.setEditable(true);
+//        name.setCellFactory(new Callback<TableColumn<Table, String>, TableCell<Table, String>>() {
+//            @Override
+//            public TableCell<Table, String> call(TableColumn<Table, String> param) {
+//                return new TextFieldTableCell<>();
+//            }
+//        });
+////        showResult();
+//        hydrateTable.setItems(dataWithThydrate);
+//        hydrateTable.setColumnResizePolicy((param) -> true);
+//        Platform.runLater(() -> customResize(hydrateTable));
+//        hydrateName.prefWidthProperty().bind(hydrateTable.widthProperty().divide(3));
+//        hydrateMeter.prefWidthProperty().bind(tableID.widthProperty().divide(3));
+//        hydrateValue.prefWidthProperty().bind(hydrateTable.widthProperty().divide(3));
 //        showResult();
 
     }
@@ -503,5 +526,15 @@ public class ShowResultsController implements Initializable {
         } catch (IOException ioex) {
             ioex.printStackTrace();
         }
+    }
+
+    private ObjectNode getStationJsonNode(StationLogic stationLogic) throws IOException {
+        TokenBuffer tb = new TokenBuffer(null, false);
+
+//        mapper.writeValue(tb, gas);
+        StationLogic copyStation = mapper.readValue(tb.asParser(), StationLogic.class);
+//        copyGas.setComponent(gas.getComponent());
+        ObjectNode stationNode = (ObjectNode) mapper.readTree(mapper.writeValueAsString(copyStation));
+        return  stationNode;
     }
 }

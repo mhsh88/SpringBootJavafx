@@ -4,6 +4,7 @@ import com.codetreatise.bean.station.CityGateStationEntity;
 import com.codetreatise.view.FxmlView;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 
@@ -58,6 +59,7 @@ public class StageManager {
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
         primaryStage.centerOnScreen();
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo2.png")));
 //        primaryStage.setMaximized(true);
 
         try {

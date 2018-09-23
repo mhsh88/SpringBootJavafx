@@ -15,6 +15,8 @@ public class PipeSpecificationsEntity extends BaseEntity implements PipeSpecific
     private Double insulationThickness;
     private String insulationThicknessUnit;
     private String pipeSizeUnit;
+
+    @Column(name = "is_insulation")
     private boolean insulation;
 
 
@@ -79,7 +81,7 @@ public class PipeSpecificationsEntity extends BaseEntity implements PipeSpecific
         this.pipeSizeUnit = pipeSizeUnit;
     }
 
-    @Column(name = "is_insulation")
+
     public boolean isInsulation() {
         return insulation;
     }

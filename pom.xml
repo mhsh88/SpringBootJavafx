@@ -3,8 +3,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ir.behineh-sazan/</groupId>
-    <artifactId>SpringCGS</artifactId>
+    <groupId>ir.behineh-sazan</groupId>
+    <artifactId>CGS</artifactId>
     <packaging>jar</packaging>
     <version>1.0</version>
 
@@ -183,9 +183,51 @@
             <version>2.9.5</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.197</version>
+            <scope>runtime</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
+        <finalName>CGS-1.3.0</finalName>
+        <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+            <plugins>
+                <plugin>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>3.0.0</version>
+                </plugin>
+                <!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging -->
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.0.2</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.7.0</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.20.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>3.2.0</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.5.2</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.2</version>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -198,7 +240,23 @@
                     <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <!--<configuration>-->
+                <!--<classifier>exec</classifier>-->
+                <!--</configuration>-->
+            </plugin>
         </plugins>
+
     </build>
     <description>The Application front-end designed using JavaFX and Spring Boot is used as backend to bootstrap the
         app. The scenes are created in FXML using Scene Builder. The app demonstrate simple CRUD using Spring Boot and

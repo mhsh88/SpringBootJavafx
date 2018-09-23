@@ -779,7 +779,7 @@ public class SecController extends BaseController implements Initializable {
             return;
         }
 
-        stageManager.switchScene(FxmlView.SHOW_RESULT);
+        stageManager.switchScene(FxmlView.SHOW_CHART);
     }
 
     @Override
