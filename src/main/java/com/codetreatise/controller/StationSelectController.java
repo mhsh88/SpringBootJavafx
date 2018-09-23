@@ -77,7 +77,7 @@ public class StationSelectController implements Initializable {
                 public TableCell<CityGateStationEntity, Boolean> call(final TableColumn<CityGateStationEntity, Boolean> param) {
                     final TableCell<CityGateStationEntity, Boolean> cell = new TableCell<CityGateStationEntity, Boolean>() {
                         final Button btnEdit = new Button();
-                        Image imgEdit = new Image(getClass().getResourceAsStream("/images/point-at.png"));
+                        Image imgEdit = new Image(getClass().getResourceAsStream("/images/click.png"));
 
                         @Override
                         public void updateItem(Boolean check, boolean empty) {

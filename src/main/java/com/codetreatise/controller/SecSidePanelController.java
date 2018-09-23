@@ -94,7 +94,7 @@ public class SecSidePanelController implements Initializable {
                 public TableCell<SecEntity, Boolean> call(final TableColumn<SecEntity, Boolean> param) {
                     final TableCell<SecEntity, Boolean> cell = new TableCell<SecEntity, Boolean>() {
                         final Button btnEdit = new Button();
-                        Image imgEdit = new Image(getClass().getResourceAsStream("/images/point-at.png"));
+                        Image imgEdit = new Image(getClass().getResourceAsStream("/images/click.png"));
 
                         @Override
                         public void updateItem(Boolean check, boolean empty) {

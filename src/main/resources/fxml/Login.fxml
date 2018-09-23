@@ -31,9 +31,6 @@
                 <DropShadow blurType="ONE_PASS_BOX" />
             </effect>
         </Button>
-      <JFXSpinner layoutX="100.0" layoutY="241.0" progress="0.0" />
-      <JFXSlider layoutX="117.0" layoutY="291.0" orientation="VERTICAL" />
-      <JFXColorPicker layoutX="208.0" layoutY="335.0" />
     </children>
     <opaqueInsets>
         <Insets />

@@ -1,6 +1,8 @@
 package com.codetreatise.bean.station;
 
 import com.codetreatise.bean.base.BaseEntity;
+import com.codetreatise.bean.constants.SecConstants;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -11,7 +13,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "sec")
-public class SecEntity extends BaseEntity {
+public class SecEntity extends BaseEntity implements SecConstants {
+
 
     @OneToMany
     @JoinColumn(name = "sec_id")
@@ -41,6 +44,18 @@ public class SecEntity extends BaseEntity {
     @Lob
     @Column(name = "file_name")
     private String fileName;
+
+    @Size(max = 1)
+    @ColumnDefault(value="'"+NOT_CALCULATED+"'")
+    private String calculated;
+
+    public String getCalculated() {
+        return calculated;
+    }
+
+    public void setCalculated(String calculated) {
+        this.calculated = calculated;
+    }
 
     public byte[] getExcelFile() {
         return excelFile;

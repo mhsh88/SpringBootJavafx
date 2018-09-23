@@ -15,10 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -43,6 +40,7 @@ import java.util.*;
 
 @Controller
 public class StationController extends BaseController implements Initializable {
+    public Button stationSelect;
     @Lazy
     @Autowired
     private StageManager stageManager;
@@ -81,6 +79,13 @@ public class StationController extends BaseController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 //    Stage stage = (Stage)mainVbox.getScene().getWindow();
 //        mainVbox.prefWidthProperty().bind(stage.widthProperty().multiply(0.80));
+        Tooltip tt = new Tooltip();
+        tt.setText("انتخاب ایستگاه");
+        tt.setStyle("-fx-base: #AE3522; "
+                + "-fx-text-fill: white;"
+                + "");
+
+        stationSelect.setTooltip(tt);
 
     }
 

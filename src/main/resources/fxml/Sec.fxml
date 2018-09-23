@@ -22,7 +22,7 @@
 <AnchorPane stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.controller.SecController">
     <children>
 
-        <BorderPane prefHeight="600.0" prefWidth="1000.0">
+        <BorderPane prefHeight="600.0" prefWidth="1000.0" AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0">
             <right>
                 <VBox prefHeight="571.0" prefWidth="306.0" spacing="10.0" styleClass="background" stylesheets="@../styles/Styles.css" BorderPane.alignment="CENTER">
                     <children>
@@ -169,7 +169,7 @@
                                 </Button>
                             </children>
                         </HBox>
-                        <TableView fx:id="conditionTable" prefHeight="400.0" prefWidth="800.0" tableMenuButtonVisible="true">
+                        <TableView fx:id="conditionTable" prefHeight="400.0" prefWidth="800.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS" >
                             <columns>
 
                                 <TableColumn fx:id="colDate" maxWidth="3500.0" prefWidth="50.0" text="تاریخ" />

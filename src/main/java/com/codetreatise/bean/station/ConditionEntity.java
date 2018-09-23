@@ -8,11 +8,14 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "conditions")
 public class ConditionEntity extends BaseEntity {
+    @Transient
+    DecimalFormat df = new DecimalFormat("#.###");
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "env_tempreture_id")
@@ -52,32 +55,32 @@ public class ConditionEntity extends BaseEntity {
 
     @Transient
     public String getOutputPressureWithUnit() {
-        return outputPressure.getPressure() + " " + outputPressure.getUnit();
+        return df.format(outputPressure.getPressure()) + " " + outputPressure.getUnit();
     }
 
     @Transient
     public String getOutputTempWithUnit() {
-        return outputTemperature.getTemperature() + " " + outputTemperature.getUnit();
+        return df.format(outputTemperature.getTemperature()) + " " + outputTemperature.getUnit();
     }
 
     @Transient
     public String getInputPressureWithUnit() {
-        return inputPressure.getPressure() + " " + inputPressure.getUnit();
+        return df.format(inputPressure.getPressure()) + " " + inputPressure.getUnit();
     }
 
     @Transient
     public String getInputTempWithUnit() {
-        return inputTemperature.getTemperature() + " " + inputTemperature.getUnit();
+        return df.format(inputTemperature.getTemperature()) + " " + inputTemperature.getUnit();
     }
 
     @Transient
     public String getDebiWithUnit() {
-        return debiInput.getDebi() + " " + debiInput.getUnit();
+        return df.format(debiInput.getDebi()) + " " + debiInput.getUnit();
     }
 
     @Transient
     public String getEnvTempWithUnit() {
-        return envTemperature.getTemperature() + " " + envTemperature.getUnit();
+        return df.format(envTemperature.getTemperature()) + " " + envTemperature.getUnit();
     }
 
     public Temperature getEnvTemperature() {

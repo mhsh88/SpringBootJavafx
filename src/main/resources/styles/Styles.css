@@ -27,3 +27,14 @@
 .refreshBtn {
     -fx-background-color: #e34e3a;
 }
+
+.textFieldSecShowChart {
+
+    -fx-text-fill: #3c3d39;
+    -fx-font-size: 15px;
+    -fx-background-color: #e8eae3;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 5;
+
+}

@@ -19,6 +19,7 @@ public interface BaseConstants extends Serializable {
     String ERROR = "error";
     String DOT = ".";
     String QUERY = "query";
+    String SPACE = " ";
 
     String YES = "yes";
     String NO = "no";

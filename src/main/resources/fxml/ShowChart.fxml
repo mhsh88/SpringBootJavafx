@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -14,19 +14,20 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <AnchorPane stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.controller.ChartController">
     <opaqueInsets>
         <Insets />
     </opaqueInsets>
    <children>
-      <BorderPane prefHeight="400.0" prefWidth="500.0">
+      <BorderPane prefHeight="600.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
             <LineChart fx:id="secChart" title="SEC" BorderPane.alignment="CENTER">
               <xAxis>
                 <CategoryAxis label="تاریخ" side="BOTTOM" fx:id="x" />
               </xAxis>
               <yAxis>
-                <NumberAxis fx:id="y" label="مصرف متر مکعب" side="LEFT" />
+                <NumberAxis fx:id="y" label="مصرف استاندارد متر مکعب" side="LEFT" />
               </yAxis>
             </LineChart>
          </center>
@@ -40,6 +41,9 @@
                        <effect>
                            <DropShadow blurType="ONE_PASS_BOX" color="#00000091" />
                        </effect>
+                       <HBox.margin>
+                           <Insets right="10.0" top="5.0" />
+                       </HBox.margin>
                    </Button>
                    <Button fx:id="backButton" mnemonicParsing="false" onAction="#backButton" prefHeight="22.0" prefWidth="70.0" styleClass="background" text="Back" textFill="#fff9f9" textOverrun="CLIP">
                        <font>
@@ -48,6 +52,9 @@
                        <effect>
                            <DropShadow blurType="ONE_PASS_BOX" color="#00000091" />
                        </effect>
+                       <HBox.margin>
+                           <Insets right="10.0" top="5.0" />
+                       </HBox.margin>
                    </Button>
 
                </children>
@@ -56,14 +63,90 @@
          <bottom>
             <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="200.0">
+                  <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="200.0" spacing="10">
                      <children>
-                        <Label text="Label" />
-                        <Label text="Label" />
-                        <TextField alignment="CENTER_RIGHT" />
+                        <Label fx:id="inputLabel" prefHeight="20" text="" />
+                        <Label text="محاسبه SEC اطلاعات وارد شده: " />
+                         <Button fx:id="inputBtn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#input" prefHeight="25.0" prefWidth="80.0" styleClass="btnCal" text="محاسبه" textFill="WHITE">
+                             <font>
+                                 <Font size="15.0" />
+                             </font>
+                             <effect>
+                                 <DropShadow blurType="ONE_PASS_BOX" color="#6468b2" />
+                             </effect>
+                         </Button>
+                         <JFXTextField fx:id="inputTextField" alignment="BOTTOM_RIGHT" focusColor="firebrick" labelFloat="true" prefHeight="20" prefWidth="50" promptText="درصد" styleClass="jfx-text-field" text="0">
+                             <HBox.margin>
+                                 <Insets right="10.0" />
+                             </HBox.margin>
+                         </JFXTextField>
+
                      </children>
+
                   </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0" />
+                  <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="200.0" spacing="10">
+                     <children>
+                        <Label fx:id="hydrateLabel" prefHeight="20" text="" />
+                        <Label text="محاسبه SEC دمای هیدرات + ۲: " />
+                         <Button fx:id="hydrateBtn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#hydrate" prefHeight="25.0" prefWidth="80.0" styleClass="btnCal" text="محاسبه" textFill="WHITE">
+                             <font>
+                                 <Font size="15.0" />
+                             </font>
+                             <effect>
+                                 <DropShadow blurType="ONE_PASS_BOX" color="#6468b2" />
+                             </effect>
+                         </Button>
+                         <JFXTextField fx:id="hydrateTextField" alignment="BOTTOM_RIGHT" focusColor="firebrick" labelFloat="true" prefHeight="20" prefWidth="50" promptText="درصد" styleClass="jfx-text-field" text="0">
+                             <HBox.margin>
+                                 <Insets right="10.0" />
+                             </HBox.margin>
+                         </JFXTextField>
+
+                     </children>
+
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="200.0" spacing="10">
+                     <children>
+                        <Label fx:id="eightLabel" prefHeight="20" text="" />
+                        <Label text="محاسبه SEC دمای خروجی ۸: " style="-fx-font-size: 14px" />
+                         <Button fx:id="eightBtn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#eight" prefHeight="25.0" prefWidth="80.0" styleClass="btnCal" text="محاسبه" textFill="WHITE">
+                             <font>
+                                 <Font size="15.0" />
+                             </font>
+                             <effect>
+                                 <DropShadow blurType="ONE_PASS_BOX" color="#6468b2" />
+                             </effect>
+                         </Button>
+                         <JFXTextField fx:id="eightTextField" alignment="BOTTOM_RIGHT" focusColor="firebrick" labelFloat="true" prefHeight="20" prefWidth="50" promptText="درصد" styleClass="jfx-text-field" text="0">
+                             <HBox.margin>
+                                 <Insets right="10.0" />
+                             </HBox.margin>
+                         </JFXTextField>
+
+                     </children>
+
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="200.0" spacing="10">
+                     <children>
+                        <Label fx:id="fifteenLabel" prefHeight="20" />
+                        <Label text="محاسبه SEC دمای خروجی ۱۵: " />
+                         <Button fx:id="fifteenBtn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#fifteen" prefHeight="25.0" prefWidth="80.0" styleClass="btnCal" text="محاسبه" textFill="WHITE">
+                             <font>
+                                 <Font size="15.0" />
+                             </font>
+                             <effect>
+                                 <DropShadow blurType="ONE_PASS_BOX" color="#6468b2" />
+                             </effect>
+                         </Button>
+                         <JFXTextField fx:id="fifteenTextField" alignment="BOTTOM_RIGHT" focusColor="firebrick" labelFloat="true" prefHeight="20" prefWidth="50" promptText="درصد" styleClass="jfx-text-field"  text="0">
+                             <HBox.margin>
+                                 <Insets right="10.0" />
+                             </HBox.margin>
+                         </JFXTextField>
+
+                     </children>
+
+                  </HBox>
                </children>
             </VBox>
          </bottom>

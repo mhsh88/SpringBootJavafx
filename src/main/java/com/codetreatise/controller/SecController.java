@@ -623,8 +623,17 @@ public class SecController extends BaseController implements Initializable {
         ExecutorService service = Executors.newFixedThreadPool(500);
         CityGateStationEntity finalCopyCgs = copyCgs;
         service.submit(new Runnable() {
-            public void run() {
-                backGroundSecCalculation(finalCopyCgs,conditionList);
+            public void run(){
+                secEntity.setCalculated(SecEntity.CALCULATING);
+                secEntity = secService.save(secEntity);
+                try{
+                    backGroundSecCalculation(finalCopyCgs,conditionList);
+                }
+                catch (Exception e){
+                    secEntity.setCalculated(SecEntity.NOT_CALCULATED);
+                    secEntity = secService.save(secEntity);
+                }
+
             }
 
             private void backGroundSecCalculation(CityGateStationEntity finalCopyCgs, List<ConditionEntity> conditionList) {
@@ -702,6 +711,10 @@ public class SecController extends BaseController implements Initializable {
                     }
                 }
 
+
+
+                secEntity.setCalculated(SecEntity.DOWN);
+                secEntity = secService.save(secEntity);
 
 
             }
