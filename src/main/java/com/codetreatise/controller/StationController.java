@@ -8,6 +8,8 @@ import com.codetreatise.service.CityGateStationService;
 import com.codetreatise.service.ConditionService;
 import com.codetreatise.service.ResultService;
 import com.codetreatise.view.FxmlView;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import ir.behinehsazan.gasStation.model.station.StationLogic;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -15,7 +17,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -52,6 +57,12 @@ public class StationController extends BaseController implements Initializable {
 
     @Autowired
     private CityGateStationService cityGateStationService;
+
+    @Autowired
+    private ShowResultsController showResultsController;
+
+    ObjectMapper mapper = new ObjectMapper();
+
     public VBox mainVbox;
     Stage stage;
     Scene scene;
@@ -170,6 +181,10 @@ public class StationController extends BaseController implements Initializable {
             result = calculateController.calculate(stageManager.getCityGateStationEntity());
         } catch (Exception e) {
             e.printStackTrace();
+            if(stageManager.getCityGateStationEntity()==null){
+                showAlert("خطا", "خطا در اطلاعات ورودی", "اطلاعات ایستگاه تکمیل نشده است", Alert.AlertType.ERROR);
+                return;
+            }
         }
         if(result!=null && result.size()>0){
             CityGateStationEntity cityGateStationEntity = stageManager.getCityGateStationEntity();
@@ -187,10 +202,18 @@ public class StationController extends BaseController implements Initializable {
             stageManager.setCityGateStationEntity(cityGateStationEntity);
 
 
+            List<StationLogic> stationLogics = resultEntity.getSingleCalculation();
 
+            JsonNode node1 = mapper.convertValue(stationLogics, JsonNode.class);
+            JsonNode node = mapper.valueToTree(stationLogics);
+            String json = mapper.writeValueAsString(stationLogics);
+            JsonNode jsonNode = mapper.readTree(json);
+            JsonNode debi = jsonNode.get("debi");
+            jsonNode.getNodeType();
 
 //        showResultsFrame.show();
-            stageManager.switchScene(FxmlView.SHOW_RESULT);
+//            stageManager.switchScene(FxmlView.SHOW_RESULT);
+            String lkafs = "";
         }
 
         //TODO must include alert

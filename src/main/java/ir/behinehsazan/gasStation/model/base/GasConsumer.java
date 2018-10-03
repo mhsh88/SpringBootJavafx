@@ -1,5 +1,6 @@
 package ir.behinehsazan.gasStation.model.base;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import ir.behinehsazan.gasStation.model.gas.Gas;
 
 public abstract class GasConsumer extends EntityBase {
@@ -70,6 +71,7 @@ public abstract class GasConsumer extends EntityBase {
         Inverse = inverse;
     }
 
+    @JsonIgnore
     public double getQdot(){
         Gas g = getGas();
         

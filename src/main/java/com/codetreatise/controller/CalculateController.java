@@ -74,7 +74,7 @@ public class CalculateController extends BaseController{
 
         Runs runs = new Runs();
         if (cityGateStationEntity == null) {
-//            showAlert("خطا", "خطا در اطلاعات ورودی", "اطلاعات ایستگاه تکمیل نشده است", Alert.AlertType.ERROR);
+    //            showAlert("خطا", "خطا در اطلاعات ورودی", "اطلاعات ایستگاه تکمیل نشده است", Alert.AlertType.ERROR);
             throw new Exception("city gate station is null");
 //            return null;
         }
