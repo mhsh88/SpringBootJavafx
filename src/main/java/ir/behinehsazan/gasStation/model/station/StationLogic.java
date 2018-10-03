@@ -1,5 +1,6 @@
 package ir.behinehsazan.gasStation.model.station;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import ir.behinehsazan.gasStation.model.base.GasConsumer;
 import ir.behinehsazan.gasStation.model.heater.Heater;
 import ir.behinehsazan.gasStation.model.heater.Heaters;
@@ -27,6 +28,16 @@ public class StationLogic extends GasConsumer implements Serializable {
     private Runs runs = new Runs();
     private Regulator regulator = new Regulator();
     private String message;
+    private PipeLine calBeforeHeater;
+
+    @JsonProperty("calBeforeHeater")
+    public PipeLine getCalBeforeHeater() {
+        return calBeforeHeater;
+    }
+
+    public void setCalBeforeHeater(PipeLine calBeforeHeater) {
+        this.calBeforeHeater = calBeforeHeater;
+    }
 
     public String getMessage() {
         return message;
@@ -117,6 +128,7 @@ public class StationLogic extends GasConsumer implements Serializable {
         }
 
 
+        this.setCalBeforeHeater(beforeHeater);
         return beforeHeater;
     }
 

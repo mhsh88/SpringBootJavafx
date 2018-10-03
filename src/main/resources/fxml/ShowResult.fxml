@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
 <AnchorPane fx:id="mainAnchor" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.controller.ShowResultsController">
-   <!--<children>-->
-      <!--<TitledPane animated="true" text="untitled" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">-->
-         <!--<content>-->
-            <!--<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">-->
-               <!--<children>-->
-                  <!--<TitledPane animated="true" text="untitled">-->
-                     <!--<content>-->
-                        <!--<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />-->
-                     <!--</content>-->
-                  <!--</TitledPane>-->
-                  <!--<TitledPane animated="true" text="untitled">-->
-                     <!--<content>-->
-                        <!--<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />-->
-                     <!--</content>-->
-                  <!--</TitledPane>-->
-               <!--</children>-->
-            <!--</AnchorPane>-->
-         <!--</content>-->
-      <!--</TitledPane>-->
-   <!--</children>-->
+   <children>
+      <Accordion layoutX="255.0" layoutY="229.0">
+        <panes>
+          <TitledPane animated="false" text="untitled 1">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </TitledPane>
+          <TitledPane animated="false" text="untitled 2">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </TitledPane>
+          <TitledPane animated="false" text="untitled 3">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </TitledPane>
+        </panes>
+      </Accordion>
+   </children>
 </AnchorPane>

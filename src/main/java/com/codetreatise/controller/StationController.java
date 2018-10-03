@@ -208,10 +208,12 @@ public class StationController extends BaseController implements Initializable {
             JsonNode node = mapper.valueToTree(stationLogics);
             String json = mapper.writeValueAsString(stationLogics);
             JsonNode jsonNode = mapper.readTree(json);
-            JsonNode debi = jsonNode.get("debi");
+            JsonNode debi = jsonNode.get(0).get("debi");
+            System.out.println(debi);
             jsonNode.getNodeType();
 
 //        showResultsFrame.show();
+//            FxmlView.SHOW_RESULT;
 //            stageManager.switchScene(FxmlView.SHOW_RESULT);
             String lkafs = "";
         }
