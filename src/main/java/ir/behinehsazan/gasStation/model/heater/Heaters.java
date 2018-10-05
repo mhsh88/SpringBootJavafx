@@ -30,7 +30,7 @@ public class Heaters extends GasConsumer{
 
 
     public void componentConsumptionCal(){
-        setConsumption();
+        calConsumption();
         double heaterConsumption  = 0;
         double burnerConsumption = 0;
         if(heaters.size() > 0) {
@@ -50,7 +50,7 @@ public class Heaters extends GasConsumer{
 
             }
 
-//            heaters.get(i).setConsumption(burnerTempComsum);
+//            heaters.get(i).calConsumption(burnerTempComsum);
 //            heaterConsum = heaterConsum + heaters.get(i).getConsumption();
         }
         this.setConsumption(burnerTempComsum);

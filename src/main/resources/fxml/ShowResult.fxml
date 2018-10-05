@@ -1,30 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Accordion?>
-<?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.layout.AnchorPane?>
-
-
-<AnchorPane fx:id="mainAnchor" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.controller.ShowResultsController">
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<AnchorPane fx:id="mainAnchor" stylesheets="@../styles/Styles.css" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.controller.ShowResultsController">
    <children>
-      <Accordion layoutX="255.0" layoutY="229.0">
-        <panes>
-          <TitledPane animated="false" text="untitled 1">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-            </content>
-          </TitledPane>
-          <TitledPane animated="false" text="untitled 2">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-            </content>
-          </TitledPane>
-          <TitledPane animated="false" text="untitled 3">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-            </content>
-          </TitledPane>
-        </panes>
-      </Accordion>
+      <BorderPane prefHeight="200.0" prefWidth="200.0"  AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <top>
+          <HBox alignment="TOP_RIGHT" prefHeight="30.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+              <Button fx:id="backButton" mnemonicParsing="false" onAction="#backButton" prefHeight="22.0" prefWidth="70.0" styleClass="background" text="Back" textFill="#fff9f9" textOverrun="CLIP">
+                <font>
+                  <Font size="14.0" />
+                </font>
+                <effect>
+                  <DropShadow blurType="ONE_PASS_BOX" color="#00000091" />
+                </effect>
+                <HBox.margin>
+                  <Insets right="10.0" top="5.0" />
+                </HBox.margin>
+              </Button>
+
+            </children>
+          </HBox>
+        </top>
+        <center>
+          <Accordion fx:id="accordion" layoutX="255.0" layoutY="229.0">
+            <panes>
+              <TitledPane animated="false" text="untitled 1">
+                <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                </content>
+              </TitledPane>
+              <TitledPane animated="false" text="untitled 2">
+                <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                </content>
+              </TitledPane>
+              <TitledPane animated="false" text="untitled 3">
+                <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                </content>
+              </TitledPane>
+            </panes>
+          </Accordion>
+
+        </center>
+      </BorderPane>
+
    </children>
 </AnchorPane>

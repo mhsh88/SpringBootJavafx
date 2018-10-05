@@ -1502,13 +1502,7 @@ public class StationPropertyController extends BaseController {
         environmentTempTextField.clear();
         windSpeedTextField.clear();
         stationDebiTextField.clear();
-
-        Station.getInstance().getList().remove("stationPropertice");
-
-
-
-
-
+        stageManager.setCityGateStationEntity(null);
     }
     @FXML
     private void cancelButton(ActionEvent actionEvent)  {

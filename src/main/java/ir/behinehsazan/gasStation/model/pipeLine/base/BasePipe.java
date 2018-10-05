@@ -1,5 +1,6 @@
 package ir.behinehsazan.gasStation.model.pipeLine.base;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import ir.behinehsazan.gasStation.model.base.GasConsumer;
 import ir.behinehsazan.gasStation.model.gas.Gas;
 import ir.behinehsazan.gasStation.model.mathCalculation.FindRoot;
@@ -12,16 +13,23 @@ import org.apache.commons.math3.analysis.solvers.BisectionSolver;
 import sample.controller.base.BaseController;
 
 public class BasePipe extends GasConsumer implements FindRoot {
+    @JsonIgnore
     private double length;
     private Gas gas;
+    @JsonIgnore
     private double outerDiameter;
+    @JsonIgnore
     private double interDiameter;
+    @JsonIgnore
     private double insulationThickness;
+    @JsonIgnore
     private double insulationFactor;
+    @JsonIgnore
     private double R;
 //    private boolean Inverse = false;
-
+    @JsonIgnore
     private double pmean;
+    @JsonIgnore
     private double tmean;
 
 

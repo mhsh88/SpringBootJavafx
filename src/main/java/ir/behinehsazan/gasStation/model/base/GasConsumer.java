@@ -1,6 +1,7 @@
 package ir.behinehsazan.gasStation.model.base;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import ir.behinehsazan.gasStation.model.gas.Gas;
 
 public abstract class GasConsumer extends EntityBase {
@@ -8,9 +9,11 @@ public abstract class GasConsumer extends EntityBase {
     double Tout;
     double Pin;
     double Pout;
+    @JsonIgnore
     boolean Inverse = false;
     Gas gas;
 
+    @JsonProperty("gas")
     public Gas getGas() {
         return gas;
     }
@@ -62,7 +65,7 @@ public abstract class GasConsumer extends EntityBase {
     public void setTout(double tout) {
         Tout = tout;
     }
-
+    @JsonIgnore
     public boolean isInverse() {
         return Inverse;
     }
@@ -93,7 +96,7 @@ public abstract class GasConsumer extends EntityBase {
         return Qdot;
 
     }
-    public void setConsumption(){
+    public void calConsumption(){
         Gas g = getGas();
         double heatConsumption;
         double Dstd;
@@ -110,7 +113,7 @@ public abstract class GasConsumer extends EntityBase {
         // change kJ/s to kJ/hr
         heatConsumption = heatConsumption * 3600;
         // change kJ/hr to kg/hr
-        heatConsumption = heatConsumption / g.getHHVd();
+        heatConsumption = heatConsumption / g.getHhvd();
         //kg/hr to Standard m^3/hr
         heatConsumption = heatConsumption / Dstd;
 

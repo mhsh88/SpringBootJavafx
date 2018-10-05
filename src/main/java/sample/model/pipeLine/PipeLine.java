@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.Objects;
 
 public class PipeLine extends BaseModel{
+    public PipeLine() {
+    }
+
     private final static Map<String, PipeSize> sizeSelection = new HashMap<String, PipeSize>() {
         {
 
@@ -27,15 +30,22 @@ public class PipeLine extends BaseModel{
 
         }
     };
-
+    
     Double OD;
+    
     Double ID;
+    
     Double length;
+    
     Double lineThickness;
+    
     Double insulationThickness;
+    
     Double insulationFactor;
+    
     String size;
 
+    
     public boolean isInsulation() {
         return insulation;
     }
@@ -44,14 +54,22 @@ public class PipeLine extends BaseModel{
         this.insulation = insulation;
     }
 
+    
     boolean insulation;
+    
     private Double Tin;
+    
     private Double Tout;
+    
     private Double Pin;
+    
     private Double Pout;
+    
     private Double withInsulationConsumption;
+    
     private Double notIsulationConsumption;
 
+    
     public Double getTin() {
         return Tin;
     }
@@ -59,7 +77,7 @@ public class PipeLine extends BaseModel{
     public void setTin(Double tin) {
         Tin = tin;
     }
-
+    
     public Double getTout() {
         return Tout;
     }
@@ -67,7 +85,7 @@ public class PipeLine extends BaseModel{
     public void setTout(Double tout) {
         Tout = tout;
     }
-
+    
     public Double getPin() {
         return Pin;
     }
@@ -75,7 +93,7 @@ public class PipeLine extends BaseModel{
     public void setPin(Double pin) {
         Pin = pin;
     }
-
+    
     public Double getPout() {
         return Pout;
     }
@@ -83,7 +101,7 @@ public class PipeLine extends BaseModel{
     public void setPout(Double pout) {
         Pout = pout;
     }
-
+    
     public Double getWithInsulationConsumption() {
         return withInsulationConsumption;
     }
@@ -91,7 +109,7 @@ public class PipeLine extends BaseModel{
     public void setWithInsulationConsumption(Double withInsulationConsumption) {
         this.withInsulationConsumption = withInsulationConsumption;
     }
-
+    
     public Double getNotIsulationConsumption() {
         return notIsulationConsumption;
     }
@@ -100,7 +118,7 @@ public class PipeLine extends BaseModel{
         this.notIsulationConsumption = notIsulationConsumption;
     }
 
-
+    
     private PipeSize pipeSize;
     public PipeLine(String size, double length){
         this.size = size;
@@ -114,6 +132,7 @@ public class PipeLine extends BaseModel{
 
     }
 
+    
     public Double getLength() {
         return length;
     }
@@ -125,11 +144,11 @@ public class PipeLine extends BaseModel{
         this.insulationThickness = insulationThickness;
         this.insulationFactor = insulationFactor;
     }
-
+    
     public static Map<String, PipeSize> getSizeSelection() {
         return sizeSelection;
     }
-
+    
     public String getSize() {
         return size;
     }
@@ -137,7 +156,7 @@ public class PipeLine extends BaseModel{
     public void setSize(String size) {
         this.size = size;
     }
-
+    
     public Double getOD() {
         return OD;
     }
@@ -145,7 +164,7 @@ public class PipeLine extends BaseModel{
     public void setOD(Double OD) {
         this.OD = OD;
     }
-
+    
     public Double getID() {
         return ID;
     }
@@ -153,7 +172,7 @@ public class PipeLine extends BaseModel{
     public void setID(Double ID) {
         this.ID = ID;
     }
-
+    
     public Double getLineThickness() {
         return lineThickness;
     }
@@ -161,7 +180,7 @@ public class PipeLine extends BaseModel{
     public void setLineThickness(Double lineThickness) {
         this.lineThickness = lineThickness;
     }
-
+    
     public Double getInsulationThickness() {
         return insulationThickness;
     }
@@ -169,7 +188,7 @@ public class PipeLine extends BaseModel{
     public void setInsulationThickness(Double insulationThickness) {
         this.insulationThickness = insulationThickness;
     }
-
+    
     public Double getInsulationFactor() {
         return insulationFactor;
     }

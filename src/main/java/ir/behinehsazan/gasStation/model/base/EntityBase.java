@@ -1,12 +1,18 @@
 package ir.behinehsazan.gasStation.model.base;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public abstract class EntityBase implements Base{
 
     protected static Double Tenv;
     protected static Double Vair;
     protected double consumption;
+    @JsonIgnore
     protected double efficiency;
+    @JsonIgnore
     protected double debi;
+
 
     public static Double getVair() {
         return Vair;
@@ -27,6 +33,7 @@ public abstract class EntityBase implements Base{
 
 
 
+    @JsonProperty("debi")
     public double getDebi() {
         return debi;
     }
@@ -37,6 +44,7 @@ public abstract class EntityBase implements Base{
 
 
 
+    @JsonProperty("efficiency")
     public double getEfficiency() {
         return efficiency;
     }
@@ -50,10 +58,7 @@ public abstract class EntityBase implements Base{
         return consumption / getEfficiency();
     }
 
-    public void setConsumption(double constumption) {
-        this.consumption = constumption ;
+    public void setConsumption(double consumption) {
+        this.consumption = consumption;
     }
-
-
-
 }

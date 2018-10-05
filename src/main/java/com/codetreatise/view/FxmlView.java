@@ -125,7 +125,8 @@ public enum FxmlView {
         public String getFxmlFile() {
             return "/fxml/Sec.fxml";
         }
-    }, SHOW_RESULT {
+    },
+    SHOW_RESULT {
         @Override
         public String getTitle() {
             return getStringFromResourceBundle("showResult.title");
@@ -135,7 +136,19 @@ public enum FxmlView {
         public String getFxmlFile() {
             return "/fxml/ShowResult.fxml";
         }
-    };
+    },
+    TEST {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("showResult.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/test.fxml";
+        }
+    }
+    ;
 
 
 

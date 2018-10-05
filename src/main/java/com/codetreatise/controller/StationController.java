@@ -10,6 +10,8 @@ import com.codetreatise.service.ResultService;
 import com.codetreatise.view.FxmlView;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.util.TokenBuffer;
 import ir.behinehsazan.gasStation.model.station.StationLogic;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -204,17 +206,22 @@ public class StationController extends BaseController implements Initializable {
 
             List<StationLogic> stationLogics = resultEntity.getSingleCalculation();
 
+
+            JsonNode stationLogicsNode = getStationLogicJsonNode(stationLogics.get(0));
+
             JsonNode node1 = mapper.convertValue(stationLogics, JsonNode.class);
             JsonNode node = mapper.valueToTree(stationLogics);
             String json = mapper.writeValueAsString(stationLogics);
             JsonNode jsonNode = mapper.readTree(json);
             JsonNode debi = jsonNode.get(0).get("debi");
-            System.out.println(debi);
             jsonNode.getNodeType();
+            showResultsController.setStationLogicsNode(stationLogicsNode);
+
 
 //        showResultsFrame.show();
 //            FxmlView.SHOW_RESULT;
-//            stageManager.switchScene(FxmlView.SHOW_RESULT);
+            stageManager.switchScene(FxmlView.SHOW_RESULT);
+//            stageManager.switchScene(FxmlView.TEST);
             String lkafs = "";
         }
 
@@ -223,6 +230,15 @@ public class StationController extends BaseController implements Initializable {
 
 
 
+    }
+
+    private ObjectNode getStationLogicJsonNode(StationLogic stationLogic) throws IOException {
+        TokenBuffer tb = new TokenBuffer(null, false);
+
+        mapper.writeValue(tb, stationLogic);
+        StationLogic copyStation = mapper.readValue(tb.asParser(), StationLogic.class);
+        ObjectNode stationNode = (ObjectNode) mapper.readTree(mapper.writeValueAsString(copyStation));
+        return  stationNode;
     }
 
 

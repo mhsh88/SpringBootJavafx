@@ -2,6 +2,7 @@ package com.codetreatise.controller;
 
 import com.codetreatise.config.StageManager;
 import com.codetreatise.view.FxmlView;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.util.TokenBuffer;
@@ -11,24 +12,27 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
+import ir.behinehsazan.gasStation.model.gas.Gas;
 import ir.behinehsazan.gasStation.model.station.StationLogic;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.poi.hssf.usermodel.HSSFHeader;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.util.IOUtils;
@@ -41,12 +45,15 @@ import sample.util.FileLocation;
 import java.io.*;
 import java.net.URL;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Controller
 public class ShowResultsController implements Initializable {
+    public Button backButton;
+    public Accordion accordion;
     ObjectMapper mapper = new ObjectMapper();
 
     public AnchorPane mainAnchor;
@@ -56,6 +63,8 @@ public class ShowResultsController implements Initializable {
 
     public TextField textField2;
     public GridPane gridPane;
+
+    private JsonNode stationLogicsNode;
 
 
     @FXML
@@ -84,6 +93,13 @@ public class ShowResultsController implements Initializable {
     @FXML
     TextField textField = new TextField();
 
+    public JsonNode getStationLogicsNode() {
+        return stationLogicsNode;
+    }
+
+    public void setStationLogicsNode(JsonNode stationLogicsNode) {
+        this.stationLogicsNode = stationLogicsNode;
+    }
 
     public static ObservableList<Table> getData() {
         return data;
@@ -96,83 +112,224 @@ public class ShowResultsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-//        mainAnchor.getChildren().add(null);
-        List<StationLogic> stationLogics = stageManager.getCityGateStationEntity().getCondition().getResult().getSingleCalculation();
+        accordion.getPanes().remove(0,accordion.getPanes().size());
 
-        for(StationLogic stationLogic : stationLogics){
+
+        for(JsonNode stationLogic : stationLogicsNode){
+
 
             TitledPane titledPane = new TitledPane();
-            if(stationLogic.getMessage()!=null && stationLogic.getMessage().equals("Th"))
+            if(stationLogic.get("message") != null && stationLogic.get("message").toString().equals("\"T_h\""))
                 titledPane.setText("دمای هیدرات");
             else
                 titledPane.setText("اطلاعات ورودی");
 
-            mainAnchor.getChildren().add(new TitledPane());
 
+            Accordion childAccordion = getTitledPaneContent(stationLogic);
+
+//            AnchorPane anchorPane = new AnchorPane();
+//            TitledPane titledPane1 = new TitledPane();
+//            titledPane1.setText("اول");
+//            anchorPane.getChildren().add(titledPane1);
+//            TitledPane titledPane2 = new TitledPane();
+//            titledPane1.setText("دوم");
+//            anchorPane.getChildren().add(titledPane2);
+            titledPane.setContent(childAccordion);
+
+            accordion.getPanes().add(titledPane);
         }
 
 
 
+    }
+
+    private Accordion getTitledPaneContent(JsonNode stationLogic) {
+        Accordion accordion = new Accordion();
+//        AnchorPane anchorPane = new AnchorPane();
+
+        Iterator<String> stringIterator = stationLogic.fieldNames();
+        for (Iterator<String> it = stringIterator; it.hasNext(); ) {
+            String string = it.next();
+            TitledPane titledPane = null;
+            switch (string){
+                case "beforeHeater":
+                    titledPane = setBeforeHeater(stationLogic.get(string),stationLogic.get("calBeforeHeater"));
+                    break;
+                case "heaters":
+                    titledPane = setHeaterTitledPane(stationLogic.get(string));
+                    break;
+                case "afterHeater":
+                    titledPane = setAfterHeater(stationLogic.get(string),stationLogic.get("calAfterHeater"));
+                    break;
+                case "collector":
+                    titledPane = setCollector(stationLogic.get(string));
+                    break;
+                case "runs":
+                    titledPane = setRuns(stationLogic.get(string));
+                    break;
+                case "regulator":
+                    titledPane = setRegulator(stationLogic.get(string));
+                    break;
+                default:
+                    break;
+            }
 
 
+            if (titledPane != null) {
+                accordion.getPanes().add(titledPane);
+            }
+        }
+        return accordion;
+    }
 
+    private TitledPane setRegulator(JsonNode jsonNode) {
+        TitledPane titledPane = new TitledPane();
+        AnchorPane anchorPane = new AnchorPane();
+        anchorPane.getChildren().add(getInputOutput(jsonNode));
+        titledPane.setContent(anchorPane);
 
-//        name.setCellValueFactory(new PropertyValueFactory<Table, String>("name"));
-//        meter.setCellValueFactory(new PropertyValueFactory<Table, String>("meter"));
-//        value.setCellValueFactory(new PropertyValueFactory<Table, String>("value"));
-//        hydrateName.setCellValueFactory(new PropertyValueFactory<Table, String>("name"));
-//        hydrateMeter.setCellValueFactory(new PropertyValueFactory<Table, String>("meter"));
-//        hydrateValue.setCellValueFactory(new PropertyValueFactory<Table, String>("value"));
-//
-////        showResult();
-//        tableID.setItems(data);
-//        tableID.setColumnResizePolicy((param) -> true);
-//        Platform.runLater(() -> customResize(tableID));
-//        name.prefWidthProperty().bind(tableID.widthProperty().divide(3));
-//        meter.prefWidthProperty().bind(tableID.widthProperty().divide(3));
-//        value.prefWidthProperty().bind(tableID.widthProperty().divide(3));
-//        tableID.setEditable(true);
-//        name.setCellFactory(new Callback<TableColumn<Table, String>, TableCell<Table, String>>() {
-//            @Override
-//            public TableCell<Table, String> call(TableColumn<Table, String> param) {
-//                return new TextFieldTableCell<>();
-//            }
-//        });
-////        showResult();
-//        hydrateTable.setItems(dataWithThydrate);
-//        hydrateTable.setColumnResizePolicy((param) -> true);
-//        Platform.runLater(() -> customResize(hydrateTable));
-//        hydrateName.prefWidthProperty().bind(hydrateTable.widthProperty().divide(3));
-//        hydrateMeter.prefWidthProperty().bind(tableID.widthProperty().divide(3));
-//        hydrateValue.prefWidthProperty().bind(hydrateTable.widthProperty().divide(3));
-//        showResult();
+        titledPane.setText("رگولاتور");
+        return titledPane;
+    }
+
+    private TitledPane setRuns(JsonNode jsonNode) {
+        TitledPane titledPane = new TitledPane();
+        AnchorPane anchorPane = new AnchorPane();
+        anchorPane.getChildren().add(getInputOutput(jsonNode));
+        titledPane.setContent(anchorPane);
+
+        titledPane.setText("ران‌ها");
+        return titledPane;
 
     }
 
+    private TitledPane setCollector(JsonNode jsonNode) {
+        TitledPane titledPane = new TitledPane();
+        AnchorPane anchorPane = new AnchorPane();
+        anchorPane.getChildren().add(getInputOutput(jsonNode));
+        titledPane.setContent(anchorPane);
 
-//    @FXML
-//    public void initialize() throws IOException{
-//        try {
-//
-//
-//        }
-//        catch(Exception e){
-//            e.printStackTrace();
-//        }
-//    }
+        titledPane.setText("کلکتور");
+        return titledPane;
+    }
+
+    private TitledPane setAfterHeater(JsonNode jsonNode, JsonNode calAfterHeater) {
+        TitledPane titledPane = new TitledPane();
+        AnchorPane anchorPane = new AnchorPane();
+        anchorPane.getChildren().add(getInputOutput(jsonNode));
+        titledPane.setContent(anchorPane);
+
+        titledPane.setText("خط لوله بعد از گرم‌کن");
+        return titledPane;
+    }
+
+    private TitledPane setHeaterTitledPane(JsonNode jsonNode) {
+        TitledPane titledPane = new TitledPane();
+        AnchorPane anchorPane = new AnchorPane();
+        anchorPane.getChildren().add(getInputOutput(jsonNode));
+        titledPane.setContent(anchorPane);
+
+        titledPane.setText("گرم‌کن");
+
+        return titledPane;
+    }
+
+    private TitledPane setBeforeHeater(JsonNode jsonNode, JsonNode calBeforeHeater) {
+        AnchorPane anchorPane = new AnchorPane();
+        anchorPane.getChildren().add(getInputOutput(jsonNode));
+        if(calBeforeHeater!=null){
+            HBox hBox = new HBox();
+            JFXTextField withInsulationTextBox = new JFXTextField();
+            withInsulationTextBox.setEditable(false);
+            withInsulationTextBox.setText(String.valueOf(calBeforeHeater.get("withInsulationConsumption").asDouble()));
+//            hBox.getChildren().add()
+
+        }
 
 
-//    @FXML
-//    public void initialize() throws IOException {
-//
-//
-//
-//    }
+        TitledPane titledPane = new TitledPane();
+        titledPane.setText("خط لوله قبل از گرم‌کن");
+        titledPane.setContent(anchorPane);
+        return titledPane;
+    }
+
+    private Accordion getInputOutput(JsonNode jsonNode) {
+        Accordion accordion = new Accordion();
+        TitledPane input = new TitledPane();
+        input.setText("ورودی");
+        input.setContent(getGasElementsPane(jsonNode.get("tin"),jsonNode.get("pin")));
+        TitledPane output = new TitledPane();
+        output.setText("خروجی");
+        output.setContent(getGasElementsPane(jsonNode.get("tout"),jsonNode.get("pout")));
+        accordion.getPanes().add(input);
+        accordion.getPanes().add(output);
+
+        return accordion;
+    }
+
+    private AnchorPane getGasElementsPane(JsonNode t, JsonNode p) {
+        double T = t.asDouble();
+        double P = p.asDouble();
+        Gas gas = new Gas();
+        gas.calculate(P,T, stageManager.getCityGateStationEntity().getGasEntity().getComponent());
+//        JsonNode gasNode = mapper.valueToTree(gas);
+        JsonNode gasNode = null;
+        try {
+            gasNode = getCopyGas(gas);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        AnchorPane anchorPane = new AnchorPane();
+        JFXTextField gasPropertyTextBox = new JFXTextField();
+        gasPropertyTextBox.setEditable(false);
+        gasPropertyTextBox.promptTextProperty().setValue("خصوصیت گاز");
+        gasPropertyTextBox.setMinSize(30.0,20.0);
+        HBox hBox = new HBox();
+        hBox.setMinHeight(25.0);
+        JFXTextField pressureTextBox = new JFXTextField(String.valueOf(P));
+        pressureTextBox.setEditable(false);
+        JFXTextField temperatureTextBox = new JFXTextField(String.valueOf(T));
+        temperatureTextBox.setEditable(false);
+        JFXComboBox<String> gasPropertyCombobox = new JFXComboBox<>();
+
+        Iterator<String> stringIterator = gasNode.fieldNames();
+        for (Iterator<String> it = stringIterator; it.hasNext(); ) {
+            gasPropertyCombobox.getItems().add(it.next());
+        }
+
+        JsonNode finalGasNode = gasNode;
+        gasPropertyTextBox.textProperty().bind(Bindings.createStringBinding(()->{
+            if(gasPropertyCombobox.getSelectionModel().getSelectedItem() == null){
+                return "";
+            }
+
+            return finalGasNode.get(String.valueOf(gasPropertyCombobox.getSelectionModel().getSelectedItem())).toString();
+            },
+                gasPropertyCombobox.getSelectionModel().selectedItemProperty()));
+
+        gasPropertyCombobox.getSelectionModel().select("z");
 
 
 
+        hBox.getChildren().add(gasPropertyTextBox);
+        hBox.getChildren().add(gasPropertyCombobox);
+        hBox.getChildren().add(temperatureTextBox);
+        hBox.getChildren().add(pressureTextBox);
+        anchorPane.getChildren().add(hBox);
 
 
+
+        return anchorPane;
+    }
+    private ObjectNode getCopyGas(Gas gas) throws IOException {
+        TokenBuffer tb = new TokenBuffer(null, false);
+        mapper.writeValue(tb, gas);
+        Gas copyGas = mapper.readValue(tb.asParser(), Gas.class);
+        copyGas.setComponent(gas.getComponent());
+        ObjectNode gasNode = (ObjectNode) mapper.readTree(mapper.writeValueAsString(copyGas));
+        return  gasNode;
+    }
 
     public void customResize(TableView<?> view) {
 
@@ -448,7 +605,7 @@ public class ShowResultsController implements Initializable {
             //Returns an object that handles instantiating concrete classes
             CreationHelper helper = wb.getCreationHelper();
             //Creates the top-level drawing patriarch.
-            Drawing drawing = sheet.createDrawingPatriarch();
+            Drawing<Shape> drawing = (Drawing<Shape>) sheet.createDrawingPatriarch();
 
             //Create an anchor that is attached to the worksheet
             ClientAnchor anchor = helper.createClientAnchor();
@@ -528,13 +685,16 @@ public class ShowResultsController implements Initializable {
         }
     }
 
-    private ObjectNode getStationJsonNode(StationLogic stationLogic) throws IOException {
+    private ObjectNode getStationLogicJsonNode(StationLogic stationLogic) throws IOException {
         TokenBuffer tb = new TokenBuffer(null, false);
 
-//        mapper.writeValue(tb, gas);
+        mapper.writeValue(tb, stationLogic);
         StationLogic copyStation = mapper.readValue(tb.asParser(), StationLogic.class);
-//        copyGas.setComponent(gas.getComponent());
         ObjectNode stationNode = (ObjectNode) mapper.readTree(mapper.writeValueAsString(copyStation));
         return  stationNode;
+    }
+
+    public void backButton(ActionEvent actionEvent) {
+        stageManager.switchScene(FxmlView.STATION);
     }
 }

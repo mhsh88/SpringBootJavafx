@@ -168,13 +168,13 @@ public class UserController implements Initializable {
     @FXML
     private void saveUser(ActionEvent event) {
 
-        if (validate("First Name", getFirstName(), "[a-zA-Z]+") &&
-                validate("Last Name", getLastName(), "[a-zA-Z]+") &&
+        if (validate("First Name", getFirstName(), "[a-zA-z]+") &&
+                validate("Last Name", getLastName(), "[a-zA-z]+") &&
                 emptyValidation("DOB", dob.getEditor().getText().isEmpty()) &&
                 emptyValidation("Role", getRole() == null)) {
 
             if (userId.getText() == null || userId.getText() == "") {
-                if (validate("Email", getEmail(), "[a-zA-Z0-9][a-zA-Z0-9._]*@[a-zA-Z0-9]+([.][a-zA-Z]+)+") &&
+                if (validate("Email", getEmail(), "[a-zA-Z0-9][a-zA-Z0-9._]*@[a-zA-Z0-9]+([.][a-zA-z]+)+") &&
                         emptyValidation("Password", getPassword().isEmpty())) {
 
                     User user = new User();

@@ -1,5 +1,7 @@
 package ir.behinehsazan.gasStation.model.gas;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import ir.behinehsazan.gasStation.model.mathCalculation.FindRoot;
 import ir.behinehsazan.gasStation.model.mathCalculation.MathCalculation;
 import org.apache.commons.math3.analysis.UnivariateFunction;
@@ -10,23 +12,23 @@ import java.util.ArrayList;
 
 public class BaseGas implements FindRoot {
 
-    protected Double D;
+    protected Double d;
     protected Double rou;
-    protected Double U;
-    protected Double H;
-    protected Double S;
-    protected Double C_v;
-    protected Double C_p;
+    protected Double u;
+    protected Double h;
+    protected Double s;
+    protected Double c_v;
+    protected Double c_p;
     protected Double mu;
     protected Double kappa;
     protected Double w;
-    protected Double Z;
+    protected Double z;
     protected Double P;
     protected Double T;
     protected Double[] component;
     protected Double[] Xi;
 
-    protected Double M;
+    protected Double m;
     protected Double F;
     protected Double Q;
     protected Double G;
@@ -37,18 +39,21 @@ public class BaseGas implements FindRoot {
     protected ArrayList<Double> C_n = new ArrayList<Double>();
     protected Double p1;
     public static final Double R = 8.314510;
-    private double T_h;
+    private double t_h;
 
+    @JsonProperty
     public double getT_h() {
-        return T_h;
+        return t_h;
     }
 
 
 
+    @JsonProperty
     public Double getZ() {
-        return Z;
+        return z;
     }
 
+    @JsonIgnore
     public Double getP() {
         return P;
     }
@@ -57,6 +62,7 @@ public class BaseGas implements FindRoot {
         P = p;
     }
 
+    @JsonIgnore
     public Double getT() {
         return T;
     }
@@ -394,6 +400,7 @@ public class BaseGas implements FindRoot {
         this.Xi = component;
     }
 
+    @JsonIgnore
     public Double[] getComponent() {
         return this.Xi;
     }
@@ -410,7 +417,7 @@ public class BaseGas implements FindRoot {
         setComponent(component);
         tau = 1 / getT();
 
-        M = MathCalculation.dotProduct(M_i, getComponent());
+        m = MathCalculation.dotProduct(M_i, getComponent());
         F = MathCalculation.dotProduct(F_i, getComponent());
         Q = MathCalculation.dotProduct(Q_i, getComponent());
         double temp = 0;
@@ -515,7 +522,7 @@ public class BaseGas implements FindRoot {
 //        double result = instanceFun()
 
 
-        Z = (P * tau * Math.pow(K, 3)) / (soldelta * R * 1);
+        z = (P * tau * Math.pow(K, 3)) / (soldelta * R * 1);
 
         delta_theta = rou_theta * Math.pow(K, 3);
 
@@ -561,7 +568,7 @@ public class BaseGas implements FindRoot {
             }
         }
 
-//       double[] c = cop_i_R.stream().mapToDouble(D -> D).toArray();
+//       double[] c = cop_i_R.stream().mapToDouble(d -> d).toArray();
 //       Double[] arr = ListAdapter.adapt(cop_i_R).asLazy().collectDouble(each -> each).toArray();
 //        (Double[]) cop_i_R.stream().mapToDouble(Double::doubleValue).toArray());
         Double cop_R = MathCalculation.dotProduct(Xi, cop_i_R.stream().mapToDouble(Double::doubleValue).toArray());
@@ -640,20 +647,20 @@ public class BaseGas implements FindRoot {
         Double phi_2 = 1 + (soldelta / Math.pow(K, 3)) * MathCalculation.listSum(phi_2_1) - soldelta * MathCalculation.listSum(phi_2_2) + MathCalculation.listSum(phi_2_3);
 
 
-        D = M * soldelta / Math.pow(K, 3);
+        d = m * soldelta / Math.pow(K, 3);
         rou = soldelta / Math.pow(K, 3);
-        U = R * T / M * tau_phi_tau;
-        H = R * T / M * (tau_phi_tau + delta_phi_delta);
-        S = (tau_phi_tau - phi) * R / M;
-        C_v = R / M * (-tau2_phi_tautau);
-        C_p = R / M * (-tau2_phi_tautau + Math.pow(phi_2, 2) / phi_1);
-        mu = (phi_2 / phi_1 - 1) / C_p / M / rou * 1000;
-        kappa = phi_1 / Z * C_p / C_v;
-        w = Math.sqrt(phi_1 * C_p / C_v * R * T / M * 1000);
+        u = R * T / m * tau_phi_tau;
+        h = R * T / m * (tau_phi_tau + delta_phi_delta);
+        s = (tau_phi_tau - phi) * R / m;
+        c_v = R / m * (-tau2_phi_tautau);
+        c_p = R / m * (-tau2_phi_tautau + Math.pow(phi_2, 2) / phi_1);
+        mu = (phi_2 / phi_1 - 1) / c_p / m / rou * 1000;
+        kappa = phi_1 / z * c_p / c_v;
+        w = Math.sqrt(phi_1 * c_p / c_v * R * T / m * 1000);
 
 
         double Ma = 28.95;  //# molecular mass of air
-        double Gamma_g = M / Ma;
+        double Gamma_g = m / Ma;
         double psi = getP() * 0.145038;
         double [] mass_matrix = {1, Math.log(psi), Math.log(Gamma_g), Math.pow((Math.log(psi)) , 2.0) , Math.log(psi) * Math.log(Gamma_g), Math.pow(Math.log(Gamma_g) , 2.0),
                 Math.pow((Math.log(psi)) , 3.0), Math.pow(Math.log(psi) , 2.0) * Math.log(Gamma_g), Math.pow(Math.log(Gamma_g) , 2.0) * Math.log(psi), Math.pow((Math.log(Gamma_g)) , 3),
@@ -668,7 +675,7 @@ public class BaseGas implements FindRoot {
 
         double T_h = 1 / MathCalculation.dotProduct( cc, mass_matrix);
         T_h = (T_h - 32) / 1.8;
-        this.T_h = T_h;
+        this.t_h = T_h;
 
 
     }

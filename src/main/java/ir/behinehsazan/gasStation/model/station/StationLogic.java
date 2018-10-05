@@ -11,13 +11,13 @@ import ir.behinehsazan.gasStation.model.run.base.BaseRun;
 import sample.model.heaters.HeatersModel;
 import sample.model.pipeLine.PipeLine;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+public class StationLogic extends GasConsumer {
 
-public class StationLogic extends GasConsumer implements Serializable {
+
 
 
     double stationConsumption;
@@ -29,6 +29,20 @@ public class StationLogic extends GasConsumer implements Serializable {
     private Regulator regulator = new Regulator();
     private String message;
     private PipeLine calBeforeHeater;
+    private PipeLine calAfterHeater;
+
+    @JsonProperty("calAfterHeater")
+    public PipeLine getCalAfterHeater() {
+        return calAfterHeater;
+    }
+
+    public void setCalAfterHeater(PipeLine calAfterHeater) {
+        this.calAfterHeater = calAfterHeater;
+    }
+
+
+
+
 
     @JsonProperty("calBeforeHeater")
     public PipeLine getCalBeforeHeater() {
@@ -89,7 +103,7 @@ public class StationLogic extends GasConsumer implements Serializable {
             this.beforeHeater.setInverse(false);
             this.beforeHeater.setGas(getGas());
             this.beforeHeater.calculate();
-            this.beforeHeater.setConsumption();
+            this.beforeHeater.calConsumption();
 
             beforeHeater.setNotIsulationConsumption(this.beforeHeater.getConsumption());
 
@@ -97,7 +111,7 @@ public class StationLogic extends GasConsumer implements Serializable {
             this.beforeHeater.setInsulationFactor(beforeHeater.getInsulationFactor());
             this.beforeHeater.setInsulationThickness(beforeHeater.getInsulationThickness());
             this.beforeHeater.calculate();
-            this.beforeHeater.setConsumption();
+            this.beforeHeater.calConsumption();
             beforeHeater.setTin(this.beforeHeater.getTin());
             beforeHeater.setPin(this.beforeHeater.getPin());
             beforeHeater.setTout(this.beforeHeater.getTout());
@@ -160,7 +174,7 @@ public class StationLogic extends GasConsumer implements Serializable {
             }
 
             this.heaters.calculate();
-            this.heaters.setConsumption();
+            this.heaters.calConsumption();
             this.heaters.componentConsumptionCal();
 
         }
@@ -172,7 +186,7 @@ public class StationLogic extends GasConsumer implements Serializable {
             if(getDebi() > 0){
                 this.heaters.setDebi(getDebi());
                 this.heaters.setGas(getGas());
-                this.heaters.setConsumption();
+                this.heaters.calConsumption();
             }
             else {
                 this.heaters.setConsumption(0.0);
@@ -207,7 +221,7 @@ public class StationLogic extends GasConsumer implements Serializable {
             this.afterHeater.setInverse(true);
             this.afterHeater.setGas(getGas());
             this.afterHeater.calculate();
-            this.afterHeater.setConsumption();
+            this.afterHeater.calConsumption();
 
 
             afterHeater.setNotIsulationConsumption(this.afterHeater.getConsumption());
@@ -216,7 +230,7 @@ public class StationLogic extends GasConsumer implements Serializable {
             this.afterHeater.setInsulationFactor(afterHeater.getInsulationFactor());
             this.afterHeater.setInsulationThickness(afterHeater.getInsulationThickness());
             this.afterHeater.calculate();
-            this.afterHeater.setConsumption();
+            this.afterHeater.calConsumption();
             afterHeater.setTin(this.afterHeater.getTin());
             afterHeater.setPin(this.afterHeater.getPin());
             afterHeater.setTout(this.afterHeater.getTout());
@@ -242,7 +256,7 @@ public class StationLogic extends GasConsumer implements Serializable {
             }
 
         }
-
+        setCalAfterHeater(afterHeater);
         return afterHeater;
 
     }
@@ -277,7 +291,7 @@ public class StationLogic extends GasConsumer implements Serializable {
             this.collector.setPout(pi);
             this.collector.setInverse(true);
             this.collector.calculate();
-            this.collector.setConsumption();
+            this.collector.calConsumption();
 
         }
         else{
@@ -318,7 +332,7 @@ public class StationLogic extends GasConsumer implements Serializable {
             }
          for(BaseRun run : this.runs.getRuns()){
                 run.setTin(tempList.get(tempList.indexOf(Collections.min(tempList))));
-                run.setConsumption();
+                run.calConsumption();
          }
 
         }
@@ -344,23 +358,8 @@ public class StationLogic extends GasConsumer implements Serializable {
 
         this.regulator.calculate();
 
-//        this.regulator.setGas(getGas());
-//        this.regulator.setPin(getPin());
-//        this.regulator.setTout(getTout());
-//        this.regulator.setPout(getPout());
-//        this.regulator.setInverse(true);
-//        this.regulator.calculate();
 
     }
-    //    private ArrayList<EntityBase> allComponent = new ArrayList<EntityBase>(){{
-//        add(beforeHeater);
-//        add(heater);
-//        add(afterHeater);
-//        add(collector);
-//        add(runs);
-//        add(regulators);
-//
-//    }};
 
 
 
@@ -383,6 +382,4 @@ public class StationLogic extends GasConsumer implements Serializable {
 
     }
 
-    public void setHeaters(Heaters heaters) {
-    }
 }
