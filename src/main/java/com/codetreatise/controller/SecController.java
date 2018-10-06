@@ -248,7 +248,7 @@ public class SecController extends BaseController implements Initializable {
                 conditionEntity.setEnvTemperature(new Temperature(Double.parseDouble(envTemp.getText()), envTempCombo.getValue().toString()));
                 conditionEntity.setDebiInput(new Debi(Double.parseDouble(counter.getText()), Debi.M3));
                 conditionEntity.setInputTemperature(new Temperature(Double.parseDouble(gasInputTemp.getText()), gasInputTempCombo.getValue().toString()));
-                conditionEntity.setInputPressure(new Pressure(Double.parseDouble(gasInputTemp.getText()), gasInputPressureCombo.getValue().toString()));
+                conditionEntity.setInputPressure(new Pressure(Double.parseDouble(gasInputPressure.getText()), gasInputPressureCombo.getValue().toString()));
                 conditionEntity.setOutputTemperature(new Temperature(Double.parseDouble(gasOutputTemp.getText()), gasOutputTempCombo.getValue().toString()));
                 conditionEntity.setOutputPressure(new Pressure(Double.parseDouble(gasOutputPressure.getText()), gasOutputPressureCombo.getValue().toString()));
                 conditionEntity.setWindSpeed(Double.parseDouble(windSpeed.getText().equals("")? "0.0": windSpeed.getText()));
