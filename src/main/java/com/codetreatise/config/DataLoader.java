@@ -17,8 +17,8 @@ public class DataLoader {
     }
 
     private void LoadUsers() {
-        User user = userRepository.findByEmailAndPassword("admin","admin");
+        User user = userRepository.findByEmailAndPassword("bsstco","bsstco");
         if(user==null)
-            userRepository.save(new User("admin", "admin"));
+            userRepository.save(new User("bsstco", "bsstco"));
     }
 }

@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "pipe_specifications")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class PipeSpecificationsEntity extends BaseEntity implements PipeSpecificatonConstants {
     private Double length;
     private Double insulationFactor;

@@ -20,6 +20,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
@@ -1521,27 +1522,27 @@ public class StationPropertyController extends BaseController {
 
     public void gasPropertyInput(KeyEvent keyEvent) {
 
-        component[0] = (!nitrogenTextField.getText().equals("")) ? Double.parseDouble(nitrogenTextField.getText()) : 0.0;
-        component[1] = (!carbonDioxideTextField.getText().equals("")) ? Double.parseDouble(carbonDioxideTextField.getText()) : 0.0;
-        component[2] = (!methanTextField.getText().equals("")) ? Double.parseDouble(methanTextField.getText()) : 0.0;
-        component[3] = (!ethaneTextField.getText().equals("")) ? Double.parseDouble(ethaneTextField.getText()) : 0.0;
-        component[4] = (!propaneTextField.getText().equals("")) ? Double.parseDouble(propaneTextField.getText()) : 0.0;
-        component[5] = (!nButaneTextField.getText().equals("")) ? Double.parseDouble(nButaneTextField.getText()) : 0.0;
-        component[6] = (!isoButaneTextField.getText().equals("")) ? Double.parseDouble(isoButaneTextField.getText()) : 0.0;
-        component[7] = (!nPentaneTextField.getText().equals("")) ? Double.parseDouble(nPentaneTextField.getText()) : 0.0;
-        component[8] = (!isoPentaneTextField.getText().equals("")) ? Double.parseDouble(isoPentaneTextField.getText()) : 0.0;
-        component[9] = (!hexaneTextField.getText().equals("")) ? Double.parseDouble(hexaneTextField.getText()) : 0.0;
-        component[10] = (!heptaneTextField.getText().equals("")) ? Double.parseDouble(heptaneTextField.getText()) : 0.0;
-        component[11] = (!octaneTextField.getText().equals("")) ? Double.parseDouble(octaneTextField.getText()) : 0.0;
-        component[12] = (!nonaneTextField.getText().equals("")) ? Double.parseDouble(nonaneTextField.getText()) : 0.0;
-        component[13] = (!decaneTextField.getText().equals("")) ? Double.parseDouble(decaneTextField.getText()) : 0.0;
-        component[14] = (!hydrogenTextField.getText().equals("")) ? Double.parseDouble(hydrogenTextField.getText()) : 0.0;
-        component[15] = (!oxygenTextField.getText().equals("")) ? Double.parseDouble(oxygenTextField.getText()) : 0.0;
-        component[16] = (!carbonMonoxideTextField.getText().equals("")) ? Double.parseDouble(carbonMonoxideTextField.getText()) : 0.0;
-        component[17] = (!waterTextField.getText().equals("")) ? Double.parseDouble(waterTextField.getText()) : 0.0;
-        component[18] = (!hydrogenSulfideTextField.getText().equals("")) ? Double.parseDouble(hydrogenSulfideTextField.getText()) : 0.0;
-        component[19] = (!heliumTextField.getText().equals("")) ? Double.parseDouble(heliumTextField.getText()) : 0.0;
-        component[20] = (!argonTextField.getText().equals("")) ? Double.parseDouble(argonTextField.getText()) : 0.0;
+        component[0] = (!nitrogenTextField.getText().equals("")) && NumberUtils.isCreatable(nitrogenTextField.getText())  ? Double.parseDouble(nitrogenTextField.getText()) : 0.0;
+        component[1] = (!carbonDioxideTextField.getText().equals("")) && NumberUtils.isCreatable(carbonDioxideTextField.getText())? Double.parseDouble(carbonDioxideTextField.getText()) : 0.0;
+        component[2] = (!methanTextField.getText().equals("")) && NumberUtils.isCreatable(methanTextField.getText()) ? Double.parseDouble(methanTextField.getText()) : 0.0;
+        component[3] = (!ethaneTextField.getText().equals("")) && NumberUtils.isCreatable(ethaneTextField.getText())? Double.parseDouble(ethaneTextField.getText()) : 0.0;
+        component[4] = (!propaneTextField.getText().equals("")) && NumberUtils.isCreatable(propaneTextField.getText())? Double.parseDouble(propaneTextField.getText()) : 0.0;
+        component[5] = (!nButaneTextField.getText().equals("")) && NumberUtils.isCreatable(nButaneTextField.getText()) ? Double.parseDouble(nButaneTextField.getText()) : 0.0;
+        component[6] = (!isoButaneTextField.getText().equals("")) && NumberUtils.isCreatable(isoButaneTextField.getText()) ? Double.parseDouble(isoButaneTextField.getText()) : 0.0;
+        component[7] = (!nPentaneTextField.getText().equals(""))  && NumberUtils.isCreatable(nPentaneTextField.getText())? Double.parseDouble(nPentaneTextField.getText()) : 0.0;
+        component[8] = (!isoPentaneTextField.getText().equals("")) && NumberUtils.isCreatable(isoPentaneTextField.getText())? Double.parseDouble(isoPentaneTextField.getText()) : 0.0;
+        component[9] = (!hexaneTextField.getText().equals("")) && NumberUtils.isCreatable(hexaneTextField.getText())? Double.parseDouble(hexaneTextField.getText()) : 0.0;
+        component[10] = (!heptaneTextField.getText().equals("")) && NumberUtils.isCreatable(heptaneTextField.getText()) ? Double.parseDouble(heptaneTextField.getText()) : 0.0;
+        component[11] = (!octaneTextField.getText().equals("")) && NumberUtils.isCreatable(octaneTextField.getText())? Double.parseDouble(octaneTextField.getText()) : 0.0;
+        component[12] = (!nonaneTextField.getText().equals("")) && NumberUtils.isCreatable(nonaneTextField.getText())? Double.parseDouble(nonaneTextField.getText()) : 0.0;
+        component[13] = (!decaneTextField.getText().equals("")) && NumberUtils.isCreatable(decaneTextField.getText())? Double.parseDouble(decaneTextField.getText()) : 0.0;
+        component[14] = (!hydrogenTextField.getText().equals(""))&& NumberUtils.isCreatable(hydrogenTextField.getText()) ? Double.parseDouble(hydrogenTextField.getText()) : 0.0;
+        component[15] = (!oxygenTextField.getText().equals(""))&& NumberUtils.isCreatable(oxygenTextField.getText()) ? Double.parseDouble(oxygenTextField.getText()) : 0.0;
+        component[16] = (!carbonMonoxideTextField.getText().equals(""))&& NumberUtils.isCreatable(carbonMonoxideTextField.getText()) ? Double.parseDouble(carbonMonoxideTextField.getText()) : 0.0;
+        component[17] = (!waterTextField.getText().equals("")) && NumberUtils.isCreatable(waterTextField.getText())? Double.parseDouble(waterTextField.getText()) : 0.0;
+        component[18] = (!hydrogenSulfideTextField.getText().equals("")) && NumberUtils.isCreatable(hydrogenSulfideTextField.getText())? Double.parseDouble(hydrogenSulfideTextField.getText()) : 0.0;
+        component[19] = (!heliumTextField.getText().equals("")) && NumberUtils.isCreatable(heliumTextField.getText())? Double.parseDouble(heliumTextField.getText()) : 0.0;
+        component[20] = (!argonTextField.getText().equals("")) && NumberUtils.isCreatable(argonTextField.getText())? Double.parseDouble(argonTextField.getText()) : 0.0;
 
         totalNumberText.setText(String.valueOf(df.format(MathCalculation.listSum(component))));
 

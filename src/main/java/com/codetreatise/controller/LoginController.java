@@ -11,6 +11,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
@@ -28,6 +30,7 @@ import java.util.ResourceBundle;
 @Controller
 public class LoginController extends BaseController implements Initializable {
 
+    public ImageView imageView;
     @FXML
     private Button btnLogin;
 
@@ -73,6 +76,7 @@ public class LoginController extends BaseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        imageView.setImage(new Image(getClass().getResourceAsStream("/images/logo.png")));
 
     }
 

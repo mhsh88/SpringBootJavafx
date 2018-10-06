@@ -56,7 +56,7 @@
 
          <Button layoutX="831.0" layoutY="41.0" mnemonicParsing="false" onAction="#stationPropertyWindows" styleClass="stationProperty" />
          <Button layoutX="831.0" layoutY="261.0" mnemonicParsing="false" onAction="#showResultsWindows" styleClass="showResults" visible="false" />
-         <Button layoutX="827.0" layoutY="150.0" mnemonicParsing="false" onAction="#calculateButton" styleClass="calculateButton" />
+         <Button fx:id="calculateBtn" layoutX="827.0" layoutY="150.0" mnemonicParsing="false" onAction="#calculateButton" styleClass="calculateButton" disable="true" />
             <Button fx:id="stationSelect" layoutX="838.0" layoutY="394.0" mnemonicParsing="false" onAction="#stationSelect" styleClass="stationSelect"  >
                 <tooltip><Tooltip text="انتخاب ایستگاه" styleClass="toolTip" /></tooltip>
             </Button>

@@ -53,7 +53,8 @@ public class Heaters extends GasConsumer{
 //            heaters.get(i).calConsumption(burnerTempComsum);
 //            heaterConsum = heaterConsum + heaters.get(i).getConsumption();
         }
-        this.setConsumption(burnerTempComsum);
+        if(burnerTempComsum>0)
+            this.setConsumption(burnerTempComsum);
     }
     public double getConsumption(){
         double cons = 0;

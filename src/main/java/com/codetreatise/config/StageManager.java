@@ -2,13 +2,18 @@ package com.codetreatise.config;
 
 import com.codetreatise.bean.station.CityGateStationEntity;
 import com.codetreatise.view.FxmlView;
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -60,6 +65,24 @@ public class StageManager {
         primaryStage.sizeToScene();
         primaryStage.centerOnScreen();
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo2.png")));
+        primaryStage.setOnCloseRequest(event -> {
+            {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("توجه");
+                alert.setHeaderText("اطمینان از خروج");
+                alert.setContentText("آیا برای خارج شدن از برنامه اطمینان دارید؟");
+                ButtonType okButton = new ButtonType("بله", ButtonBar.ButtonData.YES);
+                ButtonType noButton = new ButtonType("خیر", ButtonBar.ButtonData.NO);
+                alert.getButtonTypes().setAll(okButton, noButton);
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == okButton) {
+                    Platform.exit();
+                }  else {
+                    event.consume();
+                }
+            }
+
+        });
 //        primaryStage.setMaximized(true);
 
         try {

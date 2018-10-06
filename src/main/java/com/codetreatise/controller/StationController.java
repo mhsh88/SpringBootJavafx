@@ -48,6 +48,7 @@ import java.util.*;
 @Controller
 public class StationController extends BaseController implements Initializable {
     public Button stationSelect;
+    public Button calculateBtn;
     @Lazy
     @Autowired
     private StageManager stageManager;
@@ -92,6 +93,7 @@ public class StationController extends BaseController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 //    Stage stage = (Stage)mainVbox.getScene().getWindow();
 //        mainVbox.prefWidthProperty().bind(stage.widthProperty().multiply(0.80));
+        calculateBtn.setVisible(false);
 
 
 
@@ -207,7 +209,7 @@ public class StationController extends BaseController implements Initializable {
             List<StationLogic> stationLogics = resultEntity.getSingleCalculation();
 
 
-            JsonNode stationLogicsNode = getStationLogicJsonNode(stationLogics.get(0));
+//            JsonNode stationLogicsNode = getStationLogicJsonNode(stationLogics.get(0));
 
             JsonNode node1 = mapper.convertValue(stationLogics, JsonNode.class);
             JsonNode node = mapper.valueToTree(stationLogics);
@@ -215,7 +217,7 @@ public class StationController extends BaseController implements Initializable {
             JsonNode jsonNode = mapper.readTree(json);
             JsonNode debi = jsonNode.get(0).get("debi");
             jsonNode.getNodeType();
-            showResultsController.setStationLogicsNode(stationLogicsNode);
+            showResultsController.setStationLogicsNode(node1);
 
 
 //        showResultsFrame.show();

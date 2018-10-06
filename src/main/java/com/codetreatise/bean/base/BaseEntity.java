@@ -11,11 +11,10 @@ import java.io.Serializable;
 //@EntityListeners({AuditingEntityListener.class})
 
 @MappedSuperclass
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class BaseEntity <I extends Serializable> implements BaseConstants, BaseModel {
 
 
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     public Long id;
 

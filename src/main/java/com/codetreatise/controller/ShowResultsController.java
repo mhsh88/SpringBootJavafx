@@ -27,6 +27,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.poi.hssf.usermodel.HSSFHeader;
@@ -226,7 +227,14 @@ public class ShowResultsController implements Initializable {
     private TitledPane setHeaterTitledPane(JsonNode jsonNode) {
         TitledPane titledPane = new TitledPane();
         AnchorPane anchorPane = new AnchorPane();
-        anchorPane.getChildren().add(getInputOutput(jsonNode));
+        VBox vBox = new VBox();
+        vBox.getChildren().add(getInputOutput(jsonNode));
+        JFXTextField consumptionTextField = new JFXTextField();
+        consumptionTextField.setEditable(false);
+        consumptionTextField.setText(String.valueOf(Math.round(jsonNode.get("consumption").asDouble())));
+        vBox.getChildren().add(consumptionTextField);
+        anchorPane.getChildren().add(vBox);
+
         titledPane.setContent(anchorPane);
 
         titledPane.setText("گرم‌کن");
@@ -241,7 +249,7 @@ public class ShowResultsController implements Initializable {
             HBox hBox = new HBox();
             JFXTextField withInsulationTextBox = new JFXTextField();
             withInsulationTextBox.setEditable(false);
-            withInsulationTextBox.setText(String.valueOf(calBeforeHeater.get("withInsulationConsumption").asDouble()));
+//            withInsulationTextBox.setText(String.valueOf(calBeforeHeater.get("withInsulationConsumption").asDouble()));
 //            hBox.getChildren().add()
 
         }
